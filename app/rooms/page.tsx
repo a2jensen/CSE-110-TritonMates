@@ -7,7 +7,7 @@ export default function Home() {
                 <b>Rooms</b>
             </div>
             <div>
-                <Link href="/dashboard">Go to dashboard</Link>
+                <Link href="/dashboard">Return to dashboard</Link>
             </div>
         </>
     );
