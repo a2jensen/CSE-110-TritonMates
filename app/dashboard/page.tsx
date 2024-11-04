@@ -13,6 +13,9 @@ export default function Home() {
                 <Link href="/rooms">Go to rooms page</Link>
             </div>
             <div>
+                <Link href="/shop">Go to shop page</Link>
+            </div>
+            <div>
                 <Link href="/">Sign out</Link>
             </div>
         </>
