@@ -6,6 +6,12 @@ export default function Home() {
             <div>
                 Dashboard
             </div>
+            <div>
+                <Link href="/user">Go to user page</Link>  
+            </div>
+            <div>
+                <Link href="/rooms">Go to rooms page</Link>
+            </div>
         </>
     );
 }
