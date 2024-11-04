@@ -4,7 +4,7 @@ export default function Home() {
     return (
         <>
             <div>
-                Rooms
+                <b>Rooms</b>
             </div>
             <div>
                 <Link href="/dashboard">Go to dashboard</Link>
