@@ -4,10 +4,10 @@ export default function Home() {
     return (
         <>
             <div>
-                <b>Sign Up</b>
+                <b>Shop</b>
             </div>
             <div>
-                <Link href="/dashboard">Go to dashboard</Link>
+                <Link href="/dashboard">Return to dashboard</Link>
             </div>
         </>
     );

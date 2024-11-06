@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-
+// run "npm run dev" in CSE-110-GROUP1 folder to start the website
 
 export default function Home() {
   return (

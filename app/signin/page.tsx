@@ -4,7 +4,10 @@ export default function Home() {
     return (
         <>
             <div>
-                <Link href="/dashboard">Dashboard</Link>
+                <b>Sign In</b>
+            </div>
+            <div>
+                <Link href="/dashboard">Go to dashboard</Link>
             </div>
         </>
     );

@@ -1,5 +1,14 @@
+import Link from "next/link";
+
 export default function Home() {
     return (
-        "Rooms"
+        <>
+            <div>
+                <b>Rooms</b>
+            </div>
+            <div>
+                <Link href="/dashboard">Return to dashboard</Link>
+            </div>
+        </>
     );
 }
