@@ -1,10 +1,15 @@
 import Link from "next/link";
+import Navbar from '../../components/navbar';
 
 export default function Home() {
     return (
         <>
+            <Navbar />
             <div>
                 <b>Dashboard</b>
+            </div>
+            <div>
+                <Link href="/events">Go to events page</Link>  
             </div>
             <div>
                 <Link href="/user">Go to user page</Link>  

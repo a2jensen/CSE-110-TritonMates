@@ -6,7 +6,7 @@ export default function Home() {
         <>
             <Navbar />
             <div>
-                <b>Shop</b>
+                <b>Events</b>
             </div>
             <div>
                 <Link href="/dashboard">Return to dashboard</Link>
