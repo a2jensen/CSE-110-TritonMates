@@ -7,6 +7,7 @@ import { event } from "../../types";
 
 
 export default function EventsManager() {
+    // ik these hardcoded values are temporory, but i think getting events data will be handled in the upcomingEvents component instead of here(this component can actually be cut)
     const [events, setEvents] = useState<event[]>([
         { name: 'Movie Night', description: 'Join us for a movie!', id: 0, date: new Date() },
         { name: 'Dinner', description: 'Dinner gathering in the suite', id: 1, date: new Date() },

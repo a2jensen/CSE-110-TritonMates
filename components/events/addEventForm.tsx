@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { event } from '../../types';
 import styles from './addEventForm.module.css';
 
+// move this into types.ts
 type AddEventFormProps = {
     onAddEvent: (event: event) => void;
 };
