@@ -1,0 +1,1 @@
+[userId] will represent the unique route to the user page for a unique user
