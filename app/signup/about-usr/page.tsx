@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import './about-usr.css';
-import Logo from '@/app/components/logo';
+import Logo from '../../../components/logo';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 

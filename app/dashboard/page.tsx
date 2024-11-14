@@ -1,4 +1,4 @@
-import UpcomingEvents from "@/app/components/events/upcomingEvents";
+import UpcomingEvents from "../../components/events/upcomingEvents";
 import Link from "next/link";
 import { TaskStatus } from "./task";
 
