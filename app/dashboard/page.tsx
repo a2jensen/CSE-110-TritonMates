@@ -22,7 +22,7 @@ export default function Home() {
           <Link href="/">Sign out</Link>
         </div>
       </div>
-      <UpcomingEvents roomName="testRoom"/>
+      <UpcomingEvents roomName="testRoom" events={[]}/>
       <div className="flex-1 ml-4">
         <TaskStatus />
       </div>
