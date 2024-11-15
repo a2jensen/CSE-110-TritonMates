@@ -1,5 +1,5 @@
 import styles from './upcomingEvents.module.css';
-import { event } from '../../types';
+import { event } from '../../../types';
 
 
 type UpcomingEventsProps = {

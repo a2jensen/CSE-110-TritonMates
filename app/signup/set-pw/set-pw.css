@@ -1,0 +1,24 @@
+#requirements{
+    margin-top: 20px;
+    margin-left:50px;
+}
+#pw-input{
+    margin-top: 5px;
+    margin-left: 50px;
+    padding-top: 2px;
+    padding-left: 15px;
+    border-radius: 5px;
+    border: 1px solid #0a0a0a;
+    height: 50px;
+    width: 250px;
+}
+#pw-input-2{
+    margin-top: 20px;
+    margin-left: 50px;
+    padding-top: 2px;
+    padding-left: 15px;
+    border-radius: 5px;
+    border: 1px solid #0a0a0a;
+    height: 50px;
+    width: 250px;
+}
