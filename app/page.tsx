@@ -1,21 +1,14 @@
 import Link from 'next/link'
-
 // run "npm run dev" in CSE-110-GROUP1 folder to start the website
+import SignInButton from "../components/users/googleAuthButton";
 
 export default function Home() {
   return (
     <>
-      <div>
-        {/* hello world - Allen */}
-        Roommate App
-      </div>
-      <div>
-        <Link href="/signin">Sign In</Link>
-      </div>
-      <div>
-        <Link href="/signup">Sign Up</Link>
-      </div>
+    <div className='place-content-center '>
+      <h6>Welcome To TritonMates</h6>
+      <SignInButton/>
+    </div>
     </>
-
   );
 }

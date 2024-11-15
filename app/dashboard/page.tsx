@@ -1,8 +1,18 @@
 import UpcomingEvents from "@/components/events/upcomingEvents";
 import Link from "next/link";
 import { TaskStatus } from "./task";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { db } from "../../firebase/firebaseConfig"
 
-export default function Home() {
+export default  async function Home() {
+  const docRef = collection(db, "rooms");
+  const docsSnap = await getDocs(docRef);
+
+    // Loop through documents in the collection
+  docsSnap.forEach((doc) => {
+    console.log(`${doc.id} =>`, doc.data());
+  });
+
   return (
     <div className="flex">
       <div className="w-64">

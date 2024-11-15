@@ -7,11 +7,11 @@ type UpcomingEventsProps = {
     roomName: string;
 };
 
-const UpcomingEvents: React.FC<UpcomingEventsProps> = ({ events, roomName }) => {
-    // const events: event[] = [
-    //     { name: 'Movie Night', description: 'Body text for whatever you’d like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.', id: 0, date: new Date()},
-    //     { name: 'Dinner', description: 'Body text for whatever you’d like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.', id: 1, date: new Date()},
-    // ];
+const UpcomingEvents: React.FC<UpcomingEventsProps> = ({ eventsProp, roomName }) => {
+     const events: event[] = [
+         { name: 'Movie Night', description: 'Body text for whatever you’d like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.', id: 0, date: new Date()},
+         { name: 'Dinner', description: 'Body text for whatever you’d like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.', id: 1, date: new Date()},
+     ];
 
     return (
         <div className={styles.container}>
