@@ -3,9 +3,10 @@
 import Link from 'next/link'
 import { styleText } from 'util'
 import { useRouter } from 'next/navigation';
-import Logo from './../components/logo'
+
 import { useState } from 'react';
 import './sign-in.css';
+import Logo from '@/components/logo';
 
 
 // run "npm run dev" in CSE-110-GROUP1 folder to start the website

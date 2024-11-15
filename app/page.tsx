@@ -4,8 +4,9 @@ import Link from 'next/link'
 
 import { styleText } from 'util'
 import { useRouter } from 'next/navigation';
-import Logo from './components/logo'
+// import Logo from './components/logo'
 import { useState } from 'react';
+import Logo from '@/components/logo';
 
 
 // run "npm run dev" in CSE-110-GROUP1 folder to start the website
@@ -36,9 +37,6 @@ export default function Home() {
       <div id='email'>
         <div style={{ marginLeft: '10px' }}>Enter email</div>
         <input type='email' id='email-input' value={email} onChange={(e)=> setEmail(e.target.value)} placeholder= 'Enter email' required></input>
-      <div>
-        {/* hello world - Allen */}
-        <b>Roommate App</b>
       </div>
 
       <button type='submit' id='sign-up-btn1'>Next</button>
