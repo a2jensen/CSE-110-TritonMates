@@ -13,10 +13,9 @@ export default function Navbar() {
                 </div>
                 <nav className="nav-links">
                     <ul>
-                        <li><Link href="/events">Events</Link></li>
+                        <li><Link href="/dashboard">Dashboard</Link></li>
                         <li><Link href="/user">User Page</Link></li>
                         <li><Link href="/rooms">Rooms</Link></li>
-                        <li><Link href="/shop">Shop</Link></li>
                         <li><Link href="/signout">Sign Out</Link></li>
                     </ul>
                 </nav>
