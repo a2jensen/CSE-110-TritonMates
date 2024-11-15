@@ -7,7 +7,6 @@ export default function Home() {
   return (
     <div className="flex">
       <div className="w-64">
-            <Navbar />
         <div>
           <b>Dashboard</b>
         </div>

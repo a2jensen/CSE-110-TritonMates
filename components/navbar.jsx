@@ -2,11 +2,11 @@
 export default function Navbar() {
     return (
         <>
-            <div>Navbar component</div>
+            <div><b>Navbar component</b></div>
             <div>
                 <nav className="navbar">
                     <ul>
-                        <li><a href="">Test</a></li>
+                        <li><a href="">Test Element In Navbar</a></li>
                     </ul>
                 </nav>
             </div>

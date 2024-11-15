@@ -8,7 +8,7 @@ export default function Home() {
     <>
       <div>
         {/* hello world - Allen */}
-        Roommate App
+        <b>Roommate App</b>
       </div>
       <div>
         <Link href="/signin">Sign In</Link>
