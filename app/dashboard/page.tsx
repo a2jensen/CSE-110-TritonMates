@@ -1,6 +1,7 @@
-import UpcomingEvents from "@/components/events/upcomingEvents";
+import UpcomingEvents from "../../components/events/upcomingEvents";
 import Link from "next/link";
 import { TaskStatus } from "./task";
+import Navbar from '../../components/navbar';
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig"
 
@@ -19,6 +20,9 @@ export default  async function Home() {
         <div>
           <b>Dashboard</b>
         </div>
+            <div>
+                <Link href="/events">Go to events page</Link>  
+            </div>
         <div>
           <Link href="/user">Go to user page</Link>
         </div>
@@ -32,7 +36,7 @@ export default  async function Home() {
           <Link href="/">Sign out</Link>
         </div>
       </div>
-      <UpcomingEvents roomName="testRoom"/>
+      <UpcomingEvents roomName="testRoom" events={[]}/>
       <div className="flex-1 ml-4">
         <TaskStatus />
       </div>

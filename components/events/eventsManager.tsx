@@ -1,9 +1,9 @@
 'use client'
-import UpcomingEvents from "@/components/events/upcomingEvents";
-import AddEventForm from "@/components/events/addEventForm";
+import UpcomingEvents from "@/app/components/events/upcomingEvents";
+import AddEventForm from "@/app/components/events/addEventForm";
 import styles from './eventsManager.module.css';
 import { useState } from "react";
-import { event } from "../../types";
+import { event } from "../../../types";
 
 
 export default function EventsManager() {
