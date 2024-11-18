@@ -8,61 +8,30 @@ import { useState } from 'react';
 import './sign-in.css';
 import Logo from '@/components/logo';
 
+import { signInUser } from '../context/AuthContext.js'; 
+
 
 // run "npm run dev" in CSE-110-GROUP1 folder to start the website
 
 
-export default function Home() {
-  const router = useRouter();
+export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignIn = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    
-    if(!email){
-      alert("Enter email");
-      return;
-    }
-    if(!password){
-        alert("Enter password");
-        return;
-    }
-
-    if (password.length < 8) {
-        alert("Password must be at least 8 characters long");
-        return;
-        }
-
-        let hasNumber = false;
-        for (let i = 0; i < password.length; i++) {
-        if ('0123456789'.includes(password[i])) {
-            hasNumber = true;
-            break;
-        }
-        }
-        if (!hasNumber) {
-        alert("Password must contain at least one number");
-        return;
-        }
-
-
-        let hasSpecialChar = false;
-        for (let i = 0; i < password.length; i++) {
-        if ('@#$%'.includes(password[i])) {
-            hasSpecialChar = true;
-            break;
-        }
-        }
-        if (!hasSpecialChar) {
-        alert("Password must contain at least one special character (e.g.: @, #, $, %)");
-        return;
-        }
-
-      //TODO: Check if password matches the password set by user for the email entered. (Connect to backend)
-
-        router.push('/dashboard');
+    try {
+      const user = await signInUser(email, password);
+      console.log("Signed in user:", user);
+      // Redirect to dashboard or another page
+    } catch (error) {
+      if (error instanceof Error) {
+    console.log(error.message); // Safely access 'message' property
+  } else {
+    console.log("An unexpected error occurred");
   }
+    }
+  };
   
   return (
     <>
@@ -70,7 +39,7 @@ export default function Home() {
       <img id="roommates-img" src='https://img.freepik.com/free-vector/parents-child-holding-their-cellphones-tablet-home-chatting-online-social-media_74855-14130.jpg?t=st=1731474608~exp=1731478208~hmac=940cc60f124ac8c46eb1bcc20dd97159c348b738a07328e006d802e0dc318565&w=996'></img>
       <h1 id="welcome-hdr">Welcome!</h1>
 
-      <form className="email-form" onSubmit={handleSubmit}>
+      <form className="email-form" onSubmit={handleSignIn}>
       
       <div id='field'>
         <div style={{ marginLeft: '10px' }}>Enter email</div>
