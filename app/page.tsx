@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <>
       <div>
-        {/* hello world - Allen */}
+
         Roommate App
       </div>
       <div> <button onClick = {googleLogin} >Sign in With Google </button> </div>
