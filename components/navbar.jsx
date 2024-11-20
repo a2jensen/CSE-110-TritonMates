@@ -2,21 +2,24 @@
 
 import Link from 'next/link';
 
+
+// Put this component in sites that need it
 export default function Navbar() {
     return (
         <header className="navbar">
             <div className="container">
                 <div className="logo">
                     <Link href="/">
-                        <b>Navbar Component</b>
+                        <b>Tentative Navbar Component</b>
                     </Link>
                 </div>
                 <nav className="nav-links">
                     <ul>
                         <li><Link href="/dashboard">Dashboard</Link></li>
-                        <li><Link href="/user">User Page</Link></li>
+                        <li><Link href="/events">Events</Link></li>
                         <li><Link href="/rooms">Rooms</Link></li>
-                        <li><Link href="/signout">Sign Out</Link></li>
+                        <li><Link href="/signin">Sign In</Link></li>
+                        <li><Link href="/">Sign Out/Up</Link></li>
                     </ul>
                 </nav>
             </div>
