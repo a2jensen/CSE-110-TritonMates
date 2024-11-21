@@ -3,18 +3,40 @@
 import Link from 'next/link'
 import { styleText } from 'util'
 import { useRouter } from 'next/navigation';
-import Logo from './../components/logo'
+
 import { useState } from 'react';
 import './sign-in.css';
+import Logo from '@/components/logo';
+import { auth, provider, signInWithPopup, signOut, User } from "../../firebase/firebaseConfig"
 
-
-// run "npm run dev" in CSE-110-GROUP1 folder to start the website
 
 
 export default function Home() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const [user, setUser] = useState<User | null>(null);
+  const handleGoogleSignIn = async () => {
+    try {
+        console.log('about to run signInWithPopup')
+        const result = await signInWithPopup(auth, provider);
+        console.log("Results ", result.user)
+        setUser(result.user);
+        router.push('/dashboard');
+    } catch (error : any) {
+        console.error("Failed to sign in with google", error);
+    }
+}
+
+const handleSignOut = async () => {
+    try {
+        const result = await signOut(auth)
+        setUser(null)
+    } catch (error : any) {
+        console.error("Failed to sign out", error)  
+    }
+}
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -89,7 +111,7 @@ export default function Home() {
 
       </form>
       
-      <button style={{width:'50px', marginLeft:'130px', marginTop:'20px'}}>
+      <button style={{width:'50px', marginLeft:'130px', marginTop:'20px'}} onClick={handleGoogleSignIn}>
         <img src='https://cdn4.iconfinder.com/data/icons/picons-social/57/09-google-3-512.png'></img>
       </button>
 
