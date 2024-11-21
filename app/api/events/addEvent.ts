@@ -1,0 +1,51 @@
+import { db } from "@/firebase/firebaseConfig";
+import { collection, doc, addDoc, getDoc, Timestamp } from "firebase/firestore";
+import { event } from "@/types";
+
+// To add an event to a room's Events subcollection
+
+export async function addEvent(
+  eventData: event,
+  room_id: string,
+  event_participants: string[]
+): Promise<string> {
+  try {
+    // Reference to the room document
+    const roomRef = doc(db, "rooms", room_id);
+    const roomSnap = await getDoc(roomRef);
+
+    // Check if the room exists and has members
+    if (!roomSnap.exists()) {
+      throw new Error("Room not found");
+    }
+
+    const roomData = roomSnap.data();
+    const roomMembers = roomData?.Members || [];
+
+    // Validate participants: Ensure all participants are members of the room
+    const validParticipants = event_participants.filter((participant) =>
+      roomMembers.includes(participant)
+    );
+
+    if (validParticipants.length !== event_participants.length) {
+      throw new Error("Some participants are not members of the room");
+    }
+
+    // Reference to the Events subcollection in the specific room
+    const eventsCollection = collection(roomRef, "Events");
+
+    // Add a document to the Events subcollection with room and participants info
+    const docRef = await addDoc(eventsCollection, {
+      ...eventData,
+      date: Timestamp.fromDate(eventData.date), // Convert to Firestore-compatible Timestamp
+      event_participants: validParticipants, // Add only valid participants
+      createdAt: Timestamp.now(), // Timestamp for creation time of the event document
+    });
+
+    console.log("Event added with ID:", docRef.id);
+    return docRef.id; // Return the ID of the created event
+  } catch (error) {
+    console.error("Error adding event:", error);
+    throw new Error("Failed to add event. Please try again.");
+  }
+}
