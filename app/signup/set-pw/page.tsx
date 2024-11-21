@@ -1,7 +1,7 @@
 "use client";   //keep this until separate client and server folders are made
 
+import Logo from '@/components/logo';
 import './set-pw.css';
-import Logo from '../../components/logo'
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
