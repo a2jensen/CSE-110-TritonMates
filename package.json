@@ -6,11 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "next test"
   },
   "dependencies": {
-    "dotenv": "^16.4.5",
-    "firebase": "^11.0.1",
+    "firebase": "^11.0.2",
     "next": "15.0.0",
     "react": "19.0.0-rc-65a56d0e-20241020",
     "react-dom": "19.0.0-rc-65a56d0e-20241020"

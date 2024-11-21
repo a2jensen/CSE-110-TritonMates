@@ -1,0 +1,23 @@
+#email-input{
+    padding-top: 2px;
+    padding-left: 15px;
+    margin-top:10px;
+    border-radius: 5px;
+    border: 1px solid #0a0a0a;
+    height: 50px;
+    width: 250px;
+}
+#password-input{
+    padding-top: 2px;
+    padding-left: 15px;
+    margin-top:10px;
+    border-radius: 5px;
+    border: 1px solid #0a0a0a;
+    height: 50px;
+    width: 250px;
+}
+#field{
+margin-left: 50px;
+margin-top: 20px;
+}
+  
