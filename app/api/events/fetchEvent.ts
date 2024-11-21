@@ -1,27 +1,42 @@
 import { db } from "@/firebase/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { event } from "@/types";
 
-// Fetch a specific event from a room's Events subcollection
+// Fetch an event from a room's Events subcollection by query
 export async function fetchEvent(
-  event_id: string,
-  room_id: string
+  room_id: string,
+  criteria: Partial<event>
 ): Promise<event | null> {
   try {
-    // Reference to the event document in Firestore
-    const eventRef = doc(db, `rooms/${room_id}/Events`, event_id);
-    const eventSnap = await getDoc(eventRef);
+    // Reference to the Events subcollection
+    const eventsCollection = collection(db, `rooms/${room_id}/Events`);
 
-    // Check if the document exists
-    if (!eventSnap.exists()) {
-      console.log("Event not found");
-      return null; // Return null if the event does not exist
+    // Build a query based on provided criteria
+    const filters = [];
+    if (criteria.name) filters.push(where("name", "==", criteria.name));
+    if (criteria.date)
+      filters.push(where("date", "==", criteria.date.toISOString()));
+    if (criteria.description)
+      filters.push(where("description", "==", criteria.description));
+
+    const q = query(eventsCollection, ...filters);
+
+    // Execute the query
+    const querySnapshot = await getDocs(q);
+
+    // Check if any documents were found
+    if (querySnapshot.empty) {
+      console.log("No matching event found");
+      return null;
     }
 
-    // Return the event data along with its Firestore ID
+    // Fetch the first matching event
+    const eventSnap = querySnapshot.docs[0];
     const eventData = eventSnap.data();
+
+    // Return the event data
     return {
-      id: Number(event_id),
+      id: Number(eventSnap.id), // Convert Firestore ID to number (need to discuss this)
       name: eventData.name,
       description: eventData.description,
       date: eventData.date.toDate(), // Convert Firestore Timestamp to JavaScript Date
