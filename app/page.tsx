@@ -15,7 +15,7 @@ import Logo from '@/components/logo';
 export default function Home() {
   const router = useRouter();
   const [email, setEmail] = useState('');
-
+  
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
