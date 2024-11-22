@@ -2,6 +2,7 @@ import UpcomingEvents from "../../components/events/upcomingEvents";
 import Link from "next/link";
 import Navbar from "../../components/navbar";
 import TaskBoard from "../../components/tasks/taskBoard/taskBoard";
+import EventsManager from "@/components/events/eventsManager";
 
 export default function Home() {
   return (
@@ -13,7 +14,7 @@ export default function Home() {
 
       <div className="space-y-6">
         <TaskBoard />
-        <UpcomingEvents roomName="testRoom" events={[]} />
+        <EventsManager/>
       </div>
     </div>
   );

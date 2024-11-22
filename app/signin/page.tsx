@@ -1,11 +1,9 @@
 "use client";   //keep this until separate client and server folders are made
 
 import Link from 'next/link'
-import { styleText } from 'util'
 import { useRouter } from 'next/navigation';
 
 import { useState } from 'react';
-import './sign-in.css';
 import Logo from '@/components/logo';
 
 
@@ -72,14 +70,27 @@ export default function Home() {
 
       <form className="email-form" onSubmit={handleSubmit}>
       
-      <div id='field'>
+      <div id='field' className="ml-[50px] mt-5">
         <div style={{ marginLeft: '10px' }}>Enter email</div>
-        <input type='email' id='email-input' value={email} onChange={(e)=> setEmail(e.target.value)} placeholder= 'Enter email' required></input>
+        <input
+          type='email'
+          id='email-input'
+          value={email}
+          onChange={(e)=> setEmail(e.target.value)} placeholder= 'Enter email' required
+          className="pt-[2px] pl-[15px] mt-2.5 rounded-[5px] border border-[#0a0a0a] h-[50px] w-[250px]"
+        >
+        </input>
       </div>
 
-      <div id='field'>
+      <div id='field' className="ml-[50px] mt-5">
         <div style={{ marginLeft: '10px' }}>Enter password</div>
-        <input type='password' id='password-input' value={password} onChange={(e)=> setPassword(e.target.value)} placeholder= 'Enter password' required></input>
+        <input
+          type='password'
+          id='password-input'
+          value={password} onChange={(e)=> setPassword(e.target.value)} placeholder= 'Enter password' required
+          className="pt-[2px] pl-[15px] mt-2.5 rounded-[5px] border border-[#0a0a0a] h-[50px] w-[250px]"
+        >
+        </input>
       </div>
 
       <button type='submit' id='sign-up-btn1'>Log In</button>
