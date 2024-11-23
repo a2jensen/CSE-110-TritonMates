@@ -1,21 +1,40 @@
 "use client";   //keep this until separate client and server folders are made
 
 import Link from 'next/link'
-import { styleText } from 'util'
 import { useRouter } from 'next/navigation';
 
 import { useState } from 'react';
-import './sign-in.css';
 import Logo from '@/components/logo';
+import { auth, provider, signInWithPopup, signOut, User } from "../../firebase/firebaseConfig"
 
-
-// run "npm run dev" in CSE-110-GROUP1 folder to start the website
 
 
 export default function Home() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const [user, setUser] = useState<User | null>(null);
+  const handleGoogleSignIn = async () => {
+    try {
+        console.log('about to run signInWithPopup')
+        const result = await signInWithPopup(auth, provider);
+        console.log("Results ", result.user)
+        setUser(result.user);
+        router.push('/dashboard');
+    } catch (error : any) {
+        console.error("Failed to sign in with google", error);
+    }
+}
+
+const handleSignOut = async () => {
+    try {
+        const result = await signOut(auth)
+        setUser(null)
+    } catch (error : any) {
+        console.error("Failed to sign out", error)  
+    }
+}
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -72,14 +91,27 @@ export default function Home() {
 
       <form className="email-form" onSubmit={handleSubmit}>
       
-      <div id='field'>
+      <div id='field' className="ml-[50px] mt-5">
         <div style={{ marginLeft: '10px' }}>Enter email</div>
-        <input type='email' id='email-input' value={email} onChange={(e)=> setEmail(e.target.value)} placeholder= 'Enter email' required></input>
+        <input
+          type='email'
+          id='email-input'
+          value={email}
+          onChange={(e)=> setEmail(e.target.value)} placeholder= 'Enter email' required
+          className="pt-[2px] pl-[15px] mt-2.5 rounded-[5px] border border-[#0a0a0a] h-[50px] w-[250px]"
+        >
+        </input>
       </div>
 
-      <div id='field'>
+      <div id='field' className="ml-[50px] mt-5">
         <div style={{ marginLeft: '10px' }}>Enter password</div>
-        <input type='password' id='password-input' value={password} onChange={(e)=> setPassword(e.target.value)} placeholder= 'Enter password' required></input>
+        <input
+          type='password'
+          id='password-input'
+          value={password} onChange={(e)=> setPassword(e.target.value)} placeholder= 'Enter password' required
+          className="pt-[2px] pl-[15px] mt-2.5 rounded-[5px] border border-[#0a0a0a] h-[50px] w-[250px]"
+        >
+        </input>
       </div>
 
       <button type='submit' id='sign-up-btn1'>Log In</button>
@@ -90,7 +122,7 @@ export default function Home() {
 
       </form>
       
-      <button style={{width:'50px', marginLeft:'130px', marginTop:'20px'}}>
+      <button style={{width:'50px', marginLeft:'130px', marginTop:'20px'}} onClick={handleGoogleSignIn}>
         <img src='https://cdn4.iconfinder.com/data/icons/picons-social/57/09-google-3-512.png'></img>
       </button>
 
