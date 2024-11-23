@@ -1,3 +1,4 @@
+
 import UpcomingEvents from "../../components/events/upcomingEvents";
 import Link from "next/link";
 import Navbar from "../../components/navbar";
@@ -15,6 +16,7 @@ export default function Home() {
       <div className="space-y-6">
         <TaskBoard />
         <EventsManager/>
+
       </div>
     </div>
   );
