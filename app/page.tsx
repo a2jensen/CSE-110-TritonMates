@@ -1,7 +1,6 @@
 
+"use client";   //keep this until separate client and server folders are made
 import Link from 'next/link'
-import { GoogleAuthProvider, signInWithPopup} from 'firebase/auth';
-import {auth} from '../firebase/firebase.js'
 
 import { styleText } from 'util'
 import { useRouter } from 'next/navigation';
@@ -14,17 +13,6 @@ import Logo from '@/components/logo';
 
 
 export default function Home() {
-
-  return (
-    <>
-      <div>
-
-        Roommate App
-      </div>
-      <div> <button onClick = {googleLogin} >Sign in With Google </button> </div>
-      <div>
-       
-        <Link href="/signin">Sign In</Link>
 
   const router = useRouter();
   const [email, setEmail] = useState('');
