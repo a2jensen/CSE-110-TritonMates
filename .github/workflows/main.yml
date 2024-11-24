@@ -12,12 +12,12 @@ jobs:
    runs-on: ubuntu-latest 
    steps:
      - uses: actions/checkout@v4 
+     - name: Install Other Dependencies
+       run: npm install
      - name: Install Jest
        run: npm install --save-dev jest @testing-library/react @testing-library/jest-dom --force
      - name: Install Jest Env
        run: npm i jest-environment-jsdom --force
-     - name: Install Other Dependencies
-       run: npm install
      - name: Unit Test
        env:
          REACT_APP_API_KEY: ${{ secrets.REACT_APP_API_KEY }}
