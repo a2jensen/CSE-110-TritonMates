@@ -1,7 +1,7 @@
 "use client";   //keep this until separate client and server folders are made
 
-
 import Link from 'next/link'
+
 import { useRouter } from 'next/navigation';
 
 import { useState } from 'react';
@@ -82,16 +82,9 @@ export default function Home() {
       <h2 id="welcome-hdr" style={{color: '#000000', marginTop:'20px'}}>Welcome to </h2>
       <h1>TritonMates!</h1>
 
-      <button type='submit' id='sign-up-btn1'>Next</button>
-
-      <div style={{marginLeft: '60px', marginTop:'30px'}}>
-      <hr id='line1'></hr> or <hr id='line1'></hr>
-      </div>
-      
-      <button style={{width:'50px', marginLeft:'130px', marginTop:'20px'}}>
-        <img src='https://cdn4.iconfinder.com/data/icons/picons-social/57/09-google-3-512.png'></img>
+      <button style={{ backgroundColor: '#59a6cb', color: '#FFFFFF', width:'230px', height:'50px' ,marginLeft:'280px', marginTop:'40px', border:'2px solid #FFFFFF', borderRadius:'23px', fontSize:'20px'}} onClick={handleGoogleSignIn}>
+        Sign In with Google!
       </button>
     </>
-
   );
 }

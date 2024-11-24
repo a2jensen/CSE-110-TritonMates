@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import AddTaskForm from "../addTaskForm/addTaskform";
+import AddTaskForm from "../addTaskform/addTaskform";
 import TaskOverview from "../taskOverview/taskOverview";
 import { Task } from "../types";
 

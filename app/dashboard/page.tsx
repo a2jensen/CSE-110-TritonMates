@@ -3,10 +3,11 @@ import UpcomingEvents from "../../components/events/upcomingEvents";
 import Link from "next/link";
 import Navbar from "../../components/navbar";
 import TaskBoard from "../../components/tasks/taskBoard/taskBoard";
-import { useRouter } from 'next/navigation';
+import EventsManager from "@/components/events/eventsManager";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { auth, onAuthStateChanged, User } from "../../firebase/firebaseConfig";
 
-import { useState, useEffect } from 'react';
-import { auth, provider, signInWithPopup, signOut, User, onAuthStateChanged } from "../../firebase/firebaseConfig"
 
 export default function Home() {
   const router = useRouter();
