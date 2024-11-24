@@ -1,5 +1,4 @@
 "use client"
-import UpcomingEvents from "../../components/events/upcomingEvents";
 import Link from "next/link";
 import Navbar from "../../components/navbar";
 import TaskBoard from "../../components/tasks/taskBoard/taskBoard";
