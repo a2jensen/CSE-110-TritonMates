@@ -13,6 +13,13 @@ pnpm dev
 # or
 bun dev
 ```
+To run tests, checkout development branch, run the following commands:
+
+```bash
+npm install --save-dev jest @testing-library/react @testing-library/jest-dom --force
+npm i jest-environment-jsdom --force
+npm test
+```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
