@@ -15,6 +15,7 @@ export default function TaskBoard() {
     text: string;
     assignee: string;
     dueDate: string;
+    points: number;
   }) => {
     const today = new Date();
     const dueDateObj = new Date(task.dueDate);
@@ -30,6 +31,7 @@ export default function TaskBoard() {
         done: false,
         doneReason: "",
         dueDate: task.dueDate,
+        points: task.points,
         isUpcoming,
       },
     ]);

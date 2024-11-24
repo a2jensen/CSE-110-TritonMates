@@ -1,6 +1,6 @@
 import { initializeApp, FirebaseApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, User, setPersistence, browserLocalPersistence } from "firebase/auth"
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, User, setPersistence, browserLocalPersistence, onAuthStateChanged } from "firebase/auth"
 
 // define config object with env variables
 const firebaseConfig = {
@@ -30,5 +30,5 @@ const db = getFirestore(app);
 // set persistence to browser local storage in order to keep users logged when switching pages...
 setPersistence(auth, browserLocalPersistence);
 
-export { auth , provider, db, signInWithPopup, signOut };
+export { auth , provider, db, signInWithPopup, signOut, onAuthStateChanged };
 export type { User }

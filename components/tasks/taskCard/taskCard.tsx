@@ -23,7 +23,7 @@ export default function TaskCard({ task, onToggle, onDelete }: TaskCardProps) {
             {task.text}
           </p>
           <p className="text-sm text-gray-500">
-            Assignee: {task.assignee} | Due: {task.dueDate}
+            Assignee: {task.assignee} | Due: {task.dueDate} | Points: {task.points}
           </p>
         </div>
       </div>
