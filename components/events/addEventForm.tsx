@@ -1,8 +1,7 @@
 'use client'
 import { randomInt } from 'crypto';
 import React, { useState } from 'react';
-import { event } from '../../../types';
-import styles from './addEventForm.module.css';
+import { event } from '../../types';
 
 // move this into types.ts
 type AddEventFormProps = {
@@ -23,39 +22,38 @@ const AddEventForm: React.FC<AddEventFormProps> = ({ onAddEvent }) => {
     };
 
     return (
-        <div className={styles.container}>
-            <h2 className={styles.title}>Add New Event</h2>
-            <form onSubmit={handleSubmit} className={styles.form}>
-                <label className={styles.label}>Event Title</label>
+        <div className="bg-white p-5 rounded-[10px] shadow-md max-w-[400px] self-start">
+            <h2 className="text-[1.8em] font-bold text-[#FFD54F] mb-5">Add New Event</h2>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-[15px]">
+                <label className="text-[0.9em] font-bold text-[#333]">Event Title</label>
                 <input
                     type="text"
                     placeholder="Event Title"
                     value={eventTitle}
                     onChange={(e) => setEventTitle(e.target.value)}
-                    className={styles.input}
+                    className="p-2.5 text-[1em] border border-[#ccc] rounded-[5px] outline-none text-[#333333]"
                 />
 
-                <label className={styles.label}>Event Info</label>
+                <label className="text-[0.9em] font-bold text-[#333]">Event Info</label>
                 <input
                     type="text"
                     placeholder="Event Info"
                     value={eventInfo}
                     onChange={(e) => setEventInfo(e.target.value)}
-                    className={styles.input}
+                    className="p-2.5 text-[1em] border border-[#ccc] rounded-[5px] outline-none text-[#333333]"
                 />
 
-                <label className={styles.label}>Event Date (Calendar OR Manual Input)</label>
-                <div className={styles.dateInputWrapper}>
+                <label className="text-[0.9em] font-bold text-[#333]">Event Date (Calendar OR Manual Input)</label>
+                <div className="flex items-center relative">
                     <input
                         type="date"
                         placeholder="Due Date (MM/DD/YYYY)"
                         value={eventDate}
                         onChange={(e) => setEventDate(e.target.value)}
-                        className={styles.dateInput}
+                        className="p-2.5 text-[1em] border border-[#ccc] rounded-[5px] outline-none text-[#333333] flex-1"
                     />
-                    <span className={styles.calendarIcon}>📅</span>
                 </div>
-                <button type="submit" className={styles.addButton}>Add</button>
+                <button type="submit" className="p-2.5 text-[1em] font-bold bg-[#FFD54F] border-none rounded-[20px] cursor-pointer text-white text-center hover:bg-[#FFC107]">Add</button>
             </form>
         </div>
     );

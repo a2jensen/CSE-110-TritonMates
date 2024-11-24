@@ -41,7 +41,7 @@ export default function Home() {
 
       <div className="space-y-6">
         <TaskBoard />
-        <UpcomingEvents roomName="testRoom" events={[]} />
+        <EventsManager/>
       </div>
     </div>
   );
