@@ -1,5 +1,5 @@
-"use client";   //keep this until separate client and server folders are made
 
+"use client";   //keep this until separate client and server folders are made
 import Link from 'next/link'
 
 import { useRouter } from 'next/navigation';
@@ -11,6 +11,7 @@ import { auth, provider, signInWithPopup, signOut, User } from "../firebase/fire
 
 
 export default function Home() {
+
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
