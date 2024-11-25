@@ -1,4 +1,3 @@
-// components/user/ProfileSummary.tsx
 import { useState, useEffect } from "react";
 
 interface ProfileSummaryProps {
