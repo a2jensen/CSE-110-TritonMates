@@ -1,17 +1,13 @@
 import { db } from "@/firebase/firebaseConfig";
 import {
   doc,
-  collection,
-  query,
-  where,
   getDoc,
-  getDocs,
   updateDoc,
   Timestamp,
 } from "firebase/firestore";
 import { event } from "@/types";
 
-// To edit an event in a room's Events subcollection using a generated ID
+// Edit an event in a room's Events subcollection
 async function editEvent(eventData: event, room_id: string): Promise<void> {
   try {
     // Reference to the room document
@@ -21,21 +17,18 @@ async function editEvent(eventData: event, room_id: string): Promise<void> {
       throw new Error("Room not found");
     }
 
-    // Reference to the Events subcollection
-    const eventsCollection = collection(roomRef, "Events");
+    //Access event reference in firestore
+    const eventRef = doc(db, `rooms/${room_id}/events`, eventData.id);
 
-    // Query the Events subcollection to find the document with matching criteria (e.g., `name`)
-    const q = query(eventsCollection, where("name", "==", eventData.name));
-    const querySnapshot = await getDocs(q);
 
-    if (querySnapshot.empty) {
+    //Check if event exists
+    const eventSnap = await getDoc(eventRef);
+    if (!eventSnap.exists()) {
       throw new Error("Event not found");
     }
 
-    // Firestore-generated ID of the first matching event
-    const eventRef = querySnapshot.docs[0].ref;
 
-    // Prepare updated data with a Firestore-compatible `date`
+    // Prepare updated data with converted date
     const updatedData = {
       ...eventData,
       date: Timestamp.fromDate(eventData.date),

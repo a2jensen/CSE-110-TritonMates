@@ -5,7 +5,7 @@ export interface User {
 }
 
 export type event = {
-  id: number;
+  id: string;
   name: string;
   description: string;
   date: Date;

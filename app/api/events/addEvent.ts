@@ -1,11 +1,11 @@
 import { db } from "@/firebase/firebaseConfig";
-import { collection, doc, addDoc, getDoc, Timestamp } from "firebase/firestore";
+import { collection, doc, addDoc, getDoc, Timestamp, updateDoc } from "firebase/firestore";
 import { event } from "@/types";
 
 // To add an event to a room's Events subcollection
 
 export async function addEvent(
-  eventData: event,
+  eventData: Omit<event, "id">, //This will allow front end to pass event object without ID
   room_id: string,
   event_participants: string[]
 ): Promise<string> {
@@ -22,7 +22,7 @@ export async function addEvent(
     const roomData = roomSnap.data();
     const roomMembers = roomData?.Members || [];
 
-    // Validate participants: Ensure all participants are members of the room
+    // Validate participants: Ensure all participants are members of the room (CAN BE REMOVED)
     const validParticipants = event_participants.filter((participant) =>
       roomMembers.includes(participant)
     );
@@ -31,9 +31,11 @@ export async function addEvent(
       throw new Error("Some participants are not members of the room");
     }
 
-    // Reference to the Events subcollection in the specific room
-    const eventsCollection = collection(roomRef, "Events");
 
+    // Reference to the Events subcollection in the specific room
+    const eventsCollection = collection(roomRef, "events");
+
+    
     // Add a document to the Events subcollection with room and participants info
     const docRef = await addDoc(eventsCollection, {
       ...eventData,
@@ -42,8 +44,10 @@ export async function addEvent(
       createdAt: Timestamp.now(), // Timestamp for creation time of the event document
     });
 
+    await updateDoc(docRef, { id: docRef.id }); //Adding firebase generated id to event
+
     console.log("Event added with ID:", docRef.id);
-    return docRef.id; // Return the ID of the created event
+    return docRef.id;
   } catch (error) {
     console.error("Error adding event:", error);
     throw new Error("Failed to add event. Please try again.");
