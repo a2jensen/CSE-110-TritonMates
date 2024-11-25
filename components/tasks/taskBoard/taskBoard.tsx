@@ -1,8 +1,7 @@
-// corresponds to taskboard component on figma file dashboard page
 "use client";
 
 import { useState } from "react";
-import AddTaskForm from "../addTaskForm/addTaskForm";
+import AddTaskForm from "../addTaskForm/taskForm";
 import TaskOverview from "../taskOverview/taskOverview";
 import { Task } from "../types";
 
@@ -48,7 +47,7 @@ export default function TaskBoard() {
   };
 
   return (
-    <div className="p-6 bg-blue-100 rounded-lg shadow-md space-y-6">
+    <div className="p-6 bg-[#C1DCFF] rounded-lg shadow-lg space-y-6">
       <div className="grid grid-cols-2 gap-6">
         <TaskOverview
           tasks={tasks}

@@ -1,5 +1,5 @@
-"use client";   //keep this until separate client and server folders are made
 
+"use client";   //keep this until separate client and server folders are made
 import Link from 'next/link'
 
 import { styleText } from 'util'
@@ -13,9 +13,10 @@ import Logo from '@/components/logo';
 
 
 export default function Home() {
+
   const router = useRouter();
   const [email, setEmail] = useState('');
-
+  
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
@@ -43,6 +44,7 @@ export default function Home() {
 
       <div style={{marginLeft: '60px', marginTop:'30px'}}>
       <hr id='line1'></hr> or <hr id='line1'></hr>
+
       </div>
 
       </form>
