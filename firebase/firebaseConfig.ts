@@ -30,5 +30,5 @@ const db = getFirestore(app);
 // set persistence to browser local storage in order to keep users logged when switching pages...
 setPersistence(auth, browserLocalPersistence);
 
-export { auth , provider, db, signInWithPopup, signOut };
+export { auth , provider, db, signInWithPopup, signOut, onAuthStateChanged };
 export type { User }

@@ -1,13 +1,40 @@
-// this will be the component that represents ONE individual task
-// taskBoard AND taskOverview component will call this component
-// those components will be making API GET calls for event info, and then the event info
-// will get passed into this component(similar logic to upcoming events)
+"use client";
 
-'use client'
-import { useState, useEffect } from "react" // not fully sure if we need useEffect for this component...
-import { event } from "../../../types"
+import { Task } from "../types";
 
-// this component will take in eventData object as a prop 
-export default function taskCard ({event}) {
-    // display it onto a card
+interface TaskCardProps {
+  task: Task;
+  onToggle: (id: number) => void;
+  onDelete: (id: number) => void;
+}
+
+export default function TaskCard({ task, onToggle, onDelete }: TaskCardProps) {
+  return (
+    <li className="flex items-center justify-between p-3 bg-white rounded shadow hover:shadow-lg">
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          checked={task.done}
+          onChange={() => onToggle(task.id)}
+          className="w-4 h-4"
+        />
+        <div>
+          <p className={`font-medium ${task.done ? "line-through" : ""}`}>
+            {task.text}
+          </p>
+          <p className="text-sm text-gray-500">
+            Assignee: {task.assignee} | Due: {task.dueDate} | Points: {task.points}
+          </p>
+        </div>
+      </div>
+      {task.done && (
+        <button
+          onClick={() => onDelete(task.id)}
+          className="text-red-500 text-sm hover:underline"
+        >
+          x
+        </button>
+      )}
+    </li>
+  );
 }

@@ -1,10 +1,12 @@
 "use client";   //keep this until separate client and server folders are made
 
 import Link from 'next/link'
-import './about-usr.css';
 import Logo from '../../../components/logo';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { addUserToFirestore } from '@/app/api/auth/login';
+import firebase from 'firebase/app';
+import { auth } from '@/firebase/firebaseConfig';
 
 
 // run "npm run dev" in CSE-110-GROUP1 folder to start the website
@@ -14,21 +16,26 @@ export default function AboutUser() {
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Name: ",name);
+    console.log("Name: ", name);
 
-    if(!name){
+    if (!name) {
       alert("Enter name");
       return;
     }
-    if(!date){
+    if (!date) {
       alert("Enter Date of Birth");
       return;
     }
-    
+
+    // Replace this with actual user ID from Google Auth
+    const userId = auth.currentUser.uid;
+    // THERE IS AN ERROR IN CASE CURRENT USER IS NULL BUT IT CANNOT BE NULL.
+    await addUserToFirestore(userId, name, date);
+
     router.push('/dashboard');
-  }
+  };
 
   
 
@@ -41,12 +48,12 @@ export default function AboutUser() {
       <form className="form" onSubmit={handleSubmit}>
       <div id='input-field'>
         <div style={{  marginLeft: '50px', marginTop: '20px'}}>Name</div>
-        <input value={name} onChange={(e) => setName(e.target.value)} type='text' id='name-input' placeholder= 'Name' required></input>
+        <input value={name} onChange={(e) => setName(e.target.value)} type='text' id='name-input' placeholder= 'Name' required className="mt-[5px] ml-[50px] pt-[2px] pl-[15px] rounded-[5px] border border-[#0a0a0a] h-[50px] w-[250px]"></input>
       </div>
 
       <div id='input-field'>
         <div style={{  marginLeft: '50px', marginTop: '20px'}}>Date of birth</div>
-        <input onChange={(e) => setDate(e.target.value)} value={date} type='date' id='date-input' placeholder= 'MM/DD/YYYY' required></input>
+        <input onChange={(e) => setDate(e.target.value)} value={date} type='date' id='date-input' placeholder= 'MM/DD/YYYY' required className="mt-5 ml-[50px] pt-[2px] pl-[15px] rounded-[5px] border border-[#0a0a0a] h-[50px] w-[250px]"></input>
       </div>
       <button type='submit' id='sign-up-btn1'>Get Started!</button>
       

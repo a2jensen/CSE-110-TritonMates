@@ -1,44 +1,46 @@
-import UpcomingEvents from "../../components/events/upcomingEvents";
+"use client"
 import Link from "next/link";
-import { TaskStatus } from "./task";
-import Navbar from '../../components/navbar';
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig"
+import Navbar from "../../components/navbar";
+import TaskBoard from "../../components/tasks/taskBoard/taskBoard";
+import EventsManager from "@/components/events/eventsManager";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { auth, onAuthStateChanged, User } from "../../firebase/firebaseConfig";
 
-export default  async function Home() {
-  const docRef = collection(db, "rooms");
-  const docsSnap = await getDocs(docRef);
 
-    // Loop through documents in the collection
-  docsSnap.forEach((doc) => {
-    console.log(`${doc.id} =>`, doc.data());
-  });
+export default function Home() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true); 
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        setLoading(false);
+      } else {
+        router.push("/");
+        alert("Sign In First!");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [router]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
-    <div className="flex">
-      <div className="w-64">
-        <div>
-          <b>Dashboard</b>
-        </div>
-            <div>
-                <Link href="/events">Go to events page</Link>  
-            </div>
-        <div>
-          <Link href="/user">Go to user page</Link>
-        </div>
-        <div>
-          <Link href="/rooms">Go to rooms page</Link>
-        </div>
-        <div>
-          <Link href="/shop">Go to shop page</Link>
-        </div>
-        <div>
-          <Link href="/">Sign out</Link>
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      <div className="bg-white p-4 mb-4 flex items-center gap-4">
+        <Link className="text-blue-500 hover:underline" href="/user"><div className="w-16 h-16 bg-gray-400 rounded-full"></div></Link>
+        <h2 className="text-xl"><Link className="text-blue-500 hover:underline" href="/user">User Profile</Link></h2>
       </div>
-      <UpcomingEvents roomName="testRoom" events={[]}/>
-      <div className="flex-1 ml-4">
-        <TaskStatus />
+
+      <div className="space-y-6">
+        <TaskBoard />
+        <EventsManager/>
       </div>
     </div>
   );
