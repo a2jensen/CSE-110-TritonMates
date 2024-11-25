@@ -1,6 +1,6 @@
 import { initializeApp, FirebaseApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, User, setPersistence, browserLocalPersistence } from "firebase/auth"
+import { onAuthStateChanged, getAuth, GoogleAuthProvider, signInWithPopup, signOut, User, setPersistence, browserLocalPersistence } from "firebase/auth"
 
 // define config object with env variables
 const firebaseConfig = {
