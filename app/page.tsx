@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Logo from '@/components/logo';
 import { auth, provider, signInWithPopup, signOut, User } from "../firebase/firebaseConfig"
+import { checkIfUserExists } from './api/auth/login';
 
 
 
@@ -23,7 +24,15 @@ export default function Home() {
         const result = await signInWithPopup(auth, provider);
         console.log("Results ", result.user)
         setUser(result.user);
-        router.push('/signup/about-usr');
+
+        const userExists = await checkIfUserExists(result.user.uid);
+        if (userExists) {
+          // Redirect to dashboard if user exists
+          router.push('/dashboard');
+        } else {
+          // Redirect to about-usr if user doesn't exist
+          router.push('/signup/about-usr');
+        }
     } catch (error : any) {
         console.error("Failed to sign in with google", error);
     }
