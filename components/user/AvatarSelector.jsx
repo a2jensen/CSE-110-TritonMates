@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const avatars = [
-  '/avatars/avatar1.png',
-  '/avatars/avatar2.png',
-  '/avatars/avatar3.png',
+  "/avatars/avatar1.png",
+  "/avatars/avatar2.png",
+  "/avatars/avatar3.png",
 ];
 
 const AvatarSelector = ({ currentAvatar, onAvatarChange }) => {
@@ -25,7 +25,9 @@ const AvatarSelector = ({ currentAvatar, onAvatarChange }) => {
             key={avatar}
             src={avatar}
             alt="Avatar"
-            className={`avatar-item ${selectedAvatar === avatar ? 'selected' : ''}`}
+            className={`avatar-item ${
+              selectedAvatar === avatar ? "selected" : ""
+            }`}
             onClick={() => handleAvatarSelect(avatar)}
           />
         ))}
