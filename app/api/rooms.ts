@@ -5,9 +5,10 @@ import {doc,query, collection, where, getDocs, addDoc, updateDoc, deleteDoc,getD
 // function that will create a room. will initalisze room with roomname, roomid, date created, and adding person who created it to members array
 // params : roomname ex. (Suite 88), room_user : pass in the users ID
 export async function createRoom(roomname : string, user_id : string, room_code : string) {
-    const roomRef = doc(db, "rooms"); // generates random ID
+    const roomsCollectionRef = collection(db, "rooms"); // generates random ID
 
-    await setDoc( roomRef, {
+    const roomRef = await addDoc( roomsCollectionRef, {
+        room_id : "", // to be updated
         room_name : `${roomname}`,
         room_users : arrayUnion(user_id),
         created : Timestamp.now(),
@@ -16,11 +17,17 @@ export async function createRoom(roomname : string, user_id : string, room_code 
         room_code : `${room_code}`
     });
 
+    // use auto generated ID as the room id field
+    await addDoc(roomsCollectionRef,{
+        room_id : roomRef.id,
+    });
+
     console.log("Room create with ID:", roomRef.id);
     return roomRef.id;
 }
 
 
+// takes in roomname as string, and will delete room collection
 export async function deleteRoom(roomname : string) {
      // get specific room
      const q = query(collection(db, 'rooms'), where("room_code", "==", roomname));
@@ -29,22 +36,28 @@ export async function deleteRoom(roomname : string) {
 
         if (!querySnapshot.empty) {
             const doc = querySnapshot.docs[0]; // accesses first document in query result(this should be the only 1)
-            const roomData = doc.data();
-
-            // save room tasks to a variable
-            const roomTasks = roomData.room_tasks;
+            const roomId = doc.id;
+            
+            await deleteRoomCollections(roomId); // delete all subcollections
+            await deleteDoc(doc.ref)
         }
      } catch {
         throw Error("error deleting room")
      }
+}
 
-    // go through events and unlink all references to room
+export async function deleteRoomCollections( roomId : string) {
+    const subcollections = ["Events", "Tasks"];
 
-    // go through tasks and unlink all references to room
+    for (const subcollection of subcollections){
+        const subcollectionRef = collection(db, `rooms/${roomId}/${subcollection}`)
+        const subcollectionDocs = await getDocs(subcollectionRef);
 
-    // go through the users apart of the room and unlink them
-
-    // clear out room collection finally
+        // delete each document within subcollection
+        const deletePromises = subcollectionDocs.docs.map((doc) => deleteDoc(doc.ref));
+        await Promise.all(deletePromises);
+        console.log(`Delete all documents for room ${roomId}`);
+    }
 }
 
 export async function joinRoom(room_code : string, user_id : string){
