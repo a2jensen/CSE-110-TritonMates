@@ -1,7 +1,6 @@
 "use client";   //keep this until separate client and server folders are made
 
 import Logo from '@/components/logo';
-import './set-pw.css';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -66,15 +65,15 @@ export default function SetPassword() {
       <form className="pwd-form" onSubmit={handleSubmit}>  
       <div id='input-field'>
         <div style={{  marginLeft: '50px', marginTop: '20px'}} >Create a password</div>
-        <input onChange={(e)=>setPassword1(e.target.value)} value={password1} type='password' id='pw-input' placeholder= 'Create a password' required></input>
+        <input onChange={(e)=>setPassword1(e.target.value)} value={password1} type='password' id='pw-input' placeholder= 'Create a password' required className="mt-[5px] ml-[50px] pt-[2px] pl-[15px] rounded-[5px] border border-[#0a0a0a] h-[50px] w-[250px]"></input>
       </div>
 
       <div id='input-field-2'>
         <div style={{  marginLeft: '50px', marginTop: '20px'}}>Confirm password</div>
-        <input onChange={(e)=>setPassword2(e.target.value)} value={password2} type='password' id='pw-input-2' placeholder= 'Confirm password' required></input>
+        <input onChange={(e)=>setPassword2(e.target.value)} value={password2} type='password' id='pw-input-2' placeholder= 'Confirm password' required className="mt-5 ml-[50px] pt-[2px] pl-[15px] rounded-[5px] border border-[#0a0a0a] h-[50px] w-[250px]"></input>
       </div>
 
-      <ul id='requirements'> Your password must have at least:
+      <ul id='requirements' className="mt-5 ml-[50px]"> Your password must have at least:
           <li>8 characters</li>
           <li>1 special character (eg: @,#,$,%)</li>
           <li>1 number</li>

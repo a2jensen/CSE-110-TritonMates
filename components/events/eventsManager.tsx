@@ -1,10 +1,9 @@
 'use client'
-import UpcomingEvents from "@/app/components/events/upcomingEvents";
-import AddEventForm from "@/app/components/events/addEventForm";
+import UpcomingEvents from "./upcomingEvents";
+import AddEventForm from "./addEventForm";
 import styles from './eventsManager.module.css';
 import { useState } from "react";
-import { event } from "../../../types";
-
+import { event } from '../../types';
 
 export default function EventsManager() {
     // ik these hardcoded values are temporory, but i think getting events data will be handled in the upcomingEvents component instead of here(this component can actually be cut)
@@ -18,7 +17,7 @@ export default function EventsManager() {
       };
     return (
         <div>
-            <div className={styles.eventsManagerGrid}>
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-5 items-start p-5">
                 <UpcomingEvents events={events} roomName="testRoom" />
                 <AddEventForm onAddEvent={handleAddEvent}/>
             </div>
