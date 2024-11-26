@@ -18,8 +18,8 @@ export default function Home() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const [user, setUser] = useState<User | null>(null);
+
   const handleGoogleSignIn = async () => {
     try {
         console.log('about to run signInWithPopup')
@@ -38,6 +38,14 @@ export default function Home() {
     } catch (error : any) {
         console.error("Failed to sign in with google", error);
     }
+}
+
+const roomCheck = async () => {
+  try {
+
+  } catch (error : any){
+    console.error("Error trying to check if user is in a room", error)
+  }
 }
 
 /*  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
