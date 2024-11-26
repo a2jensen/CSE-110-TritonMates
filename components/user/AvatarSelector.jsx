@@ -1,18 +1,14 @@
 import { useState } from 'react';
 
-const avatars = [
-  '/avatars/avatar1.png',
-  '/avatars/avatar2.png',
-  '/avatars/avatar3.png',
-];
-
-const AvatarSelector = ({ currentAvatar, onAvatarChange }) => {
+const AvatarSelector = ({ currentAvatar, onAvatarChange, avatars, points }) => {
   const [selectedAvatar, setSelectedAvatar] = useState(currentAvatar);
 
   const handleAvatarSelect = (avatar) => {
-    setSelectedAvatar(avatar);
-    if (onAvatarChange) {
-      onAvatarChange(avatar);
+    if (points >= avatar.pointsRequired) { // Ensure the avatar is unlocked
+      setSelectedAvatar(avatar.src);
+      if (onAvatarChange) {
+        onAvatarChange(avatar.src);
+      }
     }
   };
 
@@ -21,13 +17,23 @@ const AvatarSelector = ({ currentAvatar, onAvatarChange }) => {
       <h3>Select Your Avatar</h3>
       <div className="avatar-list">
         {avatars.map((avatar) => (
-          <img
-            key={avatar}
-            src={avatar}
-            alt="Avatar"
-            className={`avatar-item ${selectedAvatar === avatar ? 'selected' : ''}`}
-            onClick={() => handleAvatarSelect(avatar)}
-          />
+          <div key={avatar.src} className="avatar-container">
+            <img
+              src={avatar.src}
+              alt="Avatar"
+              className={`avatar-item ${selectedAvatar === avatar.src ? 'selected' : ''}`}
+              onClick={() => handleAvatarSelect(avatar)}
+              style={{
+                opacity: points >= avatar.pointsRequired ? 1 : 0.5,
+                cursor: points >= avatar.pointsRequired ? 'pointer' : 'not-allowed',
+              }}
+            />
+            <p className="points-label">
+              {points >= avatar.pointsRequired
+                ? 'Unlocked'
+                : `${avatar.pointsRequired} Points Needed`}
+            </p>
+          </div>
         ))}
       </div>
       <style jsx>{`
@@ -36,18 +42,30 @@ const AvatarSelector = ({ currentAvatar, onAvatarChange }) => {
         }
         .avatar-list {
           display: flex;
-          gap: 10px;
+          gap: 20px;
           justify-content: center;
+          flex-wrap: wrap;
+        }
+        .avatar-container {
+          text-align: center;
         }
         .avatar-item {
-          width: 50px;
-          height: 50px;
+          width: 70px;
+          height: 70px;
           border: 2px solid transparent;
           border-radius: 50%;
-          cursor: pointer;
+          transition: border-color 0.2s ease-in-out, transform 0.2s;
+        }
+        .avatar-item:hover {
+          transform: scale(1.1);
         }
         .avatar-item.selected {
           border-color: #0070f3;
+        }
+        .points-label {
+          font-size: 0.8rem;
+          margin-top: 5px;
+          color: #555;
         }
       `}</style>
     </div>
