@@ -1,4 +1,3 @@
-// corresponds to tasks component on the dashboard page
 "use client";
 
 import TaskCard from "../taskCard/taskCard";
@@ -19,13 +18,13 @@ export default function TaskOverview({
   const upcomingTasks = tasks.filter((task) => task.isUpcoming);
 
   return (
-    <div>
-      <h3 className="text-lg font-semibold mb-4 text-blue-700">Task Board</h3>
+    <div className="bg-white rounded-lg p-6">
+      <h3 className="text-xl font-bold text-[#006EFF] mb-6">Task Board</h3>
 
       {/* Today's Tasks */}
-      <div className="mb-6">
-        <h4 className="text-sm font-medium mb-2">Today</h4>
-        <ul className="space-y-2">
+      <div className="mb-8">
+        <h4 className="text-md font-medium text-[#000000] mb-4">Today</h4>
+        <ul className="space-y-4">
           {todayTasks.map((task) => (
             <TaskCard
               key={task.id}
@@ -39,8 +38,8 @@ export default function TaskOverview({
 
       {/* Upcoming Tasks */}
       <div>
-        <h4 className="text-sm font-medium mb-2">Upcoming</h4>
-        <ul className="space-y-2">
+        <h4 className="text-md font-medium text-[#000000] mb-4">Upcoming</h4>
+        <ul className="space-y-4">
           {upcomingTasks.map((task) => (
             <TaskCard
               key={task.id}

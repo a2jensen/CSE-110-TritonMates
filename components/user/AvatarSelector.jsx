@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const AvatarSelector = ({ currentAvatar, onAvatarChange, avatars, points }) => {
   const [selectedAvatar, setSelectedAvatar] = useState(currentAvatar);
