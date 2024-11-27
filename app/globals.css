@@ -20,15 +20,9 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-h2 {
-  font-size: 3rem;
-  font-weight:normal;
-}
-h1{
+h1 {
   font-size: 4rem;
-  font-weight:bolder;
-  margin-left: 120px;
-  color: #000000;
+  font-weight: bold;
 }
 #welcome-hdr{
   margin-top: 10px;

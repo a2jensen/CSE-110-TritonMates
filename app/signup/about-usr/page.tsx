@@ -4,9 +4,6 @@ import Link from 'next/link'
 import Logo from '../../../components/logo';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { addUserToFirestore } from '@/app/api/auth/login';
-import firebase from 'firebase/app';
-import { auth } from '@/firebase/firebaseConfig';
 
 
 // run "npm run dev" in CSE-110-GROUP1 folder to start the website
@@ -16,26 +13,21 @@ export default function AboutUser() {
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Name: ", name);
+    console.log("Name: ",name);
 
-    if (!name) {
+    if(!name){
       alert("Enter name");
       return;
     }
-    if (!date) {
+    if(!date){
       alert("Enter Date of Birth");
       return;
     }
-
-    // Replace this with actual user ID from Google Auth
-    const userId = auth.currentUser.uid;
-    // THERE IS AN ERROR IN CASE CURRENT USER IS NULL BUT IT CANNOT BE NULL.
-    await addUserToFirestore(userId, name, date);
-
+    
     router.push('/dashboard');
-  };
+  }
 
   
 

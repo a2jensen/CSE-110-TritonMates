@@ -1,29 +1,10 @@
 "use client";
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-
-import { useState, useEffect } from 'react';
-import Logo from '@/components/logo';
-import { auth, provider, signInWithPopup, signOut, User, onAuthStateChanged } from "../firebase/firebaseConfig"
-
 
 
 // Put this component in sites that need it
 export default function Navbar() {
-    const router = useRouter();
-
-    const [user, setUser] = useState<User | null>(null);
-    const handleSignOut = async () => {
-        try {
-            const result = await signOut(auth)
-            setUser(null)
-        } catch (error : any) {
-            console.error("Failed to sign out", error)  
-        }
-        router.push('/');
-    }
-    
     return (
         <header className="navbar">
             <div className="container">
@@ -35,10 +16,8 @@ export default function Navbar() {
                 <nav className="nav-links">
                     <ul>
                         <li><Link href="/dashboard">Dashboard</Link></li>
-                        <li><Link href="/events">Events</Link></li>
                         <li><Link href="/rooms">Rooms</Link></li>
-                        <li><Link href="/">Sign Up</Link></li>
-                        <li><button onClick={handleSignOut}>Sign Out</button></li>
+                        <li><Link href="/user">User</Link></li>
                     </ul>
                 </nav>
             </div>

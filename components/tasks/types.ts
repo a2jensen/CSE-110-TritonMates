@@ -7,6 +7,5 @@ export type Task = {
   doneReason: string;
   assigner: string; // should be another user id
   dueDate: string;
-  points: number;
   isUpcoming: boolean;
 };
