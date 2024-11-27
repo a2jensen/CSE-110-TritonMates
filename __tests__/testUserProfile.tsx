@@ -10,7 +10,9 @@ describe("testing user profile", () => {
 
   it('Select Avatar text exists in page', () => {
     render(<UserPage />);
-    expect(screen.getByText("Select Avdatar")).toBeInTheDocument();
+    expect(screen.getByText("Select Avatar")).toBeInTheDocument();
   })
+
+
 });
 
