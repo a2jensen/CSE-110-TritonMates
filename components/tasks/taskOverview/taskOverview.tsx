@@ -25,17 +25,6 @@ export default function TaskOverview({
 }: TaskOverviewProps) {
 
   
-const fetchTasks = async(roomID: string, tasks:Task[]) => {
-    const task_data = await getAllTasks(roomID);
-  
-   
-    console.log("fetching tasks");
-
-    return task_data;
-    
-  }
-
-  
   const todayTasks = tasks.filter((tasks) => !tasks.isUpcoming);
   const upcomingTasks = tasks.filter((tasks) => tasks.isUpcoming);
  
