@@ -26,13 +26,13 @@ export async function addEvent(
     const roomMembers = roomData?.Members || [];
 
     // Validate participants: Ensure all participants are members of the room (CAN BE REMOVED)
-    const validParticipants = event_participants.filter((participant) =>
-      roomMembers.includes(participant)
-    );
+    // const validParticipants = event_participants.filter((participant) =>
+    //   roomMembers.includes(participant)
+    // );
 
-    if (validParticipants.length !== event_participants.length) {
-      throw new Error("Some participants are not members of the room");
-    }
+    // if (validParticipants.length !== event_participants.length) {
+    //   throw new Error("Some participants are not members of the room");
+    // }
 
 
     // Reference to the Events subcollection in the specific room
@@ -43,7 +43,7 @@ export async function addEvent(
     const docRef = await addDoc(eventsCollection, {
       ...eventData,
       date: Timestamp.fromDate(eventData.date), // Convert to Firestore-compatible Timestamp
-      event_participants: validParticipants, // Add only valid participants
+      event_participants: event_participants, // Add only valid participants
       createdAt: Timestamp.now(), // Timestamp for creation time of the event document
     });
 
@@ -193,3 +193,36 @@ async function editEvent(eventData: event, room_id: string): Promise<void> {
     }
   }
   
+
+  //====================================================================//
+
+export async function eventRsvp(room_id: string, event_id: string, user_id: string): Promise<void>{
+
+  try {
+
+    const eventRef = doc(db, `rooms/${room_id}/events`, event_id);
+
+    const eventSnap = await getDoc(eventRef);
+
+    if(!eventSnap.exists()){
+      throw new Error("Event does not exist!")
+    }
+
+    const eventData = eventSnap.data();
+
+    if (eventData.event_participants.includes(user_id)) {
+      console.log("User has already RSVPed to this event.");
+      return;
+    }
+
+
+    await updateDoc(eventRef, {
+      event_participants: [...eventData.event_participants, user_id],
+    });
+
+    console.log(`User ${user_id} successfully RSVPed to event ${event_id}`);
+  } catch (error){
+    console.error("Error updating event participants:", error);
+    throw new Error("Failed to RSVP to the event. Please try again.");
+  }
+}
