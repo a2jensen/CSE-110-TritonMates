@@ -3,21 +3,42 @@
 
 import TaskCard from "../taskCard/taskCard";
 import { Task } from "../types";
+import {getAllTasks } from "../../../app/api/tasks/TaskContext";
+import { useState } from "react";
+
+
 
 interface TaskOverviewProps {
   tasks: Task[];
-  onToggle: (id: number) => void;
-  onDelete: (id: number) => void;
+  onToggle: (id: string) => void;
+  onDelete: (id: string) => void;
 }
 
+
+
+
+const roomID = "bOfA98OEsUdA1ZDkGz8d";
 export default function TaskOverview({
   tasks,
   onToggle,
   onDelete,
 }: TaskOverviewProps) {
-  const todayTasks = tasks.filter((task) => !task.isUpcoming);
-  const upcomingTasks = tasks.filter((task) => task.isUpcoming);
 
+  
+const fetchTasks = async(roomID: string, tasks:Task[]) => {
+    const task_data = await getAllTasks(roomID);
+  
+   
+    console.log("fetching tasks");
+
+    return task_data;
+    
+  }
+
+  
+  const todayTasks = tasks.filter((tasks) => !tasks.isUpcoming);
+  const upcomingTasks = tasks.filter((tasks) => tasks.isUpcoming);
+ 
   return (
     <div>
       <h3 className="text-lg font-semibold mb-4 text-blue-700">Task Board</h3>
@@ -26,7 +47,10 @@ export default function TaskOverview({
       <div className="mb-6">
         <h4 className="text-sm font-medium mb-2">Today</h4>
         <ul className="space-y-2">
+         
+          
           {todayTasks.map((task) => (
+            
             <TaskCard
               key={task.id}
               task={task}
