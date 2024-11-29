@@ -7,7 +7,7 @@ import Link from 'next/link';
 const UserPage = () => {
   const [avatar, setAvatar] = useState('/avatars/default.png'); // Default avatar
 
-  const handleAvatarChange = (newAvatar) => {
+  const handleAvatarChange = (newAvatar : any) => {
     setAvatar(newAvatar);
     // Optionally, send the updated avatar to the backend
   };

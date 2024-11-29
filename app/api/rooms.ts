@@ -1,6 +1,6 @@
 import { db } from "@/firebase/firebaseConfig";
 
-import {doc,query, collection, where, getDocs, addDoc, updateDoc, deleteDoc,getDoc, setDoc, arrayRemove, arrayUnion, Timestamp} from "firebase/firestore";
+import {doc, query, collection, where, getDocs, addDoc, updateDoc, deleteDoc,getDoc, setDoc, arrayRemove, arrayUnion, Timestamp} from "firebase/firestore";
 
 // function that will create a room. will initalisze room with roomname, roomid, date created, and adding person who created it to members array
 // params : roomname ex. (Suite 88), room_user : pass in the users ID
@@ -108,5 +108,41 @@ export async function leaveRoom(room_code : string, user_id : string){
         console.log('User added to room successfully')
     } catch {
         throw Error("error trying to leave room.")
+    }
+}
+
+export async function fetchRoomData(room_id : string) {
+    try {
+        const roomRef = doc(db, `rooms/${room_id}`)
+        const roomSnap = await getDoc(roomRef);
+
+        if (roomSnap.exists()) {
+            console.log("Document data: ", roomSnap.data())
+            return roomSnap.data();
+        } else {
+            console.error("Failed to fetch room data")
+            return null;
+        }
+    } catch (error : any) {
+        console.error("Failed to fetch room data")
+        return null;
+    }
+}
+
+export async function checkRoom(user_id : string) {
+    try {
+        const roomQuery = query(
+            collection(db, "rooms"),
+            where('room_users', 'array-contains', user_id )
+        )
+
+        const roomSnap = await getDocs(roomQuery);
+        if (roomSnap) {
+            const roomId = roomSnap.docs.map(doc => doc.id)
+            return roomId;
+        }
+    } catch (error : any ) {
+        console.error("Failed to check if user is in a room")
+        return null;
     }
 }
