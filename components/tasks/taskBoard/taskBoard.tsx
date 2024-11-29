@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import AddTaskForm from "../addTaskForm/addTaskForm";
+import AddTaskForm from "../addTaskform/addTaskform";
 import TaskOverview from "../taskOverview/taskOverview";
 import { Task } from "../types";
 import {
