@@ -6,12 +6,27 @@ import Link from "next/link";
 import ProfileSummary from "../../components/user/profileSummary";
 
 const UserPage = () => {
-  const [avatar, setAvatar] = useState("/avatars/default.png"); // Default avatar
+  const [avatar, setAvatar] = useState('/avatars/default.png'); // Default avatar
+  const [points, setPoints] = useState(0);
+
+  const avatars = [
+    { src: '/avatars/default.png', pointsRequired: 0 },
+    { src: '/avatars/avatar1.png', pointsRequired: 100 },
+    { src: '/avatars/avatar2.png', pointsRequired: 200 },
+    { src: '/avatars/avatar3.png', pointsRequired: 300 },
+  ];
 
   const handleAvatarChange = (newAvatar: string) => {
     setAvatar(newAvatar);
-    // Optionally, send the updated avatar to the backend
+    // backend can save avatar
   };
+
+  const addPoints = () => {
+    setPoints((prevPoints) => prevPoints + 50);
+    // backend can send updated pts
+  };
+
+
 
   return (
     <div className="user-page bg-[#182B49] text-white min-h-screen">
@@ -25,10 +40,15 @@ const UserPage = () => {
         </div>
       </header>
 
+      <button onClick={addPoints}>Earn Points</button>
+      <p>{`Points: ${points}`}</p>
+
       <div className="avatar-selector-container mb-8">
         <AvatarSelector
           currentAvatar={avatar}
           onAvatarChange={handleAvatarChange}
+          avatars={avatars}
+          points={points}
         />
       </div>
 

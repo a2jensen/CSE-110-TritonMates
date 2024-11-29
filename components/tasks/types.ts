@@ -1,6 +1,6 @@
 // setting a type to shape task data
 export type Task = {
-  id: number;
+  id: string;
   text: string;
   done: boolean;
   assignee: string; // should be user id
