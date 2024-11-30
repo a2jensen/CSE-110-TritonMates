@@ -5,6 +5,9 @@ import AddTaskForm from "../addTaskform/addTaskform";
 import { Timestamp } from 'firebase/firestore'; 
 import TaskOverview from "../taskOverview/taskOverview";
 import { Task } from "../types";
+//import { useRoomContext } from './context/RoomContext';
+
+
 import {
   getAllTasks,
   deleteTask,
@@ -67,7 +70,9 @@ const fetchTasks = async (
 
 export default function TaskBoard() {
   const [tasks, setTasks] = useState<Task[]>([]);
-
+  
+  //const { roomData } = useRoomContext();
+  //const room ID = roomData.room_id;
   const roomID = "bOfA98OEsUdA1ZDkGz8d";
 
   const addTask = (task: {
