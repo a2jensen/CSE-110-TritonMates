@@ -39,14 +39,14 @@ export default function TaskCard({
           }
           className="w-full p-2 border rounded"
           placeholder="Task description"
-        />
+          required />
         <select
           value={editedTask.assignee}
           onChange={(e) =>
             setEditedTask({ ...editedTask, assignee: e.target.value })
           }
           className="w-full p-2 border rounded"
-        >
+          required>
           <option value="Assignee1">Assignee 1</option>
           <option value="Assignee2">Assignee 2</option>
           <option value="Unassigned">Unassigned</option>
@@ -57,7 +57,7 @@ export default function TaskCard({
           onChange={(e) =>
             setEditedTask({ ...editedTask, dueDate: e.target.value })
           }
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded" required
         />
         <input
           type="number"
@@ -67,7 +67,7 @@ export default function TaskCard({
           }
           className="w-full p-2 border rounded"
           placeholder="Points"
-        />
+          required />
         <div className="flex justify-between">
           <button
             onClick={handleSaveEdit}

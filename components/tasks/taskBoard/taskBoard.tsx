@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AddTaskForm from "../addTaskform/addTaskform";
+import { Timestamp } from 'firebase/firestore'; 
 import TaskOverview from "../taskOverview/taskOverview";
 import { Task } from "../types";
 import {
@@ -46,16 +47,16 @@ const fetchTasks = async (
   const new_tasks = [];
   for (let i = 0; i < task_data.length; i++) {
     const today = new Date();
-    const dueDateObj = new Date(task_data[i]["due_date"]);
+    const dueDateObj = task_data[i]["due_date"].toDate();
     const isUpcoming = dueDateObj > today;
     new_tasks.push({
       id: task_data[i]["task_ID"],
       text: task_data[i]["name"],
       assignee: task_data[i]["assignee"],
       assigner: "Creator",
-      done: false,
+      done: task_data[i]["status"],
       doneReason: "",
-      dueDate: String(dueDateObj),
+      dueDate: dueDateObj.toLocaleDateString(),
       points: task_data[i]["points"],
       isUpcoming,
     });
