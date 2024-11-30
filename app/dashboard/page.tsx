@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Navbar from "../../components/navbar";
 import TaskBoard from "../../components/tasks/taskBoard/taskBoard";
+import EmailForm from "../../components/conflict/conflictForm";
 import EventsManager from "@/components/events/eventsManager";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -40,6 +41,7 @@ export default function Home() {
 
       <div className="space-y-6">
         <TaskBoard />
+        <EmailForm />
         <EventsManager/>
       </div>
     </div>
