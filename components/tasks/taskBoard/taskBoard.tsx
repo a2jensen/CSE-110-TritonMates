@@ -13,6 +13,7 @@ import {
 const removeTask = async (roomID: string, taskID: string) => {
   await deleteTask(roomID, taskID);
 };
+
 const changeTask = async (
   roomID: string,
   taskID: string,
@@ -67,6 +68,7 @@ export default function TaskBoard() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const roomID = "bOfA98OEsUdA1ZDkGz8d";
+
   const addTask = (task: {
     id: string;
     text: string;
@@ -95,7 +97,6 @@ export default function TaskBoard() {
   };
 
   useEffect(() => {
-    // Only call fetchTasks when the component mounts
     fetchTasks(roomID, tasks, setTasks);
   }, [roomID]);
 
@@ -138,13 +139,47 @@ export default function TaskBoard() {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
+  const updateTaskHandler = (id: string, updatedTask: Partial<Task>) => {
+    // Update local state first
+    const updatedTasks = tasks.map((task) =>
+      task.id === id
+        ? {
+            ...task,
+            ...updatedTask,
+            isUpcoming: updatedTask.dueDate
+              ? new Date(updatedTask.dueDate) > new Date()
+              : task.isUpcoming,
+          }
+        : task
+    );
+    setTasks(updatedTasks);
+
+    // Find the specific task to update
+    const taskToUpdate = updatedTasks.find((task) => task.id === id);
+    if (taskToUpdate) {
+      // Call backend update function
+      changeTask(
+        roomID,
+        id,
+        updatedTask.text || taskToUpdate.text,
+        updatedTask.points !== undefined
+          ? updatedTask.points
+          : taskToUpdate.points,
+        updatedTask.assignee || taskToUpdate.assignee,
+        taskToUpdate.done ? "done" : "in progress",
+        updatedTask.dueDate || taskToUpdate.dueDate
+      );
+    }
+  };
+
   return (
-    <div className="p-6 bg-[#C1DCFF] rounded-lg shadow-lg space-y-6">
+    <div className="p-6 bg-white rounded-lg shadow-lg space-y-6">
       <div className="grid grid-cols-2 gap-6">
         <TaskOverview
           tasks={tasks}
           onToggle={toggleTask}
           onDelete={deleteTask}
+          onUpdate={updateTaskHandler}
         />
         <AddTaskForm onAddTask={addTask} />
       </div>
