@@ -1,14 +1,14 @@
 'use server';
 import nodemailer from 'nodemailer';
-const SMTP_SERVER_HOST = process.env.SMTP_SERVER_HOST;
-const SMTP_SERVER_USERNAME = process.env.SMTP_SERVER_USERNAME;
-const SMTP_SERVER_PASSWORD = process.env.SMTP_SERVER_PASSWORD;
-const SITE_MAIL_RECIEVER = process.env.SITE_MAIL_RECIEVER;
+const SMTP_SERVER_HOST = "smtp.gmail.com";
+const SMTP_SERVER_USERNAME = "tritonmates@gmail.com";
+const SMTP_SERVER_PASSWORD =  "fmfusmzcryjobiap";
+const SITE_MAIL_RECIEVER = "f3ahmed@ucsd.edu";
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   host: SMTP_SERVER_HOST,
   port: 587,
-  secure: true,
+  secure: false,
   auth: {
     user: SMTP_SERVER_USERNAME,
     pass: SMTP_SERVER_PASSWORD,

@@ -13,7 +13,7 @@ export default function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(true); 
   const [user, setUser] = useState<User | null>(null);
-
+  const [popUp, setpopUp] = useState(false);
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
@@ -39,9 +39,12 @@ export default function Home() {
         <h2 className="text-xl"><Link className="text-blue-500 hover:underline" href="/user">User Profile</Link></h2>
       </div>
 
+   
       <div className="space-y-6">
+     
         <TaskBoard />
-        <EmailForm />
+        <EmailForm trigger={popUp} setTrigger={setpopUp}/>
+        <button onClick = {() => setpopUp(true)}> Report Conflict</button>
         <EventsManager/>
       </div>
     </div>
