@@ -13,12 +13,11 @@ import { db } from "../../firebase/firebaseConfig";
 export default function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const [name, setName] = useState("Guest"); // State to hold the user's name
-
-  // Move the fetchNameFromFirestore function here
-  const fetchNameFromFirestore = async (uid: string) => {
+  const [points, setPoints] = useState(0);
+  // Move the fetchFromFirestore function here
+  const fetchFromFirestore = async (uid: string) => {
     try {
       // Reference the document in Firestore
       const userDocRef = doc(db, "user", uid);
@@ -28,6 +27,8 @@ export default function Home() {
         const fetchedName = userSnap.data().name; // Access the `name` field
         console.log(`Name from Firestore: ${fetchedName}`);
         setName(fetchedName); // Update the name state
+        const fetchedPoints = userSnap.data().points;
+        setPoints(fetchedPoints);
       } else {
         console.error("No such document in Firestore!");
         setName("Guest");
@@ -42,7 +43,7 @@ export default function Home() {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-        fetchNameFromFirestore(currentUser.uid); // Fetch the name from Firestore
+        fetchFromFirestore(currentUser.uid); // Fetch the name from Firestore
         setLoading(false);
       } else {
         router.push("/");
@@ -66,10 +67,10 @@ export default function Home() {
         <h2 className="text-xl">
           <Link className="text-blue-500 hover:underline" href="/user">
             {name} {/* Displays the name from our User collection on firestore. */}
+            <br></br>Points: {points}
           </Link>
         </h2>
       </div>
-
       <div className="space-y-6">
         <TaskBoard />
         <EventsManager />
