@@ -1,4 +1,5 @@
 "use client";
+"use client";
 import Link from "next/link";
 import Navbar from "../../components/navbar";
 import TaskBoard from "../../components/tasks/taskBoard/taskBoard";
@@ -11,6 +12,7 @@ import { db } from "../../firebase/firebaseConfig";
 
 export default function Home() {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const [name, setName] = useState("Guest"); // State to hold the user's name
