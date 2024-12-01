@@ -1,0 +1,10 @@
+[debug] [2024-11-14T01:26:47.551Z] ----------------------------------------------------------------------
+[debug] [2024-11-14T01:26:47.552Z] Command:       /opt/homebrew/Cellar/node/22.9.0_1/bin/node /opt/homebrew/bin/firebase init
+[debug] [2024-11-14T01:26:47.552Z] CLI Version:   13.25.0
+[debug] [2024-11-14T01:26:47.552Z] Platform:      darwin
+[debug] [2024-11-14T01:26:47.552Z] Node Version:  v22.9.0
+[debug] [2024-11-14T01:26:47.553Z] Time:          Wed Nov 13 2024 17:26:47 GMT-0800 (Pacific Standard Time)
+[debug] [2024-11-14T01:26:47.553Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-11-14T01:26:47.554Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2024-11-14T01:26:47.567Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
