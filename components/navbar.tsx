@@ -12,7 +12,6 @@ import { auth, provider, signInWithPopup, signOut, User, onAuthStateChanged } fr
 // Put this component in sites that need it
 export default function Navbar() {
     const router = useRouter();
-
     const [user, setUser] = useState<User | null>(null);
     const handleSignOut = async () => {
         try {
