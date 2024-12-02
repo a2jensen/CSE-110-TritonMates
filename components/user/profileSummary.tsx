@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import {updateUserProfile, getUser} from "../../app/api/user/UserContext";
+import { get } from "http";
 
 interface ProfileSummaryProps {
   initialData?: {
@@ -19,11 +21,57 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
     favoriteThing: "",
   },
 }) => {
+
+  const fetchUserData = async(roomID:string, userID:string,
+     setName: React.Dispatch<React.SetStateAction<string>>, 
+    setMajor: React.Dispatch<React.SetStateAction<string>>,
+    setPronouns: React.Dispatch<React.SetStateAction<string>>,
+    setSleepingHours: React.Dispatch<React.SetStateAction<string>>,
+     setFavoriteThing: React.Dispatch<React.SetStateAction<string>>)=>
+  { 
+
+    const userData = await getUser(roomID, userID);
+
+    console.log("userData", userData);
+    if (typeof userData !== "undefined"){
+      console.log("adding user data ",  userData['name'], userData['major'], userData['pronouns'], userData['sleepingHours'], userData['favoriteThing']);
+     
+      setName(userData['name']);
+      setMajor(userData['major']);
+      setPronouns(userData['pronouns']);
+      setSleepingHours(userData['sleepingHours']);
+      setFavoriteThing( userData['favoriteThing']);
+     
+   
+    }
+    
+
+  
+  }
+
+  
+
+  const roomID = "bOfA98OEsUdA1ZDkGz8d";
+  const userID = 'D3eIVTebFOhTKaptvyDCXfF0TYb2';
+ 
+
   const [name, setName] = useState(initialData.name);
   const [major, setMajor] = useState(initialData.major);
   const [pronouns, setPronouns] = useState(initialData.pronouns);
   const [sleepingHours, setSleepingHours] = useState(initialData.sleepingHours);
   const [favoriteThing, setFavoriteThing] = useState(initialData.favoriteThing);
+
+
+  const updateUser = async(roomID:string, userID:string, name: string, major: string, pronouns: string, sleepingHours: string, favoriteThing: string) => {
+    console.log(roomID, userID, name, major, pronouns, sleepingHours, favoriteThing);
+    const response = await updateUserProfile(roomID, userID, name, major, pronouns, sleepingHours, favoriteThing);
+ 
+ }
+
+
+
+  
+
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -31,27 +79,35 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
   ) => {
     setter(e.target.value);
     // Optionally, save each field to localStorage or send to backend
+
+    updateUser(roomID, userID, name, major, pronouns, sleepingHours, favoriteThing);
+
+  
   };
 
   useEffect(() => {
-    const savedData = localStorage.getItem("profileData");
-    if (savedData) {
-      const parsedData = JSON.parse(savedData);
-      setName(parsedData.name);
-      setMajor(parsedData.major);
-      setPronouns(parsedData.pronouns);
-      setSleepingHours(parsedData.sleepingHours);
-      setFavoriteThing(parsedData.favoriteThing);
-    }
+  
+    fetchUserData(roomID, userID,setName, setMajor, setPronouns, setSleepingHours, setFavoriteThing);
+  
+ 
   }, []);
+ 
 
-  useEffect(() => {
-    const profileData = { name, major, pronouns, sleepingHours, favoriteThing };
-    localStorage.setItem("profileData", JSON.stringify(profileData));
-  }, [name, major, pronouns, sleepingHours, favoriteThing]);
 
+  console.log("initial profile_data", name, major, pronouns, sleepingHours, favoriteThing);
+ 
   return (
+
+   
+   
     <div className="profile-summary">
+     
+
+        <style>{`
+        input, select, textarea{
+            color: black;
+          }
+      `}</style>
       <h2 className="text-xl font-semibold text-[#FFCD00]">User Profile</h2>
 
       <div className="input-group">
@@ -65,9 +121,9 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
           onChange={(e) => handleChange(e, setName)}
           className="input-field"
           placeholder="Enter your preferred name"
+         
         />
       </div>
-
       <div className="input-group">
         <label className="text-[#D462AD]" htmlFor="major">
           Major:
