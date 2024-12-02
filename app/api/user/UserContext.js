@@ -59,6 +59,7 @@ export async function addUser(roomID, name){
         favoriteThing:"",
         user_ID: newDocRef.id,
         room_ID: roomID,
+        avatar: "/avatars/default.png"
     });
     return newDocRef.id;
     
@@ -88,6 +89,7 @@ export async function updateUserProfile(roomID, userID, name, major, pronouns, s
         pronouns: pronouns,
         sleepingHours: sleepingHours,
         favoriteThing: favoriteThing,
+        avatar: userData['avatar'],
         user_ID: userID,
         room_ID: roomID,
         
@@ -116,6 +118,35 @@ export async function updateUserPoints(points){
         pronouns: userData.pronouns,
         sleepingHours: userData.sleepingHours,
         favoriteThing: userData.favoriteThing,
+        avatar: userData.avatar,
+        user_ID: userData.user_ID,
+        room_ID: userData.room_ID,
+        
+    });
+
+}
+
+export async function updateUserAvatar(avatar){
+
+    const roomID = "bOfA98OEsUdA1ZDkGz8d";
+    const userID = 'D3eIVTebFOhTKaptvyDCXfF0TYb2';
+   
+    const userRef = doc(db, "user", userID);
+    const userSnap = await getDoc(userRef);
+
+    console.log("avatar update");
+    
+
+    const userData = userSnap.data();
+    console.log(userData);
+    await updateDoc(userRef, {
+        name:  userData.name,
+        points: userData.points,
+        major: userData.major,
+        pronouns: userData.pronouns,
+        sleepingHours: userData.sleepingHours,
+        favoriteThing: userData.favoriteThing,
+        avatar: avatar,
         user_ID: userData.user_ID,
         room_ID: userData.room_ID,
         
@@ -135,6 +166,7 @@ export async function getUser(roomID, userID){
             pronouns: data['pronouns'],
             sleepingHours: data['sleepingHours'],
             favoriteThing: data['favoriteThing'],
+            avatar: data['avatar'],
             user_ID: data['user_ID'],
             room_ID: roomID,
        };

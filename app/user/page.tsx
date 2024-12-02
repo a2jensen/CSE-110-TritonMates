@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import AvatarSelector from "../../components/user/AvatarSelector";
 import Link from "next/link";
 import ProfileSummary from "../../components/user/profileSummary";
-import {updateUserPoints, getUser} from "../api/user/UserContext"
+import {updateUserPoints, getUser, updateUserAvatar} from "../api/user/UserContext"
 
 const UserPage = () => {
   const [avatar, setAvatar] = useState('/avatars/default.png'); // Default avatar
@@ -26,6 +26,7 @@ const UserPage = () => {
         const userData = await getUser(roomID, userID);
         if (userData) {
           setPoints(userData.points);
+          setAvatar(userData.avatar);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -38,6 +39,7 @@ const UserPage = () => {
   const handleAvatarChange = (newAvatar: string) => {
     setAvatar(newAvatar);
     console.log(newAvatar);
+    updateUserAvatar(newAvatar);
     // backend can save avatar
   };
 
