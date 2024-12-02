@@ -50,6 +50,7 @@ const fetchTasks = async (
   const new_tasks = [];
   for (let i = 0; i < task_data.length; i++) {
     const today = new Date();
+
     const dueDateObj = task_data[i]["due_date"].toDate();
     const isUpcoming = dueDateObj > today;
     new_tasks.push({
