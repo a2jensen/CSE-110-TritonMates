@@ -5,9 +5,9 @@ import {doc, query, collection, where, getDocs, addDoc, updateDoc, deleteDoc,get
 // function that will create a room. will initalisze room with roomname, roomid, date created, and adding person who created it to members array
 // params : roomname ex. (Suite 88), room_user : pass in the users ID
 export async function createRoom(roomname : string, user_id : string, room_code : string) {
-    const roomsCollectionRef = collection(db, "rooms"); // generates random ID
+    const roomsCollectionRef = collection(db, "rooms"); // reference to rooms collection
 
-    const roomRef = await addDoc( roomsCollectionRef, {
+    const roomRef = await addDoc( roomsCollectionRef, { // adds room document within rooms collection
         room_id : "", // to be updated
         room_name : `${roomname}`,
         room_users : arrayUnion(user_id),
@@ -30,24 +30,20 @@ export async function createRoom(roomname : string, user_id : string, room_code 
 // takes in roomname as string, and will delete room collection
 export async function deleteRoom(roomname : string) {
      // get specific room
-     const q = query(collection(db, 'rooms'), where("room_code", "==", roomname));
-     try { 
-        const querySnapshot = await getDocs(q);
+    const roomsCollectionRef = query(collection(db, 'rooms'), where("room_code", "==", roomname));
+    const roomSnapshot = await getDocs(roomsCollectionRef);
 
-        if (!querySnapshot.empty) {
-            const doc = querySnapshot.docs[0]; // accesses first document in query result(this should be the only 1)
-            const roomId = doc.id;
-            
-            await deleteRoomCollections(roomId); // delete all subcollections
-            await deleteDoc(doc.ref)
-        }
-     } catch {
-        throw Error("error deleting room")
-     }
+    if (!roomSnapshot.empty) {
+        const doc = roomSnapshot.docs[0]; // accesses first document in query result(this should be the only 1)
+        const roomId = doc.id;
+        
+        await deleteRoomCollections(roomId); // delete all subcollections
+        await deleteDoc(doc.ref)
+    }
 }
 
 export async function deleteRoomCollections( roomId : string) {
-    const subcollections = ["Events", "Tasks"];
+    const subcollections = ["events", "tasks"];
 
     for (const subcollection of subcollections){
         const subcollectionRef = collection(db, `rooms/${roomId}/${subcollection}`)
@@ -61,88 +57,75 @@ export async function deleteRoomCollections( roomId : string) {
 }
 
 export async function joinRoom(room_code : string, user_id : string){
-    try {
         // get specific room
-        const q = query(collection(db, 'rooms'), where("room_code", "==", room_code));
+        const roomsCollectionRef = query(collection(db, 'rooms'), where("room_code", "==", room_code));
 
-        const querySnapshot = await getDocs(q);
-        
+        const roomSnapshot = await getDocs(roomsCollectionRef);
+        console.log(roomSnapshot)
         // ensure only one document was found
-        if(!querySnapshot.empty || querySnapshot.docs.length > 1) {
-            console.error("Invalid code made")
-            throw new Error("Room not found")
-        }
+         
+        if(roomSnapshot.empty || roomSnapshot.docs.length > 1) {
+            console.error("Invalid code made");
+            throw new Error("Room not found");
+        } 
+        console.log(roomSnapshot)
+        const roomRef = roomSnapshot.docs[0].ref;
 
-        const docRef = querySnapshot.docs[0].ref;
-
-        await updateDoc(docRef, {
+        await updateDoc(roomRef, {
             room_users : arrayUnion(user_id)
         })
 
-        console.log('User added to room succesffuly')
-    } catch {
-        throw Error("Failed to join room")
-    }
+        console.log('User added to room succesfully');
+
+        return roomRef.id;
 }
 
 
 export async function leaveRoom(room_code : string, user_id : string){
-    try {
-        // get specific room
-        const q = query(collection(db, 'rooms'), where("room_code", "==", room_code));
+    // get specific room
+    const roomsCollectionRef = query(collection(db, 'rooms'), where("room_code", "==", room_code));
 
-        const querySnapshot = await getDocs(q);
-        
-        // ensure only one document was found
-        if(!querySnapshot.empty || querySnapshot.docs.length > 1) {
-            console.error("Invalid code made")
-            throw new Error("Room not found")
-        }
-
-        const docRef = querySnapshot.docs[0].ref;
-
-        await updateDoc(docRef, {
-            room_users : arrayRemove(user_id)
-        })
-
-        console.log('User added to room successfully')
-    } catch {
-        throw Error("error trying to leave room.")
+    const roomSnapshot = await getDocs(roomsCollectionRef);
+    
+    // ensure only one document was found
+    if(!roomSnapshot.empty || roomSnapshot.docs.length > 1) {
+        console.error("Invalid code made")
+        throw new Error("Room not found")
     }
+
+    const docRef = roomSnapshot.docs[0].ref;
+
+    await updateDoc(docRef, {
+        room_users : arrayRemove(user_id)
+    })
+
+    console.log('User added to room successfully')
 }
 
+// i may not need this function at all...
 export async function fetchRoomData(room_id : string) {
-    try {
-        const roomRef = doc(db, `rooms/${room_id}`)
-        const roomSnap = await getDoc(roomRef);
+    const roomRef = doc(db, `rooms/${room_id}`)
+    const roomSnap = await getDoc(roomRef);
 
-        if (roomSnap.exists()) {
-            console.log("Document data: ", roomSnap.data())
-            return roomSnap.data();
-        } else {
-            console.error("Failed to fetch room data")
-            return null;
-        }
-    } catch (error : any) {
+    if (roomSnap.exists()) {
+        console.log("Document data: ", roomSnap.data())
+        return roomSnap.data();
+    } else {
         console.error("Failed to fetch room data")
         return null;
-    }
+    }   
 }
 
 export async function checkRoom(user_id : string) {
-    try {
-        const roomQuery = query(
-            collection(db, "rooms"),
-            where('room_users', 'array-contains', user_id )
-        )
+    const roomQuery = query(
+        collection(db, "rooms"),
+        where('room_users', 'array-contains', user_id )
+    )
 
-        const roomSnap = await getDocs(roomQuery);
-        if (roomSnap) {
-            const roomId = roomSnap.docs.map(doc => doc.id)
-            return roomId;
-        }
-    } catch (error : any ) {
-        console.error("Failed to check if user is in a room")
-        return null;
+    const roomSnap = await getDocs(roomQuery);
+    if (roomSnap) {
+        const roomId = roomSnap.docs.map(doc => doc.id)
+        const roomIdString = roomId[0];
+        return roomIdString;
     }
 }

@@ -4,11 +4,10 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 type RoomData = {
   created? : Date,
-  room_code? : String,
-  room_id : String,
-  room_name: String,
-  room_users : String[]
-
+  room_code? : string,
+  room_id? : string,
+  room_name?: string,
+  room_users? : string[]
 };
 
 type RoomContextType = {
@@ -20,6 +19,24 @@ const RoomContext = createContext<RoomContextType | undefined>(undefined);
 
 export const RoomProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [roomData, setRoomData] = useState<RoomData | null>(null);
+
+  // updates room Data
+  const updateRoomData = (data : any ) => {
+    setRoomData(data);
+    localStorage.setItem("room_id", JSON.stringify(data)); 
+  }
+
+  useEffect(() => {
+    const storedRoomData = localStorage.getItem('roomData');
+    if (storedRoomData) {
+      try {
+        const parsedRoomData = JSON.parse(storedRoomData) as RoomData;
+        setRoomData(parsedRoomData);
+      } catch (error : any) {
+        console.error("Error parsing room data from localStorage", error)
+      }
+    }
+  }, [])
 
   return (
     <RoomContext.Provider value={{ roomData, setRoomData }}>

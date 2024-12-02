@@ -2,13 +2,34 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { joinRoom } from "@/app/api/rooms";
+import { checkUserAuth } from "@/app/api/user";
+import { useRoomContext } from "@/app/context/RoomContext";
 
 export default function JoinRoom() {
     const [roomCode, setRoomCode] = useState("");
     const router = useRouter(); // Use Next.js router for navigation
+    const { roomData, setRoomData} = useRoomContext();
 
-    const handleJoin = () => {
+    const handleJoin = async () => {
         console.log("Joining room with code:", roomCode);
+        try {
+            const user = await checkUserAuth();
+            if (user) {
+                const userId = user.uid;
+                const join = await joinRoom(roomCode, userId);
+                const roomId = join;
+
+                if ( join ) {
+                    router.push(`/dashboard/${roomId}`);
+                    setRoomData({...roomData, room_id : roomId}); // this will only set room_id in context
+                };
+            }
+
+        } catch ( error : any) {
+            console.error("Error trying to join room", error)
+            alert("Error trying to join room")
+        }
     };
 
     const handleBack = () => {

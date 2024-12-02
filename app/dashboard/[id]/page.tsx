@@ -4,6 +4,7 @@ import { useEffect, useState, useContext } from "react";
 import React from "react";
 import TaskBoard from "@/components/tasks/taskBoard/taskBoard";
 import EventsManager from "@/components/events/eventsManager";
+import RoomSummary from "@/components/rooms/roomSummary";
 import { auth, onAuthStateChanged, User} from '../../../firebase/firebaseConfig';
 import Link from "next/link";
 import { useRoomContext } from "../../context/RoomContext"
@@ -27,14 +28,6 @@ const dashboardPage = ({ params }: { params: Promise<{ id: string }> }) => {
                 router.push('/');
                 alert("Sign in first!");
             }
-
-            if (roomId) {
-                fetchRoomData(roomId).then((data) => {
-                    if (data) {
-                        setRoomData({roomId, ...data.data()}) // using fetched data, ERROR HERE
-                    }
-                })
-            }
             setLoading(false);
         })
         return () => onLoad()
@@ -46,6 +39,7 @@ const dashboardPage = ({ params }: { params: Promise<{ id: string }> }) => {
 
     return (
         <div className="min-h-screen bg-gray-50">
+          <RoomSummary/>
           <div className="bg-white p-4 mb-4 flex items-center gap-4">
             <Link className="text-blue-500 hover:underline" href="/user"><div className="w-16 h-16 bg-gray-400 rounded-full"></div></Link>
             <h2 className="text-xl"><Link className="text-blue-500 hover:underline" href="/user">User Profile</Link></h2>

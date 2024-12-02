@@ -1,22 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createRoom, checkRoom } from "@/app/api/rooms";
-import { getAuth } from "firebase/auth";
-import { create } from "domain";
+import { checkUserAuth } from "@/app/api/user";
+import { useRoomContext } from "@/app/context/RoomContext";
 
 export default function CreateRoom() {
     const [roomName, setRoomName] = useState("");
     const [password, setPassword] = useState("");
-    const router = useRouter(); // Use Next.js router for navigation
+    const router = useRouter(); 
     const [error, setError] = useState<Boolean>(false);
+    const { roomData, setRoomData } = useRoomContext();
 
     const handleCreate = async () => {
         console.log("Creating room:", roomName, "Password:", password);
-        const auth = getAuth();
-        const user = auth.currentUser;
-        console.log(user)
+        const user = await checkUserAuth();
 
         // check if user exists
         if (user) {
@@ -24,9 +23,11 @@ export default function CreateRoom() {
             const create = await createRoom(roomName, user_id, password);
             if (create) {
                 // fetch roomId
-                const fetchId = await checkRoom(user_id)
-                const roomId = fetchId;
-                router.push("dashboard/roomID") // edit to actual room ID
+                const check = await checkRoom(user_id)
+                const roomId = check;
+                router.push(`dashboard/${roomId}`) // edit to actual room ID
+                if (check){
+                    setRoomData({...setRoomData, room_id : roomId })
             } else {
                 setError(true);
             }
@@ -36,8 +37,8 @@ export default function CreateRoom() {
         }
 
         //router.push('/dashboard')
-    };
-
+        };
+    }
     const handleBack = () => {
         router.push("/rooms"); // Navigate back to the Rooms page
     };

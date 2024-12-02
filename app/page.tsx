@@ -9,6 +9,7 @@ import Logo from '@/components/logo';
 import { auth, provider, signInWithPopup, signOut, User } from "../firebase/firebaseConfig"
 import { checkIfUserExists } from './api/auth/login';
 import { checkRoom } from './api/rooms';
+import { useRoomContext } from './context/RoomContext';
 
 
 // run "npm run dev" in CSE-110-GROUP1 folder to start the website
@@ -18,25 +19,26 @@ export default function Home() {
 
   const router = useRouter();
   //const [user, setUser] = useState<User | null>(null);
+  const { roomData, setRoomData} = useRoomContext();
+
 
   const handleGoogleSignIn = async () => {
     try {
         console.log('about to run signInWithPopup')
         const result = await signInWithPopup(auth, provider);
         console.log("Results ", result.user)
-        //setUser(result.user);
-
         const userExists = await checkIfUserExists(result.user.uid);
-        if (userExists) {
-          const check = await checkRoom(result.user.uid)
 
-          if (check){
+        if (userExists) {
+          const check = await checkRoom(result.user.uid); // checks if user is already in  room
+
+          if (check && check.length !== 0){
             console.log('room check', check);
             const roomId = check;
-            console.log(roomId);
-            router.push(`/dashboard/${roomId}`) ;// edit this to actual room id
+            setRoomData({...roomData, room_id : roomId});
+            router.push(`/dashboard/${roomId}`) ; // sends user to their room dashboard
           } else {
-            router.push('/rooms');
+            router.push('/rooms'); // will send them to join/create room
           }
 
         } else {

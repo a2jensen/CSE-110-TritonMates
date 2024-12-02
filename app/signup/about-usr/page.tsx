@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { addUserToFirestore } from '@/app/api/auth/login';
 import firebase from 'firebase/app';
 import { auth } from '@/firebase/firebaseConfig';
+import { checkUserAuth } from '@/app/api/user';
 
 
 // run "npm run dev" in CSE-110-GROUP1 folder to start the website
@@ -30,11 +31,15 @@ export default function AboutUser() {
     }
 
     // Replace this with actual user ID from Google Auth
-    const userId = auth.currentUser.uid;
+    const user = await checkUserAuth();
+    if (user) {
+      const userId = user.uid;
+      await addUserToFirestore(userId, name, date);
+    }
     // THERE IS AN ERROR IN CASE CURRENT USER IS NULL BUT IT CANNOT BE NULL.
-    await addUserToFirestore(userId, name, date);
+    //await addUserToFirestore(userId, name, date);
 
-    router.push('/dashboard');
+    router.push('/rooms');
   };
 
   
