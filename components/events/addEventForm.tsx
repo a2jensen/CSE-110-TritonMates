@@ -5,7 +5,7 @@ import { event } from '../../types';
 
 // move this into types.ts
 type AddEventFormProps = {
-    onAddEvent: (event: event) => void;
+    onAddEvent: (event: Omit<event, "id">) => void;
 };
 
 const AddEventForm: React.FC<AddEventFormProps> = ({ onAddEvent }) => {
@@ -15,7 +15,7 @@ const AddEventForm: React.FC<AddEventFormProps> = ({ onAddEvent }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onAddEvent({ name: eventTitle, description: eventInfo, id: 5, date: new Date(eventDate) });
+        onAddEvent({ name: eventTitle, description: eventInfo, date: new Date(eventDate), event_participants: [] });
         setEventTitle('');
         setEventInfo('');
         setEventDate('');
