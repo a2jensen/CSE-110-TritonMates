@@ -4,10 +4,13 @@ import AddEventForm from "./addEventForm";
 import { useState, useEffect } from "react";
 import { event } from "../../types";
 import { addEvent, getAllRoomEvents, eventRsvp, deleteEvent, editEvent } from "@/app/api/events";
+import { useRoomContext } from "@/app/context/RoomContext";
 
 export default function EventsManager() {
-  const roomID = "egIBDVFQs4AsRSk3iSHN"; //replace with dynamic room ID
+
   const currentUserId = "USER ID FROM AuthContext"; // Replace with dynamic user ID from AuthContext
+  const { roomData } = useRoomContext();
+  const roomID = roomData?.room_id || "";
   const [events, setEvents] = useState<event[]>([]);
 
   useEffect(() => {
