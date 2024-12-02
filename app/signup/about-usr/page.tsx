@@ -6,8 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { addUserToFirestore } from '@/app/api/auth/login';
 import firebase from 'firebase/app';
-import { auth } from '@/firebase/firebaseConfig';
-
+import { auth, onAuthStateChanged, User } from "../../../firebase/firebaseConfig";
 
 // run "npm run dev" in CSE-110-GROUP1 folder to start the website
 
@@ -15,7 +14,7 @@ export default function AboutUser() {
   const router = useRouter();
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
-
+  const [points, setPoints] = useState(0);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Name: ", name);
@@ -30,15 +29,13 @@ export default function AboutUser() {
     }
 
     // Replace this with actual user ID from Google Auth
-    const userId = auth.currentUser.uid;
-    // THERE IS AN ERROR IN CASE CURRENT USER IS NULL BUT IT CANNOT BE NULL.
-    await addUserToFirestore(userId, name, date);
-
+    const userId = auth.currentUser?.uid || "Guest";
+    await addUserToFirestore(userId, name, date, points);
+    
     router.push('/dashboard');
   };
 
   
-
   return (
     <>
       <Logo />

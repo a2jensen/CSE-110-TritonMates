@@ -133,7 +133,7 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
           padding: 10px;
           width: 100%;
           border-radius: 4px;
-          background-color: #f2f2f2;
+          background-color: #aaaaaa;
         }
       `}</style>
     </div>

@@ -1,7 +1,7 @@
 'use client'
 import { randomInt } from 'crypto';
 import React, { useState } from 'react';
-import {addEvent} from '../../app/api/events/AddEvent';
+import {addEvent} from '../../app/api/events/addEvent';
 import { event } from '../../types';
 
 
