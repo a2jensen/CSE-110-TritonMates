@@ -33,13 +33,16 @@ export default function Home() {
           const check = await checkRoom(result.user.uid); // checks if user is already in  room
 
           if (check && check.length !== 0){
-            console.log("Room data from useRoomContext", roomData)
-            console.log('room check', check);
             const roomId = check;
-            const roomData1 = await fetchRoomData(roomId);
-            console.log('ROOM FETCH DATA',roomData1);
-            updateRoomData({...roomData, room_id : roomId});
-            
+            const roomDataFetch = await fetchRoomData(roomId);
+            if (roomDataFetch ) {
+              const { room_name, room_code } = roomDataFetch;
+              updateRoomData({...roomData, 
+                room_id : roomId, 
+                room_name : room_name,
+                room_code : room_code
+              })
+            }
             router.push(`/dashboard/${roomId}`) ; // sends user to their room dashboard
           } else {
             router.push('/rooms'); // will send them to join/create room

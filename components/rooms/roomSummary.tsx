@@ -9,6 +9,7 @@ const RoomSummary : React.FC = () => {
     const router = useRouter();
     const { roomData } = useRoomContext();
 
+    console.log('Context information in roomSummary component',roomData);
     const leaveRoomAction = async () => {
         try {
             const roomCode = roomData?.room_code;
