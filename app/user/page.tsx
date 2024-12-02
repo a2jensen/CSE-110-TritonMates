@@ -5,10 +5,13 @@ import AvatarSelector from "../../components/user/AvatarSelector";
 import Link from "next/link";
 import ProfileSummary from "../../components/user/profileSummary";
 import {updateUserPoints, getUser, updateUserAvatar} from "../api/user/UserContext"
+import { auth, onAuthStateChanged} from "../../firebase/firebaseConfig";
 
 const UserPage = () => {
   const [avatar, setAvatar] = useState('/avatars/default.png'); // Default avatar
   const [points, setPoints] = useState(0);
+  const [userID, setUserID] = useState('');
+  const [roomID, setRoomID] = useState('');
 
   const avatars = [
     { src: '/avatars/default.png', pointsRequired: 0 },
@@ -17,35 +20,37 @@ const UserPage = () => {
     { src: '/avatars/avatar3.png', pointsRequired: 300 },
   ];
 
-  const roomID = "bOfA98OEsUdA1ZDkGz8d";
-  const userID = 'D3eIVTebFOhTKaptvyDCXfF0TYb2';
-
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const userData = await getUser(roomID, userID);
-        if (userData) {
-          setPoints(userData.points);
-          setAvatar(userData.avatar);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setUserID(user.uid);
+        try {
+          const userData = await getUser(roomID, user.uid);
+          if (userData) {
+            setPoints(userData.points);
+            setAvatar(userData.avatar);
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
         }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
+      } else {
+        console.error("User is not authenticated");
       }
-    };
+    });
 
-    fetchUserData();
-  }, [roomID, userID]);
+    return () => unsubscribe();
+  }, [roomID]);
 
   const handleAvatarChange = (newAvatar: string) => {
     setAvatar(newAvatar);
     console.log(newAvatar);
-    updateUserAvatar(newAvatar);
+    updateUserAvatar(userID, newAvatar);
     // backend can save avatar
   };
 
   const addPoints = () => {
     setPoints((prevPoints) => prevPoints + 50);
-    updateUserPoints(points);
+    updateUserPoints(userID, points);
   };
 
 

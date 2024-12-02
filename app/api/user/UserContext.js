@@ -97,10 +97,7 @@ export async function updateUserProfile(roomID, userID, name, major, pronouns, s
 
 }
 
-export async function updateUserPoints(points){
-
-    const roomID = "bOfA98OEsUdA1ZDkGz8d";
-    const userID = 'D3eIVTebFOhTKaptvyDCXfF0TYb2';
+export async function updateUserPoints(userID, points){
    
     const userRef = doc(db, "user", userID);
     const userSnap = await getDoc(userRef);
@@ -126,10 +123,7 @@ export async function updateUserPoints(points){
 
 }
 
-export async function updateUserAvatar(avatar){
-
-    const roomID = "bOfA98OEsUdA1ZDkGz8d";
-    const userID = 'D3eIVTebFOhTKaptvyDCXfF0TYb2';
+export async function updateUserAvatar(userID, avatar){
    
     const userRef = doc(db, "user", userID);
     const userSnap = await getDoc(userRef);

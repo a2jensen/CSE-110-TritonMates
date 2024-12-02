@@ -46,8 +46,8 @@ export default function Home() {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-       // fetchFromFirestore(currentUser.uid);
-        fetchFromFirestore('D3eIVTebFOhTKaptvyDCXfF0TYb2',setName, setPoints); // Fetch the name from Firestore
+        fetchFromFirestore(currentUser.uid, setName, setPoints);
+        // fetchFromFirestore('D3eIVTebFOhTKaptvyDCXfF0TYb2',setName, setPoints); // Fetch the name from Firestore
         setLoading(false);
       } else {
         router.push("/");
