@@ -3,7 +3,8 @@ export type Task = {
   id: string;
   text: string;
   done: boolean;
-  assignee: string; // should be user id
+  assignee: string; 
+  assigneeID: string;// should be user id
   doneReason: string;
   assigner: string; // should be another user id
   dueDate: string;

@@ -24,6 +24,7 @@ export async function getAllTasks(roomID){
               name: data['name'],
               points: data['points'],
               assignee: data['assignee'],
+              assigneeID: data['assigneeID'],
               room_ID: data['room_ID'],
               task_ID: data['task_ID'],
               status: data['status'],
@@ -36,7 +37,7 @@ export async function getAllTasks(roomID){
     });
     return tasks;
 }
-export async function addTask(roomID, taskName, taskPoints, assignee, status, due_date){
+export async function addTask(roomID, taskName, taskPoints, assignee, assigneeID, status, due_date){
 
     const roomDocRef = doc(db, "rooms", roomID);
     const docRef = collection(roomDocRef, "Tasks");
@@ -44,6 +45,7 @@ export async function addTask(roomID, taskName, taskPoints, assignee, status, du
         name: taskName,
         points: taskPoints,
         assignee: assignee,
+        assigneeID: assigneeID,
         room_ID: roomID,
         status:  status,
         due_date: due_date
@@ -54,6 +56,7 @@ export async function addTask(roomID, taskName, taskPoints, assignee, status, du
         name: taskName,
         points: taskPoints,
         assignee: assignee,
+        assigneeID: assigneeID,
         room_ID: roomID,
         task_ID: newDocRef.id,
         status: status,
@@ -67,13 +70,16 @@ export async function deleteTask(roomID, taskID){
     const taskDocRef = doc(db, "rooms", roomID, "Tasks", taskID);
     await deleteDoc(taskDocRef);
 }
-export async function updateTask(roomID, taskID, taskName, taskPoints, assignee, status, due_date){
-    console.log("elements to be updated: ", roomID, taskID, taskName, taskPoints, assignee, status, due_date);
+export async function updateTask(roomID, taskID, taskName, taskPoints, assignee, assigneeID, status, due_date){
+    console.log("elements to be updated: ", roomID, taskID, taskName, taskPoints, assignee, assigneeID, status, due_date);
+    console.log("status", status);
+    console.log("due date", due_date);
     const taskRef = doc(db, "rooms", roomID, "Tasks", taskID);
     await updateDoc(taskRef, {
         name: taskName,
         points: taskPoints,
         assignee: assignee,
+        assigneeID: assigneeID,
         room_ID: roomID,
         task_ID: taskID,
         status:  status,
@@ -91,6 +97,7 @@ export async function getTask(roomID, taskID){
            name: data['name'],
            points: data['points'],
            assignee: data['assignee'],
+           assigneeID:  data['assigneeID'],
            room_ID: data['room_ID'],
            task_ID: data['task_ID'],
            status: data['status'],

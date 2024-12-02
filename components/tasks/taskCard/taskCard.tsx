@@ -1,7 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { Task } from "../types";
+import { useEffect, useState } from "react";
+import { Task} from "../types";
+import {  user} from "@/types";
+
+
+import { getAllUsersinRoom } from "../../../app/api/user/UserContext";
 
 interface TaskCardProps {
   task: Task;
@@ -9,6 +13,20 @@ interface TaskCardProps {
   onDelete: (id: string) => void;
   onUpdate: (id: string, updatedTask: Partial<Task>) => void;
 }
+
+
+const fetchUsers = async (
+  roomID: string,
+  roomUsers: user[],
+  setRoomUsers: React.Dispatch<React.SetStateAction<user[]>>
+) => {
+  const user_data = await getAllUsersinRoom(roomID);
+  console.log("users in room", user_data);
+
+  console.log("fetching tasks");
+  setRoomUsers([...roomUsers, ...user_data]);
+};
+
 
 export default function TaskCard({
   task,
@@ -20,9 +38,20 @@ export default function TaskCard({
   const [editedTask, setEditedTask] = useState({
     text: task.text,
     assignee: task.assignee,
+    assigneeID: task.assigneeID,
     dueDate: task.dueDate,
     points: task.points,
   });
+
+  //const { roomData } = useRoomContext();
+  //const room ID = roomData.room_id;
+  const roomID = "bOfA98OEsUdA1ZDkGz8d";
+  const [roomUsers, setRoomUsers] = useState<user[]>([]);
+
+ 
+  useEffect(() => {
+    fetchUsers(roomID, roomUsers, setRoomUsers);
+  }, [roomID]);
 
   const handleSaveEdit = () => {
     onUpdate(task.id, editedTask);
@@ -35,21 +64,29 @@ export default function TaskCard({
         <input
           value={editedTask.text}
           onChange={(e) =>
+            
             setEditedTask({ ...editedTask, text: e.target.value })
           }
           className="w-full p-2 border rounded"
           placeholder="Task description"
           required />
         <select
-          value={editedTask.assignee}
-          onChange={(e) =>
-            setEditedTask({ ...editedTask, assignee: e.target.value })
-          }
+          value={`${editedTask.assignee}|${editedTask.assigneeID}`}
+          onChange={(e) => {
+            const selectedOption = e.target.value; // Get the value from the selected option
+            const [name, user_ID] = selectedOption.split('|'); // Split the value to extract name and ID
+    
+            setEditedTask({ ...editedTask, assignee: name, assigneeID:user_ID});
+        //    setEditedTask({ ...editedTask, assigneeID: user_ID})
+            console.log("changed task", editedTask);
+    
+          }}
           className="w-full p-2 border rounded"
           required>
-          <option value="Assignee1">Assignee 1</option>
-          <option value="Assignee2">Assignee 2</option>
-          <option value="Unassigned">Unassigned</option>
+           <option value='Unassigned'> Unassigned </option>
+          {roomUsers.map((roomUser) => (
+             <option key ={roomUser.user_ID} value={`${roomUser.name}|${roomUser.user_ID}`}> {roomUser.name}</option>
+            ))}
         </select>
         <input
           type="date"
