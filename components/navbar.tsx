@@ -28,7 +28,7 @@ export default function Navbar() {
             <div className="container">
                 <div className="logo">
                     <Link href="/">
-                        <b>Tentative Navbar Component</b>
+                        <b>TritonMates</b>
                     </Link>
                 </div>
                 <nav className="nav-links">
