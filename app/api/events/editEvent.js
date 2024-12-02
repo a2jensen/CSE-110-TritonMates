@@ -9,7 +9,7 @@ import {
 import { event } from "@/types";
 
 // Edit an event in a room's Events subcollection
-async function editEvent(eventData, room_id){
+export async function editEvent(eventData, room_id){
   try {
     // Reference to the room document
     const roomRef = doc(db, "rooms", room_id);
