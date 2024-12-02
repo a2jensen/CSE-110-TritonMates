@@ -1,7 +1,7 @@
 // stores types ex below
-export interface User { 
+export interface User {
     id: Number,
-    username : String,
+    username: String,
 }
 
 export type event = {
@@ -9,4 +9,5 @@ export type event = {
     name: string;
     description: string;
     date: Date;
+    event_participants: string[];
 };
