@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AvatarSelector from "../../components/user/AvatarSelector";
 import Link from "next/link";
 import ProfileSummary from "../../components/user/profileSummary";
@@ -17,8 +17,27 @@ const UserPage = () => {
     { src: '/avatars/avatar3.png', pointsRequired: 300 },
   ];
 
+  const roomID = "bOfA98OEsUdA1ZDkGz8d";
+  const userID = 'D3eIVTebFOhTKaptvyDCXfF0TYb2';
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userData = await getUser(roomID, userID);
+        if (userData) {
+          setPoints(userData.points);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, [roomID, userID]);
+
   const handleAvatarChange = (newAvatar: string) => {
     setAvatar(newAvatar);
+    console.log(newAvatar);
     // backend can save avatar
   };
 
