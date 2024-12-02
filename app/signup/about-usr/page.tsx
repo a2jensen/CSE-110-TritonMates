@@ -16,7 +16,7 @@ export default function AboutUser() {
   const router = useRouter();
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
-
+  const [points, setPoints] = useState(0);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Name: ", name);
@@ -34,7 +34,7 @@ export default function AboutUser() {
     const user = await checkUserAuth();
     if (user) {
       const userId = user.uid;
-      await addUserToFirestore(userId, name, date);
+      await addUserToFirestore(userId, name, date, points);
     }
     // THERE IS AN ERROR IN CASE CURRENT USER IS NULL BUT IT CANNOT BE NULL.
     //await addUserToFirestore(userId, name, date);
@@ -43,7 +43,6 @@ export default function AboutUser() {
   };
 
   
-
   return (
     <>
       <Logo />

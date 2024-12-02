@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent, within,} from "@testing-library/react";
 import test,{ describe } from "node:test";
-import Home  from "../app/dashboard/page";
+import Home  from "../app/page";
 import '@testing-library/jest-dom';
 
 jest.mock('next/navigation', () => ({
@@ -19,9 +19,9 @@ beforeAll(() => {
 });
 
 
-describe("testing task functions", () => {
+describe("testing title", () => {
 
-    it('sanity check for page', () => {
+    it('TritonMates', () => {
         render(<Home />);
     
       

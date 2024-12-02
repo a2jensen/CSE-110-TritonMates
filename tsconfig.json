@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/tasks/addTaskform", "firebase/firebaseConfig.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/tasks/addTaskform", "firebase/firebaseConfig.js", "app/api/events/getAllEvents.js", "app/api/events/editEvent.js", "app/api/events/addEvent.js", "app/api/events/getUserEvent.js", "app/api/events/getUserEvent.js"],
   "exclude": ["node_modules"]
 }

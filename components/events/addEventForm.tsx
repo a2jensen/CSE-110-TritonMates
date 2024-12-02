@@ -1,7 +1,9 @@
 'use client'
 import { randomInt } from 'crypto';
 import React, { useState } from 'react';
+import {addEvent} from '../../app/api/events/addEvent';
 import { event } from '../../types';
+
 
 // move this into types.ts
 type AddEventFormProps = {
@@ -13,9 +15,37 @@ const AddEventForm: React.FC<AddEventFormProps> = ({ onAddEvent }) => {
     const [eventInfo, setEventInfo] = useState('');
     const [eventDate, setEventDate] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+
+
+
+
+    const roomID = "bOfA98OEsUdA1ZDkGz8d";
+
+    const pushEvent = async(newEvent: event, roomID: string, participants: string[] ) => {
+        const eventID = await addEvent( newEvent,roomID,participants);
+        console.log("eventID", eventID);
+  
+        return eventID;
+    
+      
+     }
+    const handleSubmit = async (e: React.FormEvent) => {
+
+        console.log("hello world!");
         e.preventDefault();
-        onAddEvent({ name: eventTitle, description: eventInfo, id: 5, date: new Date(eventDate) });
+    
+        const participants: string[] = [];
+        const newEvent: event = {
+            id: "",
+            name: eventTitle,
+            description: eventInfo,
+            date: new Date(eventDate), // Example date
+        };
+        const eventId = await pushEvent(newEvent, roomID, participants);
+        console.log(eventId);
+
+        onAddEvent({ name: eventTitle, description: eventInfo, id: eventId, date: new Date(eventDate) });
+
         setEventTitle('');
         setEventInfo('');
         setEventDate('');
