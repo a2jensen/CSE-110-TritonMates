@@ -15,7 +15,7 @@ export default function Navbar() {
     const [user, setUser] = useState<User | null>(null);
     const handleSignOut = async () => {
         try {
-            const result = await signOut(auth)
+            await signOut(auth)
             setUser(null)
         } catch (error : any) {
             console.error("Failed to sign out", error)  
@@ -33,10 +33,9 @@ export default function Navbar() {
                 </div>
                 <nav className="nav-links">
                     <ul>
-                        <li><Link href="/dashboard">Dashboard</Link></li>
-                        <li><Link href="/events">Events</Link></li>
                         <li><Link href="/rooms">Rooms</Link></li>
-                        <li><Link href="/">Sign Up</Link></li>
+                        <li><Link href="/dashboard">Dashboard</Link></li>
+                        <li><Link href="/user">User</Link></li>
                         <li><button onClick={handleSignOut}>Sign Out</button></li>
                     </ul>
                 </nav>
