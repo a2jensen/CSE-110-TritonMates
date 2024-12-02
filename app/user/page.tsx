@@ -4,6 +4,7 @@ import { useState } from "react";
 import AvatarSelector from "../../components/user/AvatarSelector";
 import Link from "next/link";
 import ProfileSummary from "../../components/user/profileSummary";
+import {updateUserPoints, getUser} from "../api/user/UserContext"
 
 const UserPage = () => {
   const [avatar, setAvatar] = useState('/avatars/default.png'); // Default avatar
@@ -23,7 +24,7 @@ const UserPage = () => {
 
   const addPoints = () => {
     setPoints((prevPoints) => prevPoints + 50);
-    // backend can send updated pts
+    updateUserPoints(points);
   };
 
 

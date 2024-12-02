@@ -77,6 +77,9 @@ export async function updateUserProfile(roomID, userID, name, major, pronouns, s
     const userSnap = await getDoc(userRef);
 
     const userData = userSnap.data();
+    console.log("profile update");
+    console.log(userData);
+    
  
     await updateDoc(userRef, {
         name: name,
@@ -92,21 +95,29 @@ export async function updateUserProfile(roomID, userID, name, major, pronouns, s
 
 }
 
-export async function updateUserPoints(roomID, userID, points){
+export async function updateUserPoints(points){
+
+    const roomID = "bOfA98OEsUdA1ZDkGz8d";
+    const userID = 'D3eIVTebFOhTKaptvyDCXfF0TYb2';
    
     const userRef = doc(db, "user", userID);
     const userSnap = await getDoc(userRef);
 
+    console.log("points update");
+    
+
     const userData = userSnap.data();
+    console.log(userData);
+    console.log(points);
     await updateDoc(userRef, {
         name:  userData.name,
         points: points,
         major: userData.major,
-        pronouns: pronouns,
+        pronouns: userData.pronouns,
         sleepingHours: userData.sleepingHours,
         favoriteThing: userData.favoriteThing,
-        userID: userData.userID,
-        room_ID: userData.roomID,
+        user_ID: userData.user_ID,
+        room_ID: userData.room_ID,
         
     });
 
