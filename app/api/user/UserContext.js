@@ -171,3 +171,40 @@ export async function getUser(roomID, userID){
        }   
     
 }
+
+
+export async function getAllUsersinRoom(roomID){
+    const docRef = collection(db, "user");
+    
+    const docsSnap = await getDocs(docRef);
+    console.log("Hellow world!");
+    // Loop through documents in the collection
+  //  const [tasks, updateTasks] = useState([])
+    const users = [];
+    const user_names = [];
+    if (docsSnap.empty) {
+        console.log("No documents found in the tasks collection.");
+    }
+    
+    docsSnap.forEach((doc) => {
+        const user = doc.data();
+       
+        if (user["room_ID"] === roomID){
+       
+           const userData = { 
+            name: user['name'],
+            points: user['points'],
+            major: user['major'],
+            pronouns: user['pronouns'],
+            sleepingHours: user['sleepingHours'],
+            favoriteThing: user['favoriteThing'],
+            user_ID: user['user_ID'],
+            room_ID: roomID,
+            };
+            users.push(userData)
+            user_names.push( userData['name']);
+        }
+  });
+  return users;
+    
+}

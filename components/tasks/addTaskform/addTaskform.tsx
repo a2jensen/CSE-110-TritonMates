@@ -1,6 +1,6 @@
 // corresponds to add task component -> refer to figma file
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getAllTasks,
   addTask,
@@ -9,27 +9,44 @@ import {
   updateTask,
 } from "../../../app/api/tasks/TaskContext"
 import { useRoomContext } from "../../../app/context/RoomContext"
+import { getAllUsersinRoom } from "../../../app/api/user/UserContext";
+import {  user} from "@/types";
+
 
 interface AddTaskFormProps {
   onAddTask: (task: {
     id: string;
     text: string;
     assignee: string;
+    assigneeID: string;
     dueDate: string;
     points: number;
   }) => void;
 }
 
+const fetchUsers = async (
+  roomID: string,
+  roomUsers: user[],
+  setRoomUsers: React.Dispatch<React.SetStateAction<user[]>>
+) => {
+  const user_data = await getAllUsersinRoom(roomID);
+  console.log("users in room", user_data);
+
+  console.log("fetching tasks");
+  setRoomUsers([...roomUsers, ...user_data]);
+};
+
 export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
   const [newTask, setNewTask] = useState("");
   const [newAssignee, setNewAssignee] = useState("");
+  const [newAssigneeID, setNewAssigneeID] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [points, setPoints] = useState(0);
 
 
   const { roomData } = useRoomContext();
-  const roomID = roomData?.room_id?? "error";
-  //const roomID = "bOfA98OEsUdA1ZDkGz8d";
+  //const roomID = roomData?.room_id?? "error";
+  const roomID = "bOfA98OEsUdA1ZDkGz8d";
   const [taskID, setTaskID] = useState("");
 
   const pushTask = async (
@@ -37,10 +54,11 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
     name: string,
     points: number,
     assignee: string,
+    assigneeID: string,
     status: string,
     date: Date
   ) => {
-    const taskId = await addTask(roomID, name, points, assignee, status, date);
+    const taskId = await addTask(roomID, name, points, assignee, assigneeID, status, date);
     console.log("taskID", taskId);
     setTaskID(taskId);
     return taskId;
@@ -53,6 +71,7 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
       newTask,
       points,
       newAssignee || "Unassigned",
+      newAssigneeID || "Unassigned",
       "inprogress",
       new Date(dueDate)
     );
@@ -62,12 +81,15 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
         id: String(taskId),
         text: newTask,
         assignee: newAssignee || "Unassigned",
+        assigneeID: newAssigneeID || "Unassigned",
         dueDate: dueDate,
         points: points,
+        
       });
 
       setNewTask("");
       setNewAssignee("");
+      setNewAssigneeID("");
       setDueDate("");
       setPoints(0);
     }
@@ -76,6 +98,12 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
       return;
     }
   };
+
+  const [roomUsers, setRoomUsers] = useState<user[]>([]);
+
+  useEffect(() => {
+    fetchUsers(roomID, roomUsers, setRoomUsers);
+  }, [roomID]);
 
   return (
     <div className="bg-blue-50 rounded-lg p-6 shadow-md">
@@ -100,16 +128,22 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
             Tag a TritonMate
           </label>
           <select
-            value={newAssignee}
-            onChange={(e) => setNewAssignee(e.target.value)}
+            value={`${newAssignee}|${newAssigneeID}`}
+          
+            onChange={(e) => {
+              const selectedOption = e.target.value; // Get the value from the selected option
+              const [name, user_ID] = selectedOption.split('|'); // Split the value to extract name and ID
+              setNewAssignee(name); // Update the name
+              setNewAssigneeID(user_ID); // Set the Assignee ID
+            }}
+            
             className="w-full p-3 border border-[#C1DCFF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#006EFF]"
             required
           >
-            <option value="" className="text-[#7D7D7D]">
-              None
-            </option>
-            <option value="Assignee1">Assignee 1</option>
-            <option value="Assignee2">Assignee 2</option>
+            <option value="Unassigned|"> Unassigned </option>
+          {roomUsers.map((roomUser) => (
+             <option  key={roomUser.user_ID} value={`${roomUser.name}|${roomUser.user_ID}`}> {roomUser.name}</option>
+            ))}
           </select>
         </div>
 
