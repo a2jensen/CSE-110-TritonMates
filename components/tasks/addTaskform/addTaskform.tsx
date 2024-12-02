@@ -9,7 +9,6 @@ import {
   updateTask,
 } from "../../../app/api/tasks/TaskContext";
 //import { useRoomContext } from './context/RoomContext';
-
 interface AddTaskFormProps {
   onAddTask: (task: {
     id: string;
@@ -25,7 +24,6 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
   const [newAssignee, setNewAssignee] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [points, setPoints] = useState(0);
-
 
   //const { roomData } = useRoomContext();
   //const room ID = roomData.room_id;
