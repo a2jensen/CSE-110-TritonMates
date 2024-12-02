@@ -1,5 +1,4 @@
 "use client";
-"use client";
 import Link from "next/link";
 import Navbar from "../../components/navbar";
 import TaskBoard from "../../components/tasks/taskBoard/taskBoard";
@@ -14,19 +13,19 @@ export default function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
-  const [name, setName] = useState("Guest"); // State to hold the user's name
+  
+  const [name, setName] = useState("Guest"); 
   const [points, setPoints] = useState(0);
-  // Move the fetchFromFirestore function here
+
   const fetchFromFirestore = async (uid: string) => {
     try {
-      // Reference the document in Firestore
       const userDocRef = doc(db, "user", uid);
       const userSnap = await getDoc(userDocRef);
 
       if (userSnap.exists()) {
-        const fetchedName = userSnap.data().name; // Access the `name` field
+        const fetchedName = userSnap.data().name; 
         console.log(`Name from Firestore: ${fetchedName}`);
-        setName(fetchedName); // Update the name state
+        setName(fetchedName); 
         const fetchedPoints = userSnap.data().points;
         setPoints(fetchedPoints);
       } else {
