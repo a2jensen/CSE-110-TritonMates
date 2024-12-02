@@ -43,7 +43,7 @@ export async function deleteRoom(roomname : string) {
 }
 
 export async function deleteRoomCollections( roomId : string) {
-    const subcollections = ["events", "tasks"];
+    const subcollections = ["Events", "Tasks"];
 
     for (const subcollection of subcollections){
         const subcollectionRef = collection(db, `rooms/${roomId}/${subcollection}`)
@@ -88,9 +88,9 @@ export async function leaveRoom(room_code : string, user_id : string){
     const roomSnapshot = await getDocs(roomsCollectionRef);
     
     // ensure only one document was found
-    if(!roomSnapshot.empty || roomSnapshot.docs.length > 1) {
-        console.error("Invalid code made")
-        throw new Error("Room not found")
+    if(roomSnapshot.empty || roomSnapshot.docs.length > 1) {
+        console.error("Invalid code made");
+        throw new Error("Room not found");
     }
 
     const docRef = roomSnapshot.docs[0].ref;
@@ -99,7 +99,7 @@ export async function leaveRoom(room_code : string, user_id : string){
         room_users : arrayRemove(user_id)
     })
 
-    console.log('User added to room successfully')
+    console.log('User removed from room successfully');
 }
 
 // i may not need this function at all...

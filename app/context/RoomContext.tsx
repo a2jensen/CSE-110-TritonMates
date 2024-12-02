@@ -13,6 +13,7 @@ type RoomData = {
 type RoomContextType = {
   roomData: RoomData | null;
   setRoomData: (data: RoomData) => void;
+  updateRoomData : (data : RoomData) => void;
 };
 
 const RoomContext = createContext<RoomContextType | undefined>(undefined);
@@ -21,9 +22,9 @@ export const RoomProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [roomData, setRoomData] = useState<RoomData | null>(null);
 
   // updates room Data
-  const updateRoomData = (data : any ) => {
+  const updateRoomData = (data : RoomData ) => {
     setRoomData(data);
-    localStorage.setItem("room_id", JSON.stringify(data)); 
+    localStorage.setItem("roomData", JSON.stringify(data)); 
   }
 
   useEffect(() => {
@@ -39,7 +40,7 @@ export const RoomProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [])
 
   return (
-    <RoomContext.Provider value={{ roomData, setRoomData }}>
+    <RoomContext.Provider value={{ roomData, setRoomData, updateRoomData }}>
       {children}
     </RoomContext.Provider>
   );
@@ -52,3 +53,4 @@ export const useRoomContext = () => {
   }
   return context;
 };
+

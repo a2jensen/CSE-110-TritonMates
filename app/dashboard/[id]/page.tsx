@@ -44,9 +44,6 @@ const dashboardPage = ({ params }: { params: Promise<{ id: string }> }) => {
             <Link className="text-blue-500 hover:underline" href="/user"><div className="w-16 h-16 bg-gray-400 rounded-full"></div></Link>
             <h2 className="text-xl"><Link className="text-blue-500 hover:underline" href="/user">User Profile</Link></h2>
           </div>
-            {roomData && (
-                <div>{roomData.room_name}</div>
-            )}
           <div className="space-y-6">
             <TaskBoard />
             <EventsManager/>
