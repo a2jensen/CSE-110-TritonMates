@@ -8,7 +8,9 @@ interface ProfileSummaryProps {
     pronouns: string;
     sleepingHours: string;
     favoriteThing: string;
-  };
+  },
+  userID: string;
+  roomID: string;
 }
 
 const ProfileSummary: React.FC<ProfileSummaryProps> = ({
@@ -19,6 +21,8 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
     sleepingHours: "",
     favoriteThing: "",
   },
+  userID,
+  roomID
 }) => {
 
 
@@ -31,7 +35,7 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
    setSleepingHours: React.Dispatch<React.SetStateAction<string>>,
     setFavoriteThing: React.Dispatch<React.SetStateAction<string>>)=>
  { 
-
+   console.log(roomID, userID);
    const userData = await getUser(roomID, userID);
 
    console.log("userData", userData);
@@ -50,18 +54,6 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
 
  
  }
-
- 
-
- const roomID = "bOfA98OEsUdA1ZDkGz8d";
- const userID = 'D3eIVTebFOhTKaptvyDCXfF0TYb2';
-
-
-
-
-
-
-
 
   const [name, setName] = useState(initialData.name);
   const [major, setMajor] = useState(initialData.major);
