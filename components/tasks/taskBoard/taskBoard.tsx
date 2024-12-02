@@ -24,6 +24,7 @@ const changeTask = async (
   name: string,
   points: number,
   assignee: string,
+  assigneeID: string,
   status: string,
   due_date: string
 ) => {
@@ -33,6 +34,7 @@ const changeTask = async (
     name,
     points,
     assignee,
+    assigneeID,
     status,
     new Date(due_date)
   );
@@ -57,6 +59,7 @@ const fetchTasks = async (
       id: task_data[i]["task_ID"],
       text: task_data[i]["name"],
       assignee: task_data[i]["assignee"],
+      assigneeID: task_data[i]["assigneeID"],
       assigner: "Creator",
       done: task_data[i]["status"],
       doneReason: "",
@@ -80,6 +83,7 @@ export default function TaskBoard() {
     id: string;
     text: string;
     assignee: string;
+    assigneeID: string;
     dueDate: string;
     points: number;
   }) => {
@@ -93,6 +97,7 @@ export default function TaskBoard() {
         id: task.id,
         text: task.text,
         assignee: task.assignee,
+        assigneeID: task.assigneeID,
         assigner: "Creator",
         done: false,
         doneReason: "",
@@ -110,6 +115,14 @@ export default function TaskBoard() {
   const toggleTask = (id: string) => {
     for (let i = 0; i < tasks.length; i++) {
       if (tasks[i].id == id) {
+        console.log("assignee ID ", tasks[i].assigneeID);
+        console.log( "id", id, "text",
+          tasks[i].text, "points",
+          tasks[i].points, "assignee",
+          tasks[i].assignee,"assigneeID",
+          tasks[i].assigneeID,"status",
+          "in progress", "duedate",
+          tasks[i].dueDate)
         console.log(tasks[i]);
         if (tasks[i].done) {
           changeTask(
@@ -118,8 +131,9 @@ export default function TaskBoard() {
             tasks[i].text,
             tasks[i].points,
             tasks[i].assignee,
+            tasks[i].assigneeID,
             "in progress",
-            tasks[i].dueDate
+            tasks[i].dueDate,
           );
         } else {
           changeTask(
@@ -128,8 +142,9 @@ export default function TaskBoard() {
             tasks[i].text,
             tasks[i].points,
             tasks[i].assignee,
+            tasks[i].assigneeID,
             "done",
-            tasks[i].dueDate
+            tasks[i].dueDate,
           );
         }
       }
@@ -173,6 +188,7 @@ export default function TaskBoard() {
           ? updatedTask.points
           : taskToUpdate.points,
         updatedTask.assignee || taskToUpdate.assignee,
+        updatedTask.assigneeID || taskToUpdate.assigneeID,
         taskToUpdate.done ? "done" : "in progress",
         updatedTask.dueDate || taskToUpdate.dueDate
       );
