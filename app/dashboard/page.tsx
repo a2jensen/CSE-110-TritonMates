@@ -19,11 +19,12 @@ export default function Home() {
   const [name, setName] = useState("Guest");
   const [points, setPoints] = useState(0);
 
-  const fetchFromFirestore = async (uid: string) => {
+  const fetchFromFirestore = async (uid: string, setName: React.Dispatch<React.SetStateAction<string>>, setPoints: React.Dispatch<React.SetStateAction<number>>) => {
     try {
       const userDocRef = doc(db, "user", uid);
+      
       const userSnap = await getDoc(userDocRef);
-
+      console.log("user data", userSnap.data());
       if (userSnap.exists()) {
         const fetchedName = userSnap.data().name;
         console.log(`Name from Firestore: ${fetchedName}`);
@@ -45,7 +46,8 @@ export default function Home() {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-        fetchFromFirestore(currentUser.uid); // Fetch the name from Firestore
+        fetchFromFirestore(currentUser.uid, setName, setPoints);
+        // fetchFromFirestore('D3eIVTebFOhTKaptvyDCXfF0TYb2',setName, setPoints); // Fetch the name from Firestore
         setLoading(false);
       } else {
         router.push("/");

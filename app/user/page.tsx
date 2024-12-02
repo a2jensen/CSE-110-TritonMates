@@ -1,13 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AvatarSelector from "../../components/user/AvatarSelector";
 import Link from "next/link";
 import ProfileSummary from "../../components/user/profileSummary";
+import {updateUserPoints, getUser, updateUserAvatar} from "../api/user/UserContext"
+import { auth, onAuthStateChanged} from "../../firebase/firebaseConfig";
 
 const UserPage = () => {
   const [avatar, setAvatar] = useState('/avatars/default.png'); // Default avatar
   const [points, setPoints] = useState(0);
+  const [userID, setUserID] = useState('');
+  const [roomID, setRoomID] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const avatars = [
     { src: '/avatars/default.png', pointsRequired: 0 },
@@ -16,17 +21,44 @@ const UserPage = () => {
     { src: '/avatars/avatar3.png', pointsRequired: 300 },
   ];
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setUserID(user.uid);
+        try {
+          const userData = await getUser(roomID, user.uid);
+          if (userData) {
+            setPoints(userData.points);
+            setAvatar(userData.avatar);
+            setRoomID(userData.room_ID);
+            setLoading(false);
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      } else {
+        console.error("User is not authenticated");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [roomID]);
+
   const handleAvatarChange = (newAvatar: string) => {
     setAvatar(newAvatar);
+    console.log(newAvatar);
+    updateUserAvatar(userID, newAvatar);
     // backend can save avatar
   };
 
   const addPoints = () => {
     setPoints((prevPoints) => prevPoints + 50);
-    // backend can send updated pts
+    updateUserPoints(userID, points);
   };
 
-
+  if (loading) {
+    return <p>Loading...</p>; // Show loading state
+  }
 
   return (
     <div className="user-page bg-[#182B49] text-white min-h-screen">
@@ -62,6 +94,8 @@ const UserPage = () => {
             sleepingHours: "",
             favoriteThing: "",
           }}
+          userID={userID}
+          roomID={roomID}
         />
       </div>
 
