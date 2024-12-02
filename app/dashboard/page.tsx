@@ -1,7 +1,8 @@
-"use client";
+"use client"
 import Link from "next/link";
 import Navbar from "../../components/navbar";
 import TaskBoard from "../../components/tasks/taskBoard/taskBoard";
+import EmailForm from "../../components/conflict/conflictForm";
 import EventsManager from "@/components/events/eventsManager";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -9,9 +10,10 @@ import { auth, onAuthStateChanged, User } from "../../firebase/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 
+
 export default function Home() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); 
   const [user, setUser] = useState<User | null>(null);
   
   const [name, setName] = useState("Guest"); 
@@ -38,6 +40,7 @@ export default function Home() {
     }
   };
 
+  const [popUp, setpopUp] = useState(false);
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
@@ -71,8 +74,11 @@ export default function Home() {
         </h2>
       </div>
       <div className="space-y-6">
+     
         <TaskBoard />
-        <EventsManager />
+        <EmailForm trigger={popUp} setTrigger={setpopUp}/>
+        <button onClick = {() => setpopUp(true)}> Report Conflict</button>
+        <EventsManager/>
       </div>
     </div>
   );
