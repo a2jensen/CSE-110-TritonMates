@@ -12,6 +12,7 @@ const UserPage = () => {
   const [points, setPoints] = useState(0);
   const [userID, setUserID] = useState('');
   const [roomID, setRoomID] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const avatars = [
     { src: '/avatars/default.png', pointsRequired: 0 },
@@ -29,6 +30,8 @@ const UserPage = () => {
           if (userData) {
             setPoints(userData.points);
             setAvatar(userData.avatar);
+            setRoomID(userData.room_ID);
+            setLoading(false);
           }
         } catch (error) {
           console.error("Error fetching user data:", error);
@@ -53,7 +56,9 @@ const UserPage = () => {
     updateUserPoints(userID, points);
   };
 
-
+  if (loading) {
+    return <p>Loading...</p>; // Show loading state
+  }
 
   return (
     <div className="user-page bg-[#182B49] text-white min-h-screen">
@@ -89,6 +94,8 @@ const UserPage = () => {
             sleepingHours: "",
             favoriteThing: "",
           }}
+          userID={userID}
+          roomID={roomID}
         />
       </div>
 
