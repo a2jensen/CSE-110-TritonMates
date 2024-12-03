@@ -1,8 +1,35 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
+import { checkRoom } from "../api/rooms";
+import { checkUserAuth } from "../api/user";
+import { useRouter } from "next/navigation";
+import { useRoomContext } from "../context/RoomContext";
 
 export default function RoomsPage() {
+    const { roomData } = useRoomContext();
+    const router = useRouter();
+    const room_id = roomData?.room_id
+
+    useEffect(() => {
+        const roomUserCheck = async () => {
+            try {
+                const user = await checkUserAuth();
+                const user_id = user?.uid;
+                if (user_id){
+                    const check = await checkRoom(user_id);
+                    if (check) {
+                        alert("You are already in a room!");
+                        router.push(`dashboard/${room_id}`);
+                    }
+                }
+            } catch ( error : unknown ){
+                console.error("error trying to check if user is in a room")
+            }
+        }
+        roomUserCheck();
+    }, [])
     return (
         <div className="container">
             <header className="header">

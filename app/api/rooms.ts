@@ -49,21 +49,31 @@ export async function deleteRoomCollections( roomId : string) {
         const subcollectionRef = collection(db, `rooms/${roomId}/${subcollection}`)
         const subcollectionDocs = await getDocs(subcollectionRef);
 
+        if (subcollectionDocs.size) { // skip since subcollection is empty/doesnt exist
+            continue;
+        }
         // delete each document within subcollection
         const deletePromises = subcollectionDocs.docs.map((doc) => deleteDoc(doc.ref));
         await Promise.all(deletePromises);
         console.log(`Delete all documents for room ${roomId}`);
     }
+    return;
 }
 
 export async function joinRoom(room_code : string, user_id : string){
+        // case where somehow user is already in a room
+        const roomUserCheck = query(collection(db,'rooms'), where("room_users", 'array-contains', user_id));
+        if (roomUserCheck) {
+            alert("Woah! Your already in a room... don't try and join another one. Leave your current room first.")
+            return;
+        }
+
         // get specific room
         const roomsCollectionRef = query(collection(db, 'rooms'), where("room_code", "==", room_code));
 
         const roomSnapshot = await getDocs(roomsCollectionRef);
         console.log(roomSnapshot)
         // ensure only one document was found
-         
         if(roomSnapshot.empty || roomSnapshot.docs.length > 1) {
             console.error("Invalid code made");
             throw new Error("Room not found");
@@ -93,11 +103,20 @@ export async function leaveRoom(room_code : string, user_id : string){
         throw new Error("Room not found");
     }
 
-    const docRef = roomSnapshot.docs[0].ref;
+    const docRef = roomSnapshot.docs[0].ref; // retrieves reference of document
+    const docData = roomSnapshot.docs[0].data(); // retrievers data inside the document
+    const docUsers = docData.room_users; 
 
     await updateDoc(docRef, {
         room_users : arrayRemove(user_id)
     })
+
+    // case where user was the only one in the room at the time of leaving, then we want to delete room since there would be no roommates 
+    if ( docUsers.length == 1 ) {
+        console.log("Deleting room case executed")
+        await deleteRoom(room_code)
+    }
+
 
     console.log('User removed from room successfully');
 }
@@ -127,5 +146,7 @@ export async function checkRoom(user_id : string) {
         const roomId = roomSnap.docs.map(doc => doc.id)
         const roomIdString = roomId[0];
         return roomIdString;
+    } else {
+        return null;
     }
 }

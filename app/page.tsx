@@ -1,7 +1,6 @@
 "use client"; 
 
 import { useRouter } from 'next/navigation';
-
 import Logo from '@/components/logo';
 import { auth, provider, signInWithPopup, } from "../firebase/firebaseConfig"
 import { checkIfUserExists } from './api/auth/login';
