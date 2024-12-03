@@ -36,7 +36,7 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
     setFavoriteThing: React.Dispatch<React.SetStateAction<string>>)=>
  { 
    console.log(roomID, userID);
-   const userData = await getUser(roomID, userID);
+   const userData = await getUser(userID);
 
    console.log("userData", userData);
    if (typeof userData !== "undefined"){
