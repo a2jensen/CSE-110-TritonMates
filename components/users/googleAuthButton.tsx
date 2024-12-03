@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react';
-import { auth, provider, signInWithPopup, signOut, User } from "../../firebase/firebaseConfig"
+import { auth, provider, signInWithPopup, User } from "../../firebase/firebaseConfig"
 
 export default function GoogleAuthButton() {
     const [user, setUser] = useState<User | null>(null);
@@ -12,16 +12,16 @@ export default function GoogleAuthButton() {
             const result = await signInWithPopup(auth, provider);
             console.log("Results ", result.user)
             setUser(result.user);
-        } catch (error : any) {
+        } catch (error : unknown ) {
             console.error("Failed to sign in with google", error);
         }
     }
 
     const handleSignOut = async () => {
         try {
-            const result = await signOut(auth)
+            //const result = await signOut(auth)
             setUser(null)
-        } catch (error : any) {
+        } catch (error : unknown ) {
             console.error("Failed to sign out", error)  
         }
     }

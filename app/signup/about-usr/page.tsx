@@ -1,12 +1,10 @@
 "use client";   //keep this until separate client and server folders are made
 
-import Link from 'next/link'
+
 import Logo from '../../../components/logo';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { addUserToFirestore } from '@/app/api/auth/login';
-import firebase from 'firebase/app';
-import { auth } from '@/firebase/firebaseConfig';
 import { checkUserAuth } from '@/app/api/user';
 
 
@@ -16,7 +14,7 @@ export default function AboutUser() {
   const router = useRouter();
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
-  const [points, setPoints] = useState(0);
+  const [points, ] = useState(0);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Name: ", name);

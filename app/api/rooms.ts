@@ -1,6 +1,6 @@
 import { db } from "@/firebase/firebaseConfig";
 
-import {doc, query, collection, where, getDocs, addDoc, updateDoc, deleteDoc,getDoc, setDoc, arrayRemove, arrayUnion, Timestamp} from "firebase/firestore";
+import {doc, query, collection, where, getDocs, addDoc, updateDoc, deleteDoc,getDoc, arrayRemove, arrayUnion, Timestamp} from "firebase/firestore";
 
 // function that will create a room. will initalisze room with roomname, roomid, date created, and adding person who created it to members array
 // params : roomname ex. (Suite 88), room_user : pass in the users ID

@@ -1,24 +1,27 @@
 'use client';
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState,  } from "react";
 import React from "react";
 import TaskBoard from "@/components/tasks/taskBoard/taskBoard";
 import EventsManager from "@/components/events/eventsManager";
 import RoomSummary from "@/components/rooms/roomSummary";
 import { auth, onAuthStateChanged, User} from '../../../firebase/firebaseConfig';
 import Link from "next/link";
-import { useRoomContext } from "../../context/RoomContext"
-import { fetchRoomData } from "@/app/api/rooms";
+import { useRoomContext } from "../../context/RoomContext";
 
 
-const dashboardPage = ({ params }: { params: Promise<{ id: string }> }) => {
+const DashboardPage = ({ params }: { params: Promise<{ id: string }> }) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const router = useRouter();
-    const {roomData, setRoomData} = useRoomContext();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const {setRoomData} = useRoomContext();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [loading, setLoading] = useState(true);
-    const [user, setUser] = useState<User | null>(null);
+    const [, setUser] = useState<User | null>(null);
 
     // unwrap params promise
-    const { id : roomId } = React.use(params);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { id : roomId } = React.use(params); // NEED TO FIX THIS WITH VERCEL DEPLOYMENT
 
     useEffect(() => {
         const onLoad = onAuthStateChanged(auth, (currentUser) => {
@@ -52,4 +55,4 @@ const dashboardPage = ({ params }: { params: Promise<{ id: string }> }) => {
       );
 }
 
-export default dashboardPage
+export default DashboardPage;

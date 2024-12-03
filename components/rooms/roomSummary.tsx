@@ -1,7 +1,7 @@
 
 'use client'
 import { useRoomContext } from "@/app/context/RoomContext";
-import { leaveRoom, joinRoom } from "@/app/api/rooms";
+import { leaveRoom,  } from "@/app/api/rooms";
 import { checkUserAuth } from "@/app/api/user";
 import { useRouter } from "next/navigation";
 
@@ -19,7 +19,7 @@ const RoomSummary : React.FC = () => {
                 await leaveRoom(roomCode, userId);
                 router.push("/rooms")
             }
-        } catch (error : any) {
+        } catch (error : unknown ) {
             console.error("Error trying to leave room: ", error)
         }
     }

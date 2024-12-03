@@ -1,7 +1,6 @@
 "use client"
 import Link from "next/link";
-import Navbar from "../../components/navbar";
-import TaskBoard from "../../components/tasks/taskBoard/taskBoard";
+import TaskBoard from "@/components/tasks/taskBoard/taskBoard";
 import EmailForm from "../../components/conflict/conflictForm";
 import EventsManager from "@/components/events/eventsManager";
 import { useEffect, useState } from "react";
@@ -15,10 +14,10 @@ import { getUser } from "../api/user/UserContext";
 
 export default function Home() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true); 
-  const [user, setUser] = useState<User | null>(null);
-  
-  const [name, setName] = useState("Guest"); 
+  const [loading, setLoading] = useState(true);
+  const [, setUser] = useState<User | null>(null);
+
+  const [name, setName] = useState("Guest");
   const [points, setPoints] = useState(0);
   const [currentUserId, setCurrentUserId] = useState("");
 
@@ -41,20 +40,9 @@ export default function Home() {
           setName("Guest");
         } 
       });
-
       
-      
-    /*  const userSnap = await getDoc(userDocRef);
-      console.log("user data", userSnap.data());
-      if (userSnap.exists()) {
-        const fetchedName = userSnap.data().name; 
-        console.log(`Name from Firestore: ${fetchedName}`);
-        setName(fetchedName); 
-        const fetchedPoints = userSnap.data().points;
-        setPoints(fetchedPoints);*/
+    } catch (error : unknown ) {
 
-       
-    } catch (error) {
       console.error("Error fetching user data from Firestore:", error);
       setName("Guest");
     }
@@ -105,10 +93,6 @@ export default function Home() {
   if (loading) {
     return <p>Loading...</p>;
   }
-  
-
-  //fetchPoints(currentUserId, setPoints);
-
 
 
   return (
@@ -125,11 +109,11 @@ export default function Home() {
         </h2>
       </div>
       <div className="space-y-6">
-     
+
         <TaskBoard />
-        <EmailForm trigger={popUp} setTrigger={setpopUp}/>
-        <button onClick = {() => setpopUp(true)}> Report Conflict</button>
-        <EventsManager/>
+        <EmailForm trigger={popUp} setTrigger={setpopUp} />
+        <button onClick={() => setpopUp(true)}> Report Conflict</button>
+        <EventsManager />
       </div>
     </div>
   );

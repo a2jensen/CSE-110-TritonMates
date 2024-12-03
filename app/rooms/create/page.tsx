@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import { useRouter } from "next/navigation";
 import { createRoom, checkRoom, fetchRoomData } from "@/app/api/rooms";
 import { checkUserAuth } from "@/app/api/user";
@@ -10,8 +10,8 @@ export default function CreateRoom() {
     const [roomName, setRoomName] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter(); 
-    const [error, setError] = useState<Boolean>(false);
-    const { roomData, setRoomData, updateRoomData } = useRoomContext();
+    const [error, setError] = useState<boolean>(false);
+    const {  setRoomData, updateRoomData } = useRoomContext();
 
     const handleCreate = async () => {
         console.log("Creating room:", roomName, "Password:", password);
