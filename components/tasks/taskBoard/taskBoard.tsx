@@ -1,12 +1,11 @@
-"use client";
+// "use client";
 
 import { useEffect, useState } from "react";
 import AddTaskForm from "../addTaskform/addTaskform";
-import { Timestamp } from 'firebase/firestore'; 
+//import { Timestamp } from 'firebase/firestore';
 import TaskOverview from "../taskOverview/taskOverview";
 import { Task } from "../types";
 //import { useRoomContext } from './context/RoomContext';
-
 
 import {
   getAllTasks,
@@ -20,9 +19,6 @@ import { updateUserPoints } from "@/app/api/user/UserContext";
 const removeTask = async (roomID: string, taskID: string) => {
   await deleteTask(roomID, taskID);
 };
-
-
-
 
 const changeTask = async (
   roomID: string,
@@ -46,21 +42,17 @@ const changeTask = async (
   );
 };
 
-
 const fetchCurrentUser = async (
   currentUserId: string,
   setCurrentUserId: React.Dispatch<string>
-)=>{
+) => {
   const currentUser = await checkUserAuth();
   console.log("CURRENT USER", currentUser);
-   const userId = currentUser?.uid  || '' ;
-   console.log("USER ID", userId);
+  const userId = currentUser?.uid || "";
+  console.log("USER ID", userId);
 
-   setCurrentUserId(userId);
-
-
-}
-
+  setCurrentUserId(userId);
+};
 
 const fetchTasks = async (
   roomID: string,
@@ -77,13 +69,14 @@ const fetchTasks = async (
 
     const dueDateObj = task_data[i]["due_date"].toDate();
     const isUpcoming = dueDateObj > today;
+
     new_tasks.push({
       id: task_data[i]["task_ID"],
       text: task_data[i]["name"],
       assignee: task_data[i]["assignee"],
       assigneeID: task_data[i]["assigneeID"],
       assigner: "Creator",
-      done: task_data[i]["status"],
+      done: task_data[i]["status"] === "done",
       doneReason: "",
       dueDate: dueDateObj.toLocaleDateString(),
       points: task_data[i]["points"],
@@ -91,27 +84,21 @@ const fetchTasks = async (
     });
     console.log(task_data[i]);
   }
-  setTasks([...tasks, ...new_tasks]);
+  setTasks(new_tasks);
 };
 
 export default function TaskBoard() {
   const [tasks, setTasks] = useState<Task[]>([]);
-  
-  //const { roomData } = useRoomContext();
-  //const room ID = roomData.room_id;
-  //const roomID = "bOfA98OEsUdA1ZDkGz8d";
 
   const { roomData } = useRoomContext();
 
-  // Safely retrieve the room_id
-
-  if (roomData?.room_id == undefined){
+  if (roomData?.room_id == undefined) {
     const roomID = "";
   }
   const roomID = roomData?.room_id || "";
 
- const currentUser = checkUserAuth();
- console.log(currentUser);
+  const currentUser = checkUserAuth();
+  console.log(currentUser);
 
   const addTask = (task: {
     id: string;
@@ -141,6 +128,7 @@ export default function TaskBoard() {
       },
     ]);
   };
+
   const [currentUserId, setCurrentUserId] = useState("");
 
   useEffect(() => {
@@ -148,61 +136,38 @@ export default function TaskBoard() {
     fetchCurrentUser(currentUserId, setCurrentUserId);
   }, [roomID]);
 
-  const toggleTask = (id: string) => {
-    for (let i = 0; i < tasks.length; i++) {
-      if (tasks[i].id == id) {
-        console.log("assignee ID ", tasks[i].assigneeID);
-        console.log( "id", id, "text",
-          tasks[i].text, "points",
-          tasks[i].points, "assignee",
-          tasks[i].assignee,"assigneeID",
-          tasks[i].assigneeID,"status",
-          "in progress", "duedate",
-          tasks[i].dueDate)
-        console.log(tasks[i]);
-        if (tasks[i].done) {
-          changeTask(
-            roomID,
-            id,
-            tasks[i].text,
-            tasks[i].points,
-            tasks[i].assignee,
-            tasks[i].assigneeID,
-            "in progress",
-            tasks[i].dueDate,
-          );
-          if (currentUserId === tasks[i].assigneeID ){
-            console.log("updating points");
-            updateUserPoints(currentUserId, -1*tasks[i].points);
+  const toggleTask = async (id: string) => {
+    const taskToUpdate = tasks.find((task) => task.id === id);
+    if (!taskToUpdate) return;
 
+    const updatedDoneState = !taskToUpdate.done;
+    const newStatus = updatedDoneState ? "done" : "in progress";
 
-          }
-        } else {
-          changeTask(
-            roomID,
-            id,
-            tasks[i].text,
-            tasks[i].points,
-            tasks[i].assignee,
-            tasks[i].assigneeID,
-            "done",
-            tasks[i].dueDate,
-          );
+    await changeTask(
+      roomID,
+      id,
+      taskToUpdate.text,
+      taskToUpdate.points,
+      taskToUpdate.assignee,
+      taskToUpdate.assigneeID,
+      newStatus,
+      taskToUpdate.dueDate
+    );
 
-          if (currentUserId === tasks[i].assigneeID ){
-            console.log("updating points");
-            updateUserPoints(currentUserId, tasks[i].points);
-
-
-          }
-        }
-      }
-    }
+    // Update local state
     setTasks(
       tasks.map((task) =>
-        task.id === id ? { ...task, done: !task.done } : task
+        task.id === id ? { ...task, done: updatedDoneState } : task
       )
     );
+
+    if (currentUserId === taskToUpdate.assigneeID) {
+      const pointsChange = updatedDoneState
+        ? taskToUpdate.points
+        : -taskToUpdate.points;
+      console.log("updating points");
+      await updateUserPoints(currentUserId, pointsChange);
+    }
   };
 
   const deleteTask = (id: string) => {
@@ -211,7 +176,6 @@ export default function TaskBoard() {
   };
 
   const updateTaskHandler = (id: string, updatedTask: Partial<Task>) => {
-    // Update local state first
     const updatedTasks = tasks.map((task) =>
       task.id === id
         ? {
@@ -225,10 +189,8 @@ export default function TaskBoard() {
     );
     setTasks(updatedTasks);
 
-    // Find the specific task to update
     const taskToUpdate = updatedTasks.find((task) => task.id === id);
     if (taskToUpdate) {
-      // Call backend update function
       changeTask(
         roomID,
         id,
