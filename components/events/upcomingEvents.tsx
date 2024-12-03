@@ -1,4 +1,3 @@
-import styles from './upcomingEvents.module.css';
 import { event } from '../../types';
 import { EventCard } from './eventCard';
 

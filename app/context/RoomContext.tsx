@@ -34,7 +34,7 @@ export const RoomProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const parsedRoomData = JSON.parse(storedRoomData) as RoomData;
         setRoomData(parsedRoomData);
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error("Error parsing room data from localStorage", error)
       }
     }

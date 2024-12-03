@@ -2,13 +2,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import {
-  getAllTasks,
   addTask,
-  getTask,
-  deleteTask,
-  updateTask,
 } from "../../../app/api/tasks/TaskContext"
-import { useRoomContext } from "../../../app/context/RoomContext"
+//import { useRoomContext } from "../../../app/context/RoomContext"
 import { getAllUsersinRoom } from "../../../app/api/user/UserContext";
 import {  user} from "@/types";
 
@@ -44,10 +40,10 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
   const [points, setPoints] = useState(0);
 
 
-  const { roomData } = useRoomContext();
+  //const { roomData } = useRoomContext();
   //const roomID = roomData?.room_id?? "error";
   const roomID = "bOfA98OEsUdA1ZDkGz8d";
-  const [taskID, setTaskID] = useState("");
+  const [, setTaskID] = useState("");
 
   const pushTask = async (
     roomID: string,

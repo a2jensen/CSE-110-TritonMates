@@ -3,9 +3,8 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { useState, useEffect } from 'react';
-import Logo from '@/components/logo';
-import { auth, provider, signInWithPopup, signOut, User, onAuthStateChanged } from "../firebase/firebaseConfig"
+import { useState, } from 'react';
+import { auth, signOut, User, } from "../firebase/firebaseConfig"
 
 
 
@@ -17,7 +16,7 @@ export default function Navbar() {
         try {
             await signOut(auth)
             setUser(null)
-        } catch (error : any) {
+        } catch (error : unknown ) {
             console.error("Failed to sign out", error)  
         }
         router.push('/');

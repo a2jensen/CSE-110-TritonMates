@@ -1,8 +1,6 @@
 'use client'
-import { auth, db } from '../../firebase/firebase.js'
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
-import { doc, getDoc } from 'firebase/firestore'
-import React, { useContext, useState, useEffect } from 'react'
+import { auth,  } from '../../firebase/firebase.js'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword,  } from 'firebase/auth'
 
 export async function signUpUser(email, password, displayName) {
     try {

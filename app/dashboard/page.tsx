@@ -1,6 +1,5 @@
 "use client"
 import Link from "next/link";
-import Navbar from "../../components/navbar";
 import TaskBoard from "@/components/tasks/taskBoard/taskBoard";
 import EmailForm from "../../components/conflict/conflictForm";
 import EventsManager from "@/components/events/eventsManager";
@@ -14,7 +13,7 @@ import { db } from "../../firebase/firebaseConfig";
 export default function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<User | null>(null);
+  const [, setUser] = useState<User | null>(null);
 
   const [name, setName] = useState("Guest");
   const [points, setPoints] = useState(0);

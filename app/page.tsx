@@ -1,11 +1,9 @@
-"use client";   //keep this until separate client and server folders are made
-import Link from 'next/link'
+"use client"; 
 
 import { useRouter } from 'next/navigation';
 
-import { useState } from 'react';
 import Logo from '@/components/logo';
-import { auth, provider, signInWithPopup, signOut, User } from "../firebase/firebaseConfig"
+import { auth, provider, signInWithPopup, } from "../firebase/firebaseConfig"
 import { checkIfUserExists } from './api/auth/login';
 import { checkRoom, fetchRoomData } from './api/rooms';
 import { useRoomContext } from './context/RoomContext';
@@ -18,7 +16,7 @@ export default function Home() {
 
   const router = useRouter();
   //const [user, setUser] = useState<User | null>(null);
-  const { roomData, setRoomData, updateRoomData } = useRoomContext();
+  const { roomData,  updateRoomData } = useRoomContext();
 
 
   const handleGoogleSignIn = async () => {

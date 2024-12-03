@@ -26,7 +26,7 @@ export default function JoinRoom() {
                 };
             }
 
-        } catch ( error : any) {
+        } catch ( error : unknown ) {
             console.error("Error trying to join room", error)
             alert("Error trying to join room")
         }

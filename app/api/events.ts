@@ -10,7 +10,7 @@ import { event } from "@/types";
 export async function addEvent(
     eventData: Omit<event, "id">, //This will allow front end to pass event object without ID
     room_id: string,
-    event_participants: string[] = []
+    //event_participants: string[] = []
 ): Promise<string> {
     try {
         // Reference to the room document
