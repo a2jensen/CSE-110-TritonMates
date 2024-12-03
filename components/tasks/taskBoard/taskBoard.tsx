@@ -13,10 +13,16 @@ import {
   deleteTask,
   updateTask,
 } from "../../../app/api/tasks/TaskContext";
+import { useRoomContext } from "@/app/context/RoomContext";
+import { checkUserAuth } from "../../../app/api/user";
+import { updateUserPoints } from "@/app/api/user/UserContext";
 
 const removeTask = async (roomID: string, taskID: string) => {
   await deleteTask(roomID, taskID);
 };
+
+
+
 
 const changeTask = async (
   roomID: string,
@@ -39,6 +45,22 @@ const changeTask = async (
     new Date(due_date)
   );
 };
+
+
+const fetchCurrentUser = async (
+  currentUserId: string,
+  setCurrentUserId: React.Dispatch<string>
+)=>{
+  const currentUser = await checkUserAuth();
+  console.log("CURRENT USER", currentUser);
+   const userId = currentUser?.uid  || '' ;
+   console.log("USER ID", userId);
+
+   setCurrentUserId(userId);
+
+
+}
+
 
 const fetchTasks = async (
   roomID: string,
@@ -77,7 +99,19 @@ export default function TaskBoard() {
   
   //const { roomData } = useRoomContext();
   //const room ID = roomData.room_id;
-  const roomID = "bOfA98OEsUdA1ZDkGz8d";
+  //const roomID = "bOfA98OEsUdA1ZDkGz8d";
+
+  const { roomData } = useRoomContext();
+
+  // Safely retrieve the room_id
+
+  if (roomData?.room_id == undefined){
+    const roomID = "";
+  }
+  const roomID = roomData?.room_id || "";
+
+ const currentUser = checkUserAuth();
+ console.log(currentUser);
 
   const addTask = (task: {
     id: string;
@@ -107,9 +141,11 @@ export default function TaskBoard() {
       },
     ]);
   };
+  const [currentUserId, setCurrentUserId] = useState("");
 
   useEffect(() => {
     fetchTasks(roomID, tasks, setTasks);
+    fetchCurrentUser(currentUserId, setCurrentUserId);
   }, [roomID]);
 
   const toggleTask = (id: string) => {
@@ -135,6 +171,12 @@ export default function TaskBoard() {
             "in progress",
             tasks[i].dueDate,
           );
+          if (currentUserId === tasks[i].assigneeID ){
+            console.log("updating points");
+            updateUserPoints(currentUserId, -1*tasks[i].points);
+
+
+          }
         } else {
           changeTask(
             roomID,
@@ -146,6 +188,13 @@ export default function TaskBoard() {
             "done",
             tasks[i].dueDate,
           );
+
+          if (currentUserId === tasks[i].assigneeID ){
+            console.log("updating points");
+            updateUserPoints(currentUserId, tasks[i].points);
+
+
+          }
         }
       }
     }

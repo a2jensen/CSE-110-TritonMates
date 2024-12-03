@@ -7,8 +7,10 @@ import EventsManager from "@/components/events/eventsManager";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { auth, onAuthStateChanged, User } from "../../firebase/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
+import { checkUserAuth } from "../api/user";
+import { getUser } from "../api/user/UserContext";
 
 
 export default function Home() {
@@ -18,28 +20,68 @@ export default function Home() {
   
   const [name, setName] = useState("Guest"); 
   const [points, setPoints] = useState(0);
+  const [currentUserId, setCurrentUserId] = useState("");
 
   const fetchFromFirestore = async (uid: string, setName: React.Dispatch<React.SetStateAction<string>>, setPoints: React.Dispatch<React.SetStateAction<number>>) => {
     try {
       const userDocRef = doc(db, "user", uid);
+
+      onSnapshot(userDocRef, (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (data && data.points !== undefined) {
+            const fetchedName = data.name; 
+            console.log(`Name from Firestore: ${fetchedName}`);
+            setName(fetchedName); 
+            setPoints(data.points); // Update points state in real-time
+          }
+        }
+        else {
+          console.error("No such document in Firestore!");
+          setName("Guest");
+        } 
+      });
+
       
-      const userSnap = await getDoc(userDocRef);
+      
+    /*  const userSnap = await getDoc(userDocRef);
       console.log("user data", userSnap.data());
       if (userSnap.exists()) {
         const fetchedName = userSnap.data().name; 
         console.log(`Name from Firestore: ${fetchedName}`);
         setName(fetchedName); 
         const fetchedPoints = userSnap.data().points;
-        setPoints(fetchedPoints);
-      } else {
-        console.error("No such document in Firestore!");
-        setName("Guest");
-      }
+        setPoints(fetchedPoints);*/
+
+       
     } catch (error) {
       console.error("Error fetching user data from Firestore:", error);
       setName("Guest");
     }
   };
+
+  const fetchCurrentUser = async (   currentUserId: string,
+    setCurrentUserId: React.Dispatch<string>)=>{
+
+
+      const currentUser = await checkUserAuth();
+      console.log("CURRENT USER", currentUser);
+     const userId = currentUser?.uid  || '' ;
+      console.log("USER ID", userId);
+
+      setCurrentUserId(userId);
+    
+   
+
+
+  }
+
+  const fetchPoints = async (   currentUserId: string, setPoints: React.Dispatch<React.SetStateAction<number>>)=>{
+      const userData = (await getUser(currentUserId));
+      const current_points: number = userData?.points || 0;
+      setPoints(current_points as number);
+   
+  }
 
   const [popUp, setpopUp] = useState(false);
   useEffect(() => {
@@ -53,6 +95,8 @@ export default function Home() {
         router.push("/");
         alert("Sign In First!");
       }
+      fetchCurrentUser(currentUserId, setCurrentUserId);
+ 
     });
 
     return () => unsubscribe();
@@ -62,6 +106,11 @@ export default function Home() {
     return <p>Loading...</p>;
   }
   
+
+  //fetchPoints(currentUserId, setPoints);
+
+
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-white p-4 mb-4 flex items-center gap-4">

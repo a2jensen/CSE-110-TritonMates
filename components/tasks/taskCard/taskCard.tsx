@@ -5,7 +5,10 @@ import { Task} from "../types";
 import {  user} from "@/types";
 
 
-import { getAllUsersinRoom } from "../../../app/api/user/UserContext";
+import { getAllUsers } from "../../../app/api/user/UserContext";
+import { useRoomContext } from "@/app/context/RoomContext" ;
+import { checkUserAuth } from "@/app/api/user";
+
 
 interface TaskCardProps {
   task: Task;
@@ -15,16 +18,53 @@ interface TaskCardProps {
 }
 
 
+const fetchCurrentUser = async (
+  currentUserId: string,
+  setCurrentUserId: React.Dispatch<string>
+)=>{
+  const currentUser = await checkUserAuth();
+  console.log("CURRENT USER", currentUser);
+   const userId = currentUser?.uid  || '' ;
+   console.log("USER ID", userId);
+
+   setCurrentUserId(userId);
+
+
+}
+
+
 const fetchUsers = async (
   roomID: string,
   roomUsers: user[],
   setRoomUsers: React.Dispatch<React.SetStateAction<user[]>>
 ) => {
-  const user_data = await getAllUsersinRoom(roomID);
-  console.log("users in room", user_data);
+  const user_data = await getAllUsers(roomID);
 
-  console.log("fetching tasks");
-  setRoomUsers([...roomUsers, ...user_data]);
+
+ 
+  const new_users: user[] = [];
+
+  for (let i = 0; i < user_data.length; i++) {
+ 
+
+    const new_user: user={ 
+      name: user_data[i]['name'],
+      points:  user_data[i]['points'],
+      major: user_data[i]['major'],
+      pronouns: user_data[i]['pronouns'],
+      sleepingHours:  user_data[i]['sleepingHours'],
+      favoriteThing:  user_data[i]['favoriteThing'],
+      user_ID:  user_data[i]['user_ID'],
+      room_ID:  user_data[i]['room_ID'],
+    
+    }
+    new_users.push(new_user);
+
+
+  }
+  
+  setRoomUsers([...roomUsers, ...new_users]);
+ 
 };
 
 
@@ -45,13 +85,30 @@ export default function TaskCard({
 
   //const { roomData } = useRoomContext();
   //const room ID = roomData.room_id;
-  const roomID = "bOfA98OEsUdA1ZDkGz8d";
-  const [roomUsers, setRoomUsers] = useState<user[]>([]);
 
- 
+  const { roomData } = useRoomContext();
+
+  // Safely retrieve the room_id
+
+ /* if (roomData?.room_id == undefined){
+    const roomID = "";
+  }*/
+  const roomID = roomData?.room_id || '' ;
+  const [roomUsers, setRoomUsers] = useState<user[]>([]);
+  const [currentUserId, setCurrentUserId] = useState("");
+
+
+
+
+//  fetchUsers(roomID, roomUsers, setRoomUsers);
   useEffect(() => {
     fetchUsers(roomID, roomUsers, setRoomUsers);
+    fetchCurrentUser(currentUserId, setCurrentUserId);
+    console.log(roomUsers);
   }, [roomID]);
+
+  console.log("roomUsers", roomUsers);
+  console.log("currentUserId", currentUserId);
 
   const handleSaveEdit = () => {
     onUpdate(task.id, editedTask);

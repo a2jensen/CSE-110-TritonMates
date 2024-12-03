@@ -14,7 +14,8 @@ export async function addUserToFirestore (userId: string, userName: string, user
         sleepingHours: "",
         favoriteThing: "",
         roomID: "",
-        userID: userId
+        userID: userId,
+        avatar: '/avatar/default.png'
 
       });
       console.log("User added to Firestore successfully!");

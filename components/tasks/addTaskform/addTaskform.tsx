@@ -1,6 +1,7 @@
 // corresponds to add task component -> refer to figma file
 "use client";
 import { useEffect, useState } from "react";
+import {useRoomContext } from  "../../../app/context/RoomContext";
 import {
   getAllTasks,
   addTask,
@@ -8,8 +9,8 @@ import {
   deleteTask,
   updateTask,
 } from "../../../app/api/tasks/TaskContext"
-import { useRoomContext } from "../../../app/context/RoomContext"
-import { getAllUsersinRoom } from "../../../app/api/user/UserContext";
+
+import { getAllUsers } from "../../../app/api/user/UserContext";
 import {  user} from "@/types";
 
 
@@ -29,11 +30,35 @@ const fetchUsers = async (
   roomUsers: user[],
   setRoomUsers: React.Dispatch<React.SetStateAction<user[]>>
 ) => {
-  const user_data = await getAllUsersinRoom(roomID);
-  console.log("users in room", user_data);
+  const user_data = await getAllUsers(roomID);
 
-  console.log("fetching tasks");
-  setRoomUsers([...roomUsers, ...user_data]);
+
+
+  const new_users: user[] = [];
+  console.log("user", user_data);
+  console.log("length", user_data.length);
+  for (let i = 0; i < user_data.length; i++) {
+ 
+
+    const new_user: user={ 
+      name: user_data[i]['name'],
+      points:  user_data[i]['points'],
+      major: user_data[i]['major'],
+      pronouns: user_data[i]['pronouns'],
+      sleepingHours:  user_data[i]['sleepingHours'],
+      favoriteThing:  user_data[i]['favoriteThing'],
+      user_ID:  user_data[i]['user_ID'],
+      room_ID:  user_data[i]['room_ID'],
+    
+    }
+    console.log("new_user",new_user);
+    new_users.push(new_user);
+    
+  }
+
+
+  setRoomUsers([...roomUsers, ...new_users]);
+ 
 };
 
 export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
@@ -46,8 +71,14 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
 
   const { roomData } = useRoomContext();
   //const roomID = roomData?.room_id?? "error";
-  const roomID = "bOfA98OEsUdA1ZDkGz8d";
+  //const roomID = "fYWz7t6dA6C774jzAYvz";
   const [taskID, setTaskID] = useState("");
+
+
+  // Safely retrieve the room_id
+
+ 
+  const roomID = roomData?.room_id || "";
 
   const pushTask = async (
     roomID: string,
@@ -101,9 +132,13 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
 
   const [roomUsers, setRoomUsers] = useState<user[]>([]);
 
+  //fetchUsers(roomID, roomUsers, setRoomUsers);
   useEffect(() => {
     fetchUsers(roomID, roomUsers, setRoomUsers);
+    console.log(roomUsers);
   }, [roomID]);
+
+  console.log("roomUsers", roomUsers);
 
   return (
     <div className="bg-blue-50 rounded-lg p-6 shadow-md">
@@ -177,6 +212,7 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
         >
           Add
         </button>
+     
       </form>
     </div>
   );
