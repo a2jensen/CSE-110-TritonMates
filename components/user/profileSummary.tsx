@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {updateUserProfile, getUser} from "../../app/api/user/UserContext";
+import { getUser } from "../../app/api/user/UserContext";
 
 interface ProfileSummaryProps {
   initialData?: {

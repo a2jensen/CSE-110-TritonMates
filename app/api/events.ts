@@ -23,7 +23,7 @@ export async function addEvent(
         }
 
         const roomData = roomSnap.data();
-        const roomMembers = roomData?.Members || [];
+        //const roomMembers = roomData?.Members || [];
 
         // Validate participants: Ensure all participants are members of the room (CAN BE REMOVED)
         // const validParticipants = event_participants.filter((participant) =>

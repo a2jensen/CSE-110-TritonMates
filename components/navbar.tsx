@@ -11,7 +11,7 @@ import { auth, signOut, User, } from "../firebase/firebaseConfig"
 // Put this component in sites that need it
 export default function Navbar() {
     const router = useRouter();
-    const [user, setUser] = useState<User | null>(null);
+    const [, setUser] = useState<User | null>(null);
     const handleSignOut = async () => {
         try {
             await signOut(auth)

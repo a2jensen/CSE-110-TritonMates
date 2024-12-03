@@ -12,7 +12,7 @@ export default function GoogleAuthButton() {
             const result = await signInWithPopup(auth, provider);
             console.log("Results ", result.user)
             setUser(result.user);
-        } catch (error : any) {
+        } catch (error : unknown ) {
             console.error("Failed to sign in with google", error);
         }
     }

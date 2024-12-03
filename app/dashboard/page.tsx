@@ -34,7 +34,7 @@ export default function Home() {
         console.error("No such document in Firestore!");
         setName("Guest");
       }
-    } catch (error) {
+    } catch (error : unknown ) {
       console.error("Error fetching user data from Firestore:", error);
       setName("Guest");
     }

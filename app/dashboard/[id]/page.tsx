@@ -10,14 +10,18 @@ import Link from "next/link";
 import { useRoomContext } from "../../context/RoomContext";
 
 
-const dashboardPage = ({ params }: { params: Promise<{ id: string }> }) => {
+const DashboardPage = ({ params }: { params: Promise<{ id: string }> }) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const router = useRouter();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const {setRoomData} = useRoomContext();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [loading, setLoading] = useState(true);
     const [, setUser] = useState<User | null>(null);
 
     // unwrap params promise
-    const { id : roomId } = React.use(params);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { id : roomId } = React.use(params); // NEED TO FIX THIS WITH VERCEL DEPLOYMENT
 
     useEffect(() => {
         const onLoad = onAuthStateChanged(auth, (currentUser) => {
@@ -51,4 +55,4 @@ const dashboardPage = ({ params }: { params: Promise<{ id: string }> }) => {
       );
 }
 
-export default dashboardPage
+export default DashboardPage;
