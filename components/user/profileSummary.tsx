@@ -40,7 +40,7 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
 
    console.log("userData", userData);
    if (typeof userData !== "undefined"){
-     console.log("adding user data ",  userData['name'], userData['major'], userData['pronouns'], userData['sleepingHours'], userData['favoriteThing']);
+     console.log("adding user data, profile sum ",  userData['name'], userData['major'], userData['pronouns'], userData['sleepingHours'], userData['favoriteThing']);
     
      setName(userData['name']);
      setMajor(userData['major']);

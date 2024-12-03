@@ -26,7 +26,7 @@ const UserPage = () => {
       if (user) {
         setUserID(user.uid);
         try {
-          const userData = await getUser(roomID, user.uid);
+          const userData = await getUser(user.uid);
           if (userData) {
             setPoints(userData.points);
             setAvatar(userData.avatar);
@@ -63,6 +63,7 @@ const UserPage = () => {
   return (
     <div className="user-page bg-[#182B49] text-white min-h-screen">
       <header className="p-6">
+
         <h1 className="text-3xl font-bold text-[#FFCD00]">Select Avatar</h1>
         <div className="profile flex items-center mt-4">
           <img src={avatar} alt="User Avatar" className="profile-avatar mr-4" />
