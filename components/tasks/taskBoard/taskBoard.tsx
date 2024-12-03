@@ -1,6 +1,6 @@
-"use client";
+// "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import AddTaskForm from "../addTaskform/addTaskform";
 //import { Timestamp } from 'firebase/firestore';
 import TaskOverview from "../taskOverview/taskOverview";
@@ -54,68 +54,51 @@ const fetchCurrentUser = async (
   setCurrentUserId(userId);
 };
 
-const TaskBoard = () => {
+const fetchTasks = async (
+  roomID: string,
+  tasks: Task[],
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>
+) => {
+  const task_data = await getAllTasks(roomID);
+
+  console.log("fetching tasks");
+
+  const new_tasks = [];
+  for (let i = 0; i < task_data.length; i++) {
+    const today = new Date();
+
+    const dueDateObj = task_data[i]["due_date"].toDate();
+    const isUpcoming = dueDateObj > today;
+
+    new_tasks.push({
+      id: task_data[i]["task_ID"],
+      text: task_data[i]["name"],
+      assignee: task_data[i]["assignee"],
+      assigneeID: task_data[i]["assigneeID"],
+      assigner: "Creator",
+      done: task_data[i]["status"] === "done",
+      doneReason: "",
+      dueDate: dueDateObj.toLocaleDateString(),
+      points: task_data[i]["points"],
+      isUpcoming,
+    });
+    console.log(task_data[i]);
+  }
+  setTasks(new_tasks);
+};
+
+export default function TaskBoard() {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [currentUserId, setCurrentUserId] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null); // Error tracking
 
   const { roomData } = useRoomContext();
+
+  if (roomData?.room_id == undefined) {
+    const roomID = "";
+  }
   const roomID = roomData?.room_id || "";
 
-  const fetchTasks = useCallback(async () => {
-    try {
-      setIsLoading(true);
-
-      // Non-expired session storage common for standard browsers
-      const cachedTasks = window.localStorage.getItem(`tasks_${roomID}`);
-      if (cachedTasks) {
-        const parsedCachedTasks = JSON.parse(cachedTasks);
-        setTasks(parsedCachedTasks);
-      }
-
-      const task_data = await getAllTasks(roomID);
-      console.log("fetching tasks");
-
-      const new_tasks = task_data.map((taskItem) => {
-        const today = new Date();
-        const dueDateObj = taskItem["due_date"].toDate();
-        const isUpcoming = dueDateObj > today;
-
-        return {
-          id: taskItem["task_ID"],
-          text: taskItem["name"],
-          assignee: taskItem["assignee"],
-          assigneeID: taskItem["assigneeID"],
-          assigner: "Creator",
-          done: taskItem["status"],
-          doneReason: "",
-          dueDate: dueDateObj.toLocaleDateString(),
-          points: taskItem["points"],
-          isUpcoming,
-        };
-      });
-
-      // Refetch
-      setTasks(new_tasks);
-      // Convert back the object to string
-      localStorage.setItem(`tasks_${roomID}`, JSON.stringify(new_tasks));
-      setIsLoading(false);
-    } catch (err) {
-      console.error("Error fetching tasks:", err);
-      setError("Failed to fetch tasks");
-      setIsLoading(false);
-    }
-  }, [roomID]);
-
-  useEffect(() => {
-    fetchTasks();
-    fetchCurrentUser(currentUserId, setCurrentUserId);
-
-    // Listener to check interval per 5 minutes
-    const intervalId = setInterval(fetchTasks, 5 * 60 * 1000);
-    return () => clearInterval(intervalId);
-  }, [fetchTasks, currentUserId]);
+  const currentUser = checkUserAuth();
+  console.log(currentUser);
 
   const addTask = (task: {
     id: string;
@@ -146,66 +129,45 @@ const TaskBoard = () => {
     ]);
   };
 
-  const toggleTask = (id: string) => {
-    for (let i = 0; i < tasks.length; i++) {
-      if (tasks[i].id == id) {
-        console.log("assignee ID ", tasks[i].assigneeID);
-        console.log(
-          "id",
-          id,
-          "text",
-          tasks[i].text,
-          "points",
-          tasks[i].points,
-          "assignee",
-          tasks[i].assignee,
-          "assigneeID",
-          tasks[i].assigneeID,
-          "status",
-          "in progress",
-          "duedate",
-          tasks[i].dueDate
-        );
-        console.log(tasks[i]);
-        if (tasks[i].done) {
-          changeTask(
-            roomID,
-            id,
-            tasks[i].text,
-            tasks[i].points,
-            tasks[i].assignee,
-            tasks[i].assigneeID,
-            "in progress",
-            tasks[i].dueDate
-          );
-          if (currentUserId === tasks[i].assigneeID) {
-            console.log("updating points");
-            updateUserPoints(currentUserId, -1 * tasks[i].points);
-          }
-        } else {
-          changeTask(
-            roomID,
-            id,
-            tasks[i].text,
-            tasks[i].points,
-            tasks[i].assignee,
-            tasks[i].assigneeID,
-            "done",
-            tasks[i].dueDate
-          );
+  const [currentUserId, setCurrentUserId] = useState("");
 
-          if (currentUserId === tasks[i].assigneeID) {
-            console.log("updating points");
-            updateUserPoints(currentUserId, tasks[i].points);
-          }
-        }
-      }
-    }
+  useEffect(() => {
+    fetchTasks(roomID, tasks, setTasks);
+    fetchCurrentUser(currentUserId, setCurrentUserId);
+  }, [roomID]);
+
+  const toggleTask = async (id: string) => {
+    const taskToUpdate = tasks.find((task) => task.id === id);
+    if (!taskToUpdate) return;
+
+    const updatedDoneState = !taskToUpdate.done;
+    const newStatus = updatedDoneState ? "done" : "in progress";
+
+    await changeTask(
+      roomID,
+      id,
+      taskToUpdate.text,
+      taskToUpdate.points,
+      taskToUpdate.assignee,
+      taskToUpdate.assigneeID,
+      newStatus,
+      taskToUpdate.dueDate
+    );
+
+    // Update local state
     setTasks(
       tasks.map((task) =>
-        task.id === id ? { ...task, done: !task.done } : task
+        task.id === id ? { ...task, done: updatedDoneState } : task
       )
     );
+
+    if (currentUserId === taskToUpdate.assigneeID) {
+      const pointsChange = updatedDoneState
+        ? taskToUpdate.points
+        : -taskToUpdate.points;
+      console.log("updating points");
+      await updateUserPoints(currentUserId, pointsChange);
+    }
   };
 
   const deleteTask = (id: string) => {
@@ -214,7 +176,6 @@ const TaskBoard = () => {
   };
 
   const updateTaskHandler = (id: string, updatedTask: Partial<Task>) => {
-    // Update local state first
     const updatedTasks = tasks.map((task) =>
       task.id === id
         ? {
@@ -228,10 +189,8 @@ const TaskBoard = () => {
     );
     setTasks(updatedTasks);
 
-    // Find the specific task to update
     const taskToUpdate = updatedTasks.find((task) => task.id === id);
     if (taskToUpdate) {
-      // Call backend update function
       changeTask(
         roomID,
         id,
@@ -247,10 +206,6 @@ const TaskBoard = () => {
     }
   };
 
-  // Render loading or error states
-  if (isLoading) return <div>Loading tasks...</div>;
-  if (error) return <div>Error: {error}</div>;
-
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg space-y-6">
       <div className="grid grid-cols-2 gap-6">
@@ -264,6 +219,4 @@ const TaskBoard = () => {
       </div>
     </div>
   );
-};
-
-export default TaskBoard;
+}
