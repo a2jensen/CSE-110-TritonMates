@@ -30,7 +30,7 @@ const UserPage = () => {
       if (user) {
         setUserID(user.uid);
         try {
-          const userData = await getUser(user.uid); // temp
+          const userData = await getUser(user.uid);
           if (userData) {
             setPoints(userData.points);
             setAvatar(userData.avatar);

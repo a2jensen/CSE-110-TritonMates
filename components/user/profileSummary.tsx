@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getUser } from "../../app/api/user/UserContext";
+import { updateUserProfile, getUser } from "../../app/api/user/UserContext";
 
 interface ProfileSummaryProps {
   initialData?: {
@@ -34,12 +34,12 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
     setFavoriteThing: React.Dispatch<React.SetStateAction<string>>
   ) => {
     console.log(roomID, userID);
-    const userData = await getUser(userID); // temp
+    const userData = await getUser(userID);
 
     console.log("userData", userData);
     if (typeof userData !== "undefined") {
       console.log(
-        "adding user data ",
+        "adding user data, profile sum ",
         userData["name"],
         userData["major"],
         userData["pronouns"],
@@ -79,8 +79,15 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
       sleepingHours,
       favoriteThing
     );
-    //const response = await updateUserProfile(roomID, userID, name, major, pronouns, sleepingHours, favoriteThing);
-    // if the above line needs to be used, remove const reponse = and just do await function
+    const response = await updateUserProfile(
+      roomID,
+      userID,
+      name,
+      major,
+      pronouns,
+      sleepingHours,
+      favoriteThing
+    );
   };
 
   const handleChange = (

@@ -1,10 +1,11 @@
 // corresponds to add task component -> refer to figma file
 "use client";
 import { useEffect, useState } from "react";
-import { useRoomContext } from "../../../app/context/RoomContext";
+
 import { addTask } from "../../../app/api/tasks/TaskContext";
 
 import { getAllUsers } from "../../../app/api/user/UserContext";
+import { useRoomContext } from "@/app/context/RoomContext";
 
 import { user } from "@/types";
 
@@ -54,13 +55,14 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
   const [dueDate, setDueDate] = useState("");
   const [points, setPoints] = useState(0);
 
-  const { roomData } = useRoomContext();
+  //const { roomData } = useRoomContext();
   //const roomID = roomData?.room_id?? "error";
 
   //const roomID = "fYWz7t6dA6C774jzAYvz";
   const [taskID, setTaskID] = useState("");
 
   // Safely retrieve the room_id
+  const { roomData } = useRoomContext();
 
   const roomID = roomData?.room_id || "";
 
