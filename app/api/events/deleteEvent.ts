@@ -2,7 +2,7 @@ import { db } from "@/firebase/firebaseConfig";
 import { doc, deleteDoc } from "firebase/firestore";
 
 // Delete an event using event ID
-async function deleteEvent(eventId: string, room_id: string): Promise<void> {
+export async function deleteEvent(eventId: string, room_id: string): Promise<void> {
   try {
     // Reference to the specific event document in the room's Events subcollection
     const eventRef = doc(db, `rooms/${room_id}/events`, eventId);
