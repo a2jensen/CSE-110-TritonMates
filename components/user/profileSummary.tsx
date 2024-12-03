@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getUser } from "../../app/api/user/UserContext";
+import {updateUserProfile, getUser} from "../../app/api/user/UserContext";
 
 interface ProfileSummaryProps {
   initialData?: {
@@ -64,8 +64,8 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
 
   const updateUser = async(roomID:string, userID:string, name: string, major: string, pronouns: string, sleepingHours: string, favoriteThing: string) => {
     console.log(roomID, userID, name, major, pronouns, sleepingHours, favoriteThing);
-    //const response = await updateUserProfile(roomID, userID, name, major, pronouns, sleepingHours, favoriteThing);
-    // if the above line needs to be used, remove const reponse = and just do await function
+    const response = await updateUserProfile(roomID, userID, name, major, pronouns, sleepingHours, favoriteThing);
+ 
  }
 
 
