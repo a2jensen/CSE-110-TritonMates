@@ -8,7 +8,17 @@ export async function addUserToFirestore (userId: string, userName: string, user
       await setDoc(userRef, {
         name: userName,
         dateOfBirth: userDob,
-        points: points
+        points: points,
+        major: "",
+        pronouns: "",
+        sleepingHours: "",
+        favoriteThing: "",
+
+        room_ID: "",
+        user_ID: userId,
+        avatar : '/avatars/default.png'
+
+
       });
       console.log("User added to Firestore successfully!");
     } catch (error) {

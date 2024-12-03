@@ -1,7 +1,6 @@
 
 import { db } from '@/firebase/firebaseConfig.ts';
 import { collection, doc, addDoc, getDoc, Timestamp, updateDoc } from "firebase/firestore";
-import { event } from "@/types";
 
 // To add an event to a room's Events subcollection
 

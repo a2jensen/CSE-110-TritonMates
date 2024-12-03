@@ -3,8 +3,8 @@ import {sendMail} from "../../app/api/sendEmail";
 
 
 
-
-export default function EmailForm(props: { trigger: any; setTrigger: (arg0: boolean) => void; }) {
+// og typr was any, if there is an error then prob because i changed type to boolean
+export default function EmailForm(props: { trigger: boolean ; setTrigger: (arg0: boolean) => void; }) {
 
   const [yourEmail, setYourEmail] = useState('');
   const [theirEmail, setTheirEmail] = useState('');
@@ -126,22 +126,22 @@ export default function EmailForm(props: { trigger: any; setTrigger: (arg0: bool
 
 function Step1({updateYourName,  updateYourEmail, updateTheirName, updateTheirEmail }:Step1Props){
    
-    const changeYourName = (e: { target: { value: any; }; }) => {
+    const changeYourName = (e: { target: { value: string; }; }) => {
            updateYourName(e.target.value);  
 
       }
 
-    const changeYourEmail = (e: { target: { value: any; }; }) => {
+    const changeYourEmail = (e: { target: { value: string; }; }) => {
         updateYourEmail(e.target.value);  
 
    }
 
-   const changeTheirName = (e: { target: { value: any; }; }) => {
+   const changeTheirName = (e: { target: { value: string; }; }) => {
     updateTheirName(e.target.value);  
 
 }
 
-const changeTheirEmail = (e: { target: { value: any; }; }) => {
+const changeTheirEmail = (e: { target: { value: string; }; }) => {
   updateTheirEmail(e.target.value);  
 
 }
@@ -177,7 +177,7 @@ const changeTheirEmail = (e: { target: { value: any; }; }) => {
 
   function Step2({updateMessage}:Step2Props) {
 
-    const changeMessage = (e: { target: { value: any; }; }) => {
+    const changeMessage = (e: { target: { value: string; }; }) => {
       updateMessage(e.target.value);  
 
  }

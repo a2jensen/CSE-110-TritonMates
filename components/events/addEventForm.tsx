@@ -1,8 +1,8 @@
 'use client'
-import { randomInt } from 'crypto';
 import React, { useState } from 'react';
-import {addEvent} from '../../app/api/events/addEvent';
+import { addEvent } from '../../app/api/events/addEvent';
 import { event } from '../../types';
+import { useRoomContext } from '@/app/context/RoomContext';
 
 
 // move this into types.ts
@@ -15,36 +15,35 @@ const AddEventForm: React.FC<AddEventFormProps> = ({ onAddEvent }) => {
     const [eventInfo, setEventInfo] = useState('');
     const [eventDate, setEventDate] = useState('');
 
+    const { roomData } = useRoomContext();
+    const roomID = roomData?.room_id || "";
 
 
-
-
-    const roomID = "bOfA98OEsUdA1ZDkGz8d";
-
-    const pushEvent = async(newEvent: event, roomID: string, participants: string[] ) => {
-        const eventID = await addEvent( newEvent,roomID,participants);
+    const pushEvent = async (newEvent: event, roomID: string, participants: string[]) => {
+        const eventID = await addEvent(newEvent, roomID, participants);
         console.log("eventID", eventID);
-  
+
         return eventID;
-    
-      
-     }
+
+
+    }
     const handleSubmit = async (e: React.FormEvent) => {
 
         console.log("hello world!");
         e.preventDefault();
-    
+
         const participants: string[] = [];
         const newEvent: event = {
             id: "",
             name: eventTitle,
             description: eventInfo,
             date: new Date(eventDate), // Example date
+            event_participants: participants,
         };
         const eventId = await pushEvent(newEvent, roomID, participants);
         console.log(eventId);
 
-        onAddEvent({ name: eventTitle, description: eventInfo, id: eventId, date: new Date(eventDate) });
+        onAddEvent({ name: eventTitle, description: eventInfo, id: eventId, date: new Date(eventDate), event_participants: participants });
 
         setEventTitle('');
         setEventInfo('');
