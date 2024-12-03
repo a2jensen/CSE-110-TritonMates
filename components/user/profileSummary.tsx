@@ -36,11 +36,11 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
     setFavoriteThing: React.Dispatch<React.SetStateAction<string>>)=>
  { 
    console.log(roomID, userID);
-   const userData = await getUser(roomID, userID);
+   const userData = await getUser(userID);
 
    console.log("userData", userData);
    if (typeof userData !== "undefined"){
-     console.log("adding user data ",  userData['name'], userData['major'], userData['pronouns'], userData['sleepingHours'], userData['favoriteThing']);
+     console.log("adding user data, profile sum ",  userData['name'], userData['major'], userData['pronouns'], userData['sleepingHours'], userData['favoriteThing']);
     
      setName(userData['name']);
      setMajor(userData['major']);
