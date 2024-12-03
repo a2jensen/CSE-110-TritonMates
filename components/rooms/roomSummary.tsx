@@ -24,12 +24,12 @@ const RoomSummary : React.FC = () => {
         }
     }
     return (
-        <div className="p-4">
-            <div>
-                <p> Welcome To Room: {roomData?.room_name || 'No Room name available'} </p>
-                <p> Room Code: {roomData?.room_code || 'No Room code available'}</p>
+        <div className="p-4 m-10 flex justify-between">
+            <div className="p-2">
+                <h2> {roomData?.room_name || 'No Room name available'} </h2>
+                <h4> Room Code: {roomData?.room_code || 'No Room code available'}</h4>
             </div>
-            <button onClick={leaveRoomAction}>
+            <button className="bg-red-100 p-1 my-8 rounded-md" onClick={leaveRoomAction}>
                 Leave Room
             </button>
         </div>

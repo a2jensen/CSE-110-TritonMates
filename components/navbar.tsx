@@ -24,14 +24,15 @@ export default function Navbar() {
     }
     
     return (
-        <header className="navbar">
+        // what is navbar?
+        <header className="bg-blue-300 p-4 px-4 shadow-lg">
             <div className="container">
-                <div className="logo">
+                <div className="text-4xl pl-12">
                     <Link href="/">
                         <b>TritonMates</b>
                     </Link>
                 </div>
-                <nav className="nav-links">
+                <nav className="nav-links text-xl px-0 font-semibold">
                     <ul>
                         <li><Link href="/rooms">Rooms</Link></li>
                         <li><Link href="/dashboard">Dashboard</Link></li>
