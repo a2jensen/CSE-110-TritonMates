@@ -5,13 +5,15 @@ import { useState, useEffect } from "react";
 import { event } from "../../types";
 import { addEvent, getAllRoomEvents, eventRsvp, deleteEvent, editEvent } from "@/app/api/events";
 import { useRoomContext } from "@/app/context/RoomContext";
+import { checkUserAuth } from "@/app/api/user";
 
 export default function EventsManager() {
 
-  const currentUserId = "USER ID FROM AuthContext"; // Replace with dynamic user ID from AuthContext
+
   const { roomData } = useRoomContext();
   const roomID = roomData?.room_id || "";
   const [events, setEvents] = useState<event[]>([]);
+  const [userID, setUserID] = useState<string>("");
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -24,8 +26,16 @@ export default function EventsManager() {
       }
     };
     fetchEvents();
+
+    const fetchUser = async () => {
+      const user = await checkUserAuth();
+      console.log("User:", user);
+      setUserID(user?.uid || "");
+    }
+    fetchUser();
   }, [roomID]);
 
+  const currentUserId = userID;
   const handleAddEvent = async (newEvent: Omit<event, "id">) => {
     try {
       const eventId = await addEvent(newEvent, roomID); // No need to pass participants
@@ -39,7 +49,7 @@ export default function EventsManager() {
   const onRsvp = async (eventId: string) => {
     try {
       // Make an RSVP API call
-      await eventRsvp(roomID, eventId, currentUserId);
+      await eventRsvp(roomID, eventId, userID);
 
       // Update the state with the RSVP information
       setEvents((prevEvents) =>
