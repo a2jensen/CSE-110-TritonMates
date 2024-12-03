@@ -50,7 +50,7 @@ export default function Home() {
         // Redirect to about-usr if user doesn't exist
         router.push('/signup/about-usr');
       }
-    } catch (error: any) {
+    } catch (error: unknown ) {
       console.error("Failed to sign in with google", error);
     }
   }

@@ -22,7 +22,7 @@ export async function addEvent(
             throw new Error("Room not found");
         }
 
-        const roomData = roomSnap.data();
+        //const roomData = roomSnap.data();
         //const roomMembers = roomData?.Members || [];
 
         // Validate participants: Ensure all participants are members of the room (CAN BE REMOVED)
