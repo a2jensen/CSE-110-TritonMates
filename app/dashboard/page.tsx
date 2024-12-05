@@ -58,12 +58,8 @@ export default function Home() {
       console.log("USER ID", userId);
 
       setCurrentUserId(userId);
-    
-   
-
-
   }
-
+  // not needed
   const fetchPoints = async (   currentUserId: string, setPoints: React.Dispatch<React.SetStateAction<number>>)=>{
       const userData = (await getUser(currentUserId));
       const current_points: number = userData?.points || 0;
