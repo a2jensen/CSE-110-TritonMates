@@ -1,6 +1,7 @@
 'use client'
+import { randomInt } from 'crypto';
 import React, { useState } from 'react';
-import { addEvent } from '../../app/api/events/addEvent';
+import { addEvent } from '../../app/api/events';
 import { event } from '../../types';
 import { useRoomContext } from '@/app/context/RoomContext';
 
@@ -20,7 +21,7 @@ const AddEventForm: React.FC<AddEventFormProps> = ({ onAddEvent }) => {
 
 
     const pushEvent = async (newEvent: event, roomID: string, participants: string[]) => {
-        const eventID = await addEvent(newEvent, roomID, participants);
+        const eventID = await addEvent(newEvent, roomID);
         console.log("eventID", eventID);
 
         return eventID;
