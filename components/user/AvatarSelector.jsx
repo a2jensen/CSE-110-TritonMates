@@ -31,7 +31,7 @@ const AvatarSelector = ({ currentAvatar, onAvatarChange, avatars, points }) => {
             <p className="points-label">
               {points >= avatar.pointsRequired
                 ? 'Unlocked'
-                : `${avatar.pointsRequired} Points Needed`}
+                : `${avatar.pointsRequired} Points`}
             </p>
           </div>
         ))}
