@@ -97,7 +97,7 @@ export default function EventsManager() {
     <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-5 items-start p-5">
       <UpcomingEvents
         events={events}
-        roomName="Room 101"
+        roomName=""
         onRsvp={onRsvp}
         currentUserId={currentUserId}
         onDelete={handleDeleteEvent}
