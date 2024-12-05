@@ -78,7 +78,7 @@ const fetchTasks = async (
       assigner: "Creator",
       done: task_data[i]["status"] === "done",
       doneReason: "",
-      dueDate: dueDateObj.toLocaleDateString(),
+      dueDate: dueDateObj.toString(),
       points: task_data[i]["points"],
       isUpcoming,
     });
