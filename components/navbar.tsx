@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-
+import { usePathname } from 'next/navigation';
 import { useState, } from 'react';
 import { auth, signOut, User, } from "../firebase/firebaseConfig"
 
@@ -12,6 +12,13 @@ import { auth, signOut, User, } from "../firebase/firebaseConfig"
 export default function Navbar() {
     const router = useRouter();
     const [, setUser] = useState<User | null>(null);
+    const pathname = usePathname();
+    const excludedRouters = ["/"];
+
+    if (excludedRouters.includes(pathname)) {
+        return null;
+    }
+
     const handleSignOut = async () => {
         try {
             await signOut(auth);
