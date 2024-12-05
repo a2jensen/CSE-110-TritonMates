@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getUser } from "../../app/api/user/UserContext";
+import { updateUserProfile, getUser } from "../../app/api/user/UserContext";
 
 interface ProfileSummaryProps {
   initialData?: {
@@ -8,7 +8,7 @@ interface ProfileSummaryProps {
     pronouns: string;
     sleepingHours: string;
     favoriteThing: string;
-  },
+  };
   userID: string;
   roomID: string;
 }
@@ -22,38 +22,38 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
     favoriteThing: "",
   },
   userID,
-  roomID
+  roomID,
 }) => {
+  const fetchUserData = async (
+    roomID: string,
+    userID: string,
+    setName: React.Dispatch<React.SetStateAction<string>>,
+    setMajor: React.Dispatch<React.SetStateAction<string>>,
+    setPronouns: React.Dispatch<React.SetStateAction<string>>,
+    setSleepingHours: React.Dispatch<React.SetStateAction<string>>,
+    setFavoriteThing: React.Dispatch<React.SetStateAction<string>>
+  ) => {
+    console.log(roomID, userID);
+    const userData = await getUser(userID);
 
+    console.log("userData", userData);
+    if (typeof userData !== "undefined") {
+      console.log(
+        "adding user data, profile sum ",
+        userData["name"],
+        userData["major"],
+        userData["pronouns"],
+        userData["sleepingHours"],
+        userData["favoriteThing"]
+      );
 
-
-
-  const fetchUserData = async(roomID:string, userID:string,
-    setName: React.Dispatch<React.SetStateAction<string>>, 
-   setMajor: React.Dispatch<React.SetStateAction<string>>,
-   setPronouns: React.Dispatch<React.SetStateAction<string>>,
-   setSleepingHours: React.Dispatch<React.SetStateAction<string>>,
-    setFavoriteThing: React.Dispatch<React.SetStateAction<string>>)=>
- { 
-   console.log(roomID, userID);
-   const userData = await getUser(userID);
-
-   console.log("userData", userData);
-   if (typeof userData !== "undefined"){
-     console.log("adding user data ",  userData['name'], userData['major'], userData['pronouns'], userData['sleepingHours'], userData['favoriteThing']);
-    
-     setName(userData['name']);
-     setMajor(userData['major']);
-     setPronouns(userData['pronouns']);
-     setSleepingHours(userData['sleepingHours']);
-     setFavoriteThing( userData['favoriteThing']);
-    
-  
-   }
-   
-
- 
- }
+      setName(userData["name"]);
+      setMajor(userData["major"]);
+      setPronouns(userData["pronouns"]);
+      setSleepingHours(userData["sleepingHours"]);
+      setFavoriteThing(userData["favoriteThing"]);
+    }
+  };
 
   const [name, setName] = useState(initialData.name);
   const [major, setMajor] = useState(initialData.major);
@@ -61,13 +61,34 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
   const [sleepingHours, setSleepingHours] = useState(initialData.sleepingHours);
   const [favoriteThing, setFavoriteThing] = useState(initialData.favoriteThing);
 
-
-  const updateUser = async(roomID:string, userID:string, name: string, major: string, pronouns: string, sleepingHours: string, favoriteThing: string) => {
-    console.log(roomID, userID, name, major, pronouns, sleepingHours, favoriteThing);
-    //const response = await updateUserProfile(roomID, userID, name, major, pronouns, sleepingHours, favoriteThing);
-    // if the above line needs to be used, remove const reponse = and just do await function
- }
-
+  const updateUser = async (
+    roomID: string,
+    userID: string,
+    name: string,
+    major: string,
+    pronouns: string,
+    sleepingHours: string,
+    favoriteThing: string
+  ) => {
+    console.log(
+      roomID,
+      userID,
+      name,
+      major,
+      pronouns,
+      sleepingHours,
+      favoriteThing
+    );
+    const response = await updateUserProfile(
+      roomID,
+      userID,
+      name,
+      major,
+      pronouns,
+      sleepingHours,
+      favoriteThing
+    );
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -75,13 +96,29 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
   ) => {
     setter(e.target.value);
     // Optionally, save each field to localStorage or send to backend
-    updateUser(roomID, userID, name, major, pronouns, sleepingHours, favoriteThing);
+    updateUser(
+      roomID,
+      userID,
+      name,
+      major,
+      pronouns,
+      sleepingHours,
+      favoriteThing
+    );
   };
 
   useEffect(() => {
-    fetchUserData(roomID, userID,setName, setMajor, setPronouns, setSleepingHours, setFavoriteThing);
-  
-   /* const savedData = localStorage.getItem("profileData");
+    fetchUserData(
+      roomID,
+      userID,
+      setName,
+      setMajor,
+      setPronouns,
+      setSleepingHours,
+      setFavoriteThing
+    );
+
+    /* const savedData = localStorage.getItem("profileData");
     if (savedData) {
       const parsedData = JSON.parse(savedData);
       setName(parsedData.name);

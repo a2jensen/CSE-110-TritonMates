@@ -49,7 +49,7 @@ export async function addEvent(
 
         await updateDoc(docRef, { id: docRef.id }); //Adding firebase generated id to event
 
-        console.log("Event added with ID:", docRef.id);
+        console.log("Event added with ID:", docRef.id, room_id);
         return docRef.id;
     } catch (error) {
         console.error("Error adding event:", error);
