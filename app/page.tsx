@@ -1,7 +1,6 @@
 "use client"; 
 
 import { useRouter } from 'next/navigation';
-
 import Logo from '@/components/logo';
 import { auth, provider, signInWithPopup, } from "../firebase/firebaseConfig"
 import { checkIfUserExists } from './api/auth/login';
@@ -25,7 +24,11 @@ export default function Home() {
       const result = await signInWithPopup(auth, provider);
       console.log("Results ", result.user)
       const userExists = await checkIfUserExists(result.user.uid);
-
+      const token = await result.user.getIdToken();
+      
+      // set token
+      document.cookie = `auth-token=${token}; path=/; secure; SameSite=Lax`; // ADD IN HTTP HERE SO USERS CAN LOG IT
+      console.log("COOKIE",document.cookie)
       if (userExists) {
         const check = await checkRoom(result.user.uid); // checks if user is already in  room
 

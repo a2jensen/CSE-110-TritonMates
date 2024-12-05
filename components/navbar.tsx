@@ -14,8 +14,10 @@ export default function Navbar() {
     const [, setUser] = useState<User | null>(null);
     const handleSignOut = async () => {
         try {
-            await signOut(auth)
-            setUser(null)
+            await signOut(auth);
+            setUser(null);
+            document.cookie = `auth-token=; path=/; max-age=0;`;
+            console.log('IS THIS EMPTY',document.cookie)
         } catch (error : unknown ) {
             console.error("Failed to sign out", error)  
         }
