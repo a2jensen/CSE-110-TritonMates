@@ -1,0 +1,1 @@
+Jest tests, we are actively using this folder. May be issue with useRouter.
