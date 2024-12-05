@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Task} from "../types";
-import {  user} from "@/types";
-
+import { Task } from "../types";
+import { user } from "@/types";
 
 import { getAllUsers } from "../../../app/api/user/UserContext";
-import { useRoomContext } from "@/app/context/RoomContext" ;
+import { useRoomContext } from "@/app/context/RoomContext";
 import { checkUserAuth } from "@/app/api/user";
-
 
 interface TaskCardProps {
   task: Task;
@@ -17,21 +15,17 @@ interface TaskCardProps {
   onUpdate: (id: string, updatedTask: Partial<Task>) => void;
 }
 
-
 const fetchCurrentUser = async (
   currentUserId: string,
   setCurrentUserId: React.Dispatch<string>
-)=>{
+) => {
   const currentUser = await checkUserAuth();
   console.log("CURRENT USER", currentUser);
-   const userId = currentUser?.uid  || '' ;
-   console.log("USER ID", userId);
+  const userId = currentUser?.uid || "";
+  console.log("USER ID", userId);
 
-   setCurrentUserId(userId);
-
-
-}
-
+  setCurrentUserId(userId);
+};
 
 const fetchUsers = async (
   roomID: string,
@@ -40,33 +34,24 @@ const fetchUsers = async (
 ) => {
   const user_data = await getAllUsers(roomID);
 
-
- 
   const new_users: user[] = [];
 
   for (let i = 0; i < user_data.length; i++) {
- 
-
-    const new_user: user={ 
-      name: user_data[i]['name'],
-      points:  user_data[i]['points'],
-      major: user_data[i]['major'],
-      pronouns: user_data[i]['pronouns'],
-      sleepingHours:  user_data[i]['sleepingHours'],
-      favoriteThing:  user_data[i]['favoriteThing'],
-      user_ID:  user_data[i]['user_ID'],
-      room_ID:  user_data[i]['room_ID'],
-    
-    }
+    const new_user: user = {
+      name: user_data[i]["name"],
+      points: user_data[i]["points"],
+      major: user_data[i]["major"],
+      pronouns: user_data[i]["pronouns"],
+      sleepingHours: user_data[i]["sleepingHours"],
+      favoriteThing: user_data[i]["favoriteThing"],
+      user_ID: user_data[i]["user_ID"],
+      room_ID: user_data[i]["room_ID"],
+    };
     new_users.push(new_user);
-
-
   }
-  
-  setRoomUsers([...roomUsers, ...new_users]);
- 
-};
 
+  setRoomUsers([...roomUsers, ...new_users]);
+};
 
 export default function TaskCard({
   task,
@@ -90,17 +75,14 @@ export default function TaskCard({
 
   // Safely retrieve the room_id
 
- /* if (roomData?.room_id == undefined){
+  /* if (roomData?.room_id == undefined){
     const roomID = "";
   }*/
-  const roomID = roomData?.room_id || '' ;
+  const roomID = roomData?.room_id || "";
   const [roomUsers, setRoomUsers] = useState<user[]>([]);
   const [currentUserId, setCurrentUserId] = useState("");
 
-
-
-
-//  fetchUsers(roomID, roomUsers, setRoomUsers);
+  //  fetchUsers(roomID, roomUsers, setRoomUsers);
   useEffect(() => {
     fetchUsers(roomID, roomUsers, setRoomUsers);
     fetchCurrentUser(currentUserId, setCurrentUserId);
@@ -121,29 +103,39 @@ export default function TaskCard({
         <input
           value={editedTask.text}
           onChange={(e) =>
-            
             setEditedTask({ ...editedTask, text: e.target.value })
           }
           className="w-full p-2 border rounded"
           placeholder="Task description"
-          required />
+          required
+        />
         <select
           value={`${editedTask.assignee}|${editedTask.assigneeID}`}
           onChange={(e) => {
             const selectedOption = e.target.value; // Get the value from the selected option
-            const [name, user_ID] = selectedOption.split('|'); // Split the value to extract name and ID
-    
-            setEditedTask({ ...editedTask, assignee: name, assigneeID:user_ID});
-        //    setEditedTask({ ...editedTask, assigneeID: user_ID})
+            const [name, user_ID] = selectedOption.split("|"); // Split the value to extract name and ID
+
+            setEditedTask({
+              ...editedTask,
+              assignee: name,
+              assigneeID: user_ID,
+            });
+            //    setEditedTask({ ...editedTask, assigneeID: user_ID})
             console.log("changed task", editedTask);
-    
           }}
           className="w-full p-2 border rounded"
-          required>
-           <option value='Unassigned'> Unassigned </option>
+          required
+        >
+          <option value="Unassigned"> Unassigned </option>
           {roomUsers.map((roomUser) => (
-             <option key ={roomUser.user_ID} value={`${roomUser.name}|${roomUser.user_ID}`}> {roomUser.name}</option>
-            ))}
+            <option
+              key={roomUser.user_ID}
+              value={`${roomUser.name}|${roomUser.user_ID}`}
+            >
+              {" "}
+              {roomUser.name}
+            </option>
+          ))}
         </select>
         <input
           type="date"
@@ -151,7 +143,8 @@ export default function TaskCard({
           onChange={(e) =>
             setEditedTask({ ...editedTask, dueDate: e.target.value })
           }
-          className="w-full p-2 border rounded" required
+          className="w-full p-2 border rounded"
+          required
         />
         <input
           type="number"
@@ -161,7 +154,8 @@ export default function TaskCard({
           }
           className="w-full p-2 border rounded"
           placeholder="Points"
-          required />
+          required
+        />
         <div className="flex justify-between">
           <button
             onClick={handleSaveEdit}

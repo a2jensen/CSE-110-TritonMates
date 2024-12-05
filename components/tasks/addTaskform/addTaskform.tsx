@@ -2,16 +2,12 @@
 "use client";
 import { useEffect, useState } from "react";
 
-import {
-  addTask,
-} from "../../../app/api/tasks/TaskContext"
-
+import { addTask } from "../../../app/api/tasks/TaskContext";
 
 import { getAllUsers } from "../../../app/api/user/UserContext";
 import { useRoomContext } from "@/app/context/RoomContext";
 
-import {  user} from "@/types";
-
+import { user } from "@/types";
 
 interface AddTaskFormProps {
   onAddTask: (task: {
@@ -31,33 +27,25 @@ const fetchUsers = async (
 ) => {
   const user_data = await getAllUsers(roomID);
 
-
-
   const new_users: user[] = [];
   console.log("user", user_data);
   console.log("length", user_data.length);
   for (let i = 0; i < user_data.length; i++) {
- 
-
-    const new_user: user={ 
-      name: user_data[i]['name'],
-      points:  user_data[i]['points'],
-      major: user_data[i]['major'],
-      pronouns: user_data[i]['pronouns'],
-      sleepingHours:  user_data[i]['sleepingHours'],
-      favoriteThing:  user_data[i]['favoriteThing'],
-      user_ID:  user_data[i]['user_ID'],
-      room_ID:  user_data[i]['room_ID'],
-    
-    }
-    console.log("new_user",new_user);
+    const new_user: user = {
+      name: user_data[i]["name"],
+      points: user_data[i]["points"],
+      major: user_data[i]["major"],
+      pronouns: user_data[i]["pronouns"],
+      sleepingHours: user_data[i]["sleepingHours"],
+      favoriteThing: user_data[i]["favoriteThing"],
+      user_ID: user_data[i]["user_ID"],
+      room_ID: user_data[i]["room_ID"],
+    };
+    console.log("new_user", new_user);
     new_users.push(new_user);
-    
   }
 
-
   setRoomUsers([...roomUsers, ...new_users]);
- 
 };
 
 export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
@@ -67,18 +55,15 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
   const [dueDate, setDueDate] = useState("");
   const [points, setPoints] = useState(0);
 
-
   //const { roomData } = useRoomContext();
   //const roomID = roomData?.room_id?? "error";
 
   //const roomID = "fYWz7t6dA6C774jzAYvz";
   const [taskID, setTaskID] = useState("");
 
-
-
   // Safely retrieve the room_id
   const { roomData } = useRoomContext();
- 
+
   const roomID = roomData?.room_id || "";
 
   const pushTask = async (
@@ -90,7 +75,15 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
     status: string,
     date: Date
   ) => {
-    const taskId = await addTask(roomID, name, points, assignee, assigneeID, status, date);
+    const taskId = await addTask(
+      roomID,
+      name,
+      points,
+      assignee,
+      assigneeID,
+      status,
+      date
+    );
     console.log("taskID", taskId);
     setTaskID(taskId);
     return taskId;
@@ -116,7 +109,6 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
         assigneeID: newAssigneeID || "Unassigned",
         dueDate: dueDate,
         points: points,
-        
       });
 
       setNewTask("");
@@ -165,20 +157,24 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
           </label>
           <select
             value={`${newAssignee}|${newAssigneeID}`}
-          
             onChange={(e) => {
               const selectedOption = e.target.value; // Get the value from the selected option
-              const [name, user_ID] = selectedOption.split('|'); // Split the value to extract name and ID
+              const [name, user_ID] = selectedOption.split("|"); // Split the value to extract name and ID
               setNewAssignee(name); // Update the name
               setNewAssigneeID(user_ID); // Set the Assignee ID
             }}
-            
             className="w-full p-3 border border-[#C1DCFF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#006EFF]"
             required
           >
             <option value="Unassigned|"> Unassigned </option>
-          {roomUsers.map((roomUser) => (
-             <option  key={roomUser.user_ID} value={`${roomUser.name}|${roomUser.user_ID}`}> {roomUser.name}</option>
+            {roomUsers.map((roomUser) => (
+              <option
+                key={roomUser.user_ID}
+                value={`${roomUser.name}|${roomUser.user_ID}`}
+              >
+                {" "}
+                {roomUser.name}
+              </option>
             ))}
           </select>
         </div>
@@ -213,7 +209,6 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
         >
           Add
         </button>
-     
       </form>
     </div>
   );
