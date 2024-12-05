@@ -1,1 +1,0 @@
-[eventsId] will represent the unique route to the events page for a unique room

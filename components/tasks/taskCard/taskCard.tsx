@@ -1,7 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { Task } from "../types";
+import { useEffect, useState } from "react";
+import { Task} from "../types";
+import {  user} from "@/types";
+
+
+import { getAllUsers } from "../../../app/api/user/UserContext";
+import { useRoomContext } from "@/app/context/RoomContext" ;
+import { checkUserAuth } from "@/app/api/user";
+
 
 interface TaskCardProps {
   task: Task;
@@ -9,6 +16,57 @@ interface TaskCardProps {
   onDelete: (id: string) => void;
   onUpdate: (id: string, updatedTask: Partial<Task>) => void;
 }
+
+
+const fetchCurrentUser = async (
+  currentUserId: string,
+  setCurrentUserId: React.Dispatch<string>
+)=>{
+  const currentUser = await checkUserAuth();
+  console.log("CURRENT USER", currentUser);
+   const userId = currentUser?.uid  || '' ;
+   console.log("USER ID", userId);
+
+   setCurrentUserId(userId);
+
+
+}
+
+
+const fetchUsers = async (
+  roomID: string,
+  roomUsers: user[],
+  setRoomUsers: React.Dispatch<React.SetStateAction<user[]>>
+) => {
+  const user_data = await getAllUsers(roomID);
+
+
+ 
+  const new_users: user[] = [];
+
+  for (let i = 0; i < user_data.length; i++) {
+ 
+
+    const new_user: user={ 
+      name: user_data[i]['name'],
+      points:  user_data[i]['points'],
+      major: user_data[i]['major'],
+      pronouns: user_data[i]['pronouns'],
+      sleepingHours:  user_data[i]['sleepingHours'],
+      favoriteThing:  user_data[i]['favoriteThing'],
+      user_ID:  user_data[i]['user_ID'],
+      room_ID:  user_data[i]['room_ID'],
+    
+    }
+    new_users.push(new_user);
+
+
+  }
+  
+  setRoomUsers([...roomUsers, ...new_users]);
+ 
+};
+
 
 export default function TaskCard({
   task,
@@ -20,9 +78,37 @@ export default function TaskCard({
   const [editedTask, setEditedTask] = useState({
     text: task.text,
     assignee: task.assignee,
+    assigneeID: task.assigneeID,
     dueDate: task.dueDate,
     points: task.points,
   });
+
+  //const { roomData } = useRoomContext();
+  //const room ID = roomData.room_id;
+
+  const { roomData } = useRoomContext();
+
+  // Safely retrieve the room_id
+
+ /* if (roomData?.room_id == undefined){
+    const roomID = "";
+  }*/
+  const roomID = roomData?.room_id || '' ;
+  const [roomUsers, setRoomUsers] = useState<user[]>([]);
+  const [currentUserId, setCurrentUserId] = useState("");
+
+
+
+
+//  fetchUsers(roomID, roomUsers, setRoomUsers);
+  useEffect(() => {
+    fetchUsers(roomID, roomUsers, setRoomUsers);
+    fetchCurrentUser(currentUserId, setCurrentUserId);
+    console.log(roomUsers);
+  }, [roomID]);
+
+  console.log("roomUsers", roomUsers);
+  console.log("currentUserId", currentUserId);
 
   const handleSaveEdit = () => {
     onUpdate(task.id, editedTask);
@@ -35,21 +121,29 @@ export default function TaskCard({
         <input
           value={editedTask.text}
           onChange={(e) =>
+            
             setEditedTask({ ...editedTask, text: e.target.value })
           }
           className="w-full p-2 border rounded"
           placeholder="Task description"
           required />
         <select
-          value={editedTask.assignee}
-          onChange={(e) =>
-            setEditedTask({ ...editedTask, assignee: e.target.value })
-          }
+          value={`${editedTask.assignee}|${editedTask.assigneeID}`}
+          onChange={(e) => {
+            const selectedOption = e.target.value; // Get the value from the selected option
+            const [name, user_ID] = selectedOption.split('|'); // Split the value to extract name and ID
+    
+            setEditedTask({ ...editedTask, assignee: name, assigneeID:user_ID});
+        //    setEditedTask({ ...editedTask, assigneeID: user_ID})
+            console.log("changed task", editedTask);
+    
+          }}
           className="w-full p-2 border rounded"
           required>
-          <option value="Assignee1">Assignee 1</option>
-          <option value="Assignee2">Assignee 2</option>
-          <option value="Unassigned">Unassigned</option>
+           <option value='Unassigned'> Unassigned </option>
+          {roomUsers.map((roomUser) => (
+             <option key ={roomUser.user_ID} value={`${roomUser.name}|${roomUser.user_ID}`}> {roomUser.name}</option>
+            ))}
         </select>
         <input
           type="date"
