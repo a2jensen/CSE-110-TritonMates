@@ -59,14 +59,31 @@ export default function Home() {
   }
 
   return (
-    <>
-      <img id="roommates-img" src='https://img.freepik.com/free-vector/parents-child-holding-their-cellphones-tablet-home-chatting-online-social-media_74855-14130.jpg?t=st=1731474608~exp=1731478208~hmac=940cc60f124ac8c46eb1bcc20dd97159c348b738a07328e006d802e0dc318565&w=996'></img>
-      <h2 id="welcome-hdr" style={{ color: '#000000', marginTop: '100px', marginLeft: '200px' }}>Welcome to </h2>
-      <h1 style={{ color: '#000000', marginLeft: '250px' }}>TritonMates!</h1>
-
-      <button style={{ backgroundColor: '#59a6cb', color: '#FFFFFF', width: '230px', height: '50px', marginLeft: '280px', marginTop: '40px', border: '2px solid #FFFFFF', borderRadius: '23px', fontSize: '20px' }} onClick={handleGoogleSignIn}>
+    <div className='bg-gradient-to-r from-sky-300 min-h-screen'>
+      <img
+        id="roommates-img"
+        src="https://img.freepik.com/free-vector/parents-child-holding-their-cellphones-tablet-home-chatting-online-social-media_74855-14130.jpg?t=st=1731474608~exp=1731478208~hmac=940cc60f124ac8c46eb1bcc20dd97159c348b738a07328e006d802e0dc318565&w=996"
+        alt="Roommates"
+        className="w-full h-auto"
+      />
+      <h2
+        id="welcome-hdr text-9xl"
+        className="text-black pt-56 ml-48"
+      >
+        Welcome to
+      </h2>
+      <h1
+        className="text-black ml-64 text-7xl font-bold"
+      >
+        TritonMates!
+      </h1>
+      <button
+        className="bg-blue-500 text-white w-56 h-12 ml-72 mt-10 border-2 border-white rounded-full text-lg"
+        onClick={handleGoogleSignIn}
+      >
         Sign In with Google!
       </button>
-    </>
+  </div>
+  
   );
 }

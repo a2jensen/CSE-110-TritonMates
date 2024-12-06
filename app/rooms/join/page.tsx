@@ -38,7 +38,7 @@ export default function JoinRoom() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-200">
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-sky-400">
             <img 
                 src="/Home-About.png" 
                 alt="Description of the image" 

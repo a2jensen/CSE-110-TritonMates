@@ -32,10 +32,10 @@ export default function RoomsPage() {
         roomUserCheck();
     }, [])
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-200">
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-sky-400">
             <div className="flex flex-col items-center justify-center min-h-screen">
                 <header className="text-center mb-6">
-                    <h1 className="text-8xl font-bold text-blue-600">TritonMates</h1>
+                    <h1 className="text-9xl font-bold text-blue-600">TritonMates</h1>
                 </header>
             
                 <div className="flex flex-col gap-4">
