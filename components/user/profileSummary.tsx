@@ -136,10 +136,10 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
 
   return (
     <div className="profile-summary">
-      <h2 className="text-xl font-semibold text-[#FFCD00]">User Profile</h2>
-
+      <h2 className="text-xl font-semibold text-[#D462AD]">Bio</h2>
+      <br />
       <div className="input-group">
-        <label className="text-[#D462AD]" htmlFor="name">
+        <label className="text-[#006EFF]" htmlFor="name">
           Preferred Name:
         </label>
         <input
@@ -153,7 +153,7 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
       </div>
 
       <div className="input-group">
-        <label className="text-[#D462AD]" htmlFor="major">
+        <label className="text-[#006EFF]" htmlFor="major">
           Major:
         </label>
         <input
@@ -167,7 +167,7 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
       </div>
 
       <div className="input-group">
-        <label className="text-[#D462AD]" htmlFor="pronouns">
+        <label className="text-[#006EFF]" htmlFor="pronouns">
           Pronouns:
         </label>
         <input
@@ -181,7 +181,7 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
       </div>
 
       <div className="input-group">
-        <label className="text-[#D462AD]" htmlFor="sleepingHours">
+        <label className="text-[#006EFF]" htmlFor="sleepingHours">
           Preferred Sleeping Hours:
         </label>
         <input
@@ -195,7 +195,7 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
       </div>
 
       <div className="input-group">
-        <label className="text-[#D462AD]" htmlFor="favoriteThing">
+        <label className="text-[#006EFF]" htmlFor="favoriteThing">
           Favorite Thing:
         </label>
         <input
@@ -217,7 +217,6 @@ const ProfileSummary: React.FC<ProfileSummaryProps> = ({
           padding: 10px;
           width: 100%;
           border-radius: 4px;
-          background-color: #aaaaaa;
         }
       `}</style>
     </div>

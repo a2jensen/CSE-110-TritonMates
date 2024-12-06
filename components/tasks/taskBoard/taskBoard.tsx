@@ -207,7 +207,7 @@ export default function TaskBoard() {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-lg space-y-6">
+    <div className="p-6 bg-gray-50 rounded-lg space-y-6">
       <div className="grid grid-cols-2 gap-6">
         <TaskOverview
           tasks={tasks}

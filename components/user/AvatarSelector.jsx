@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const AvatarSelector = ({ currentAvatar, onAvatarChange, avatars, points }) => {
   const [selectedAvatar, setSelectedAvatar] = useState(currentAvatar);
 
   const handleAvatarSelect = (avatar) => {
-    if (points >= avatar.pointsRequired) { // If avatar's unlocked
+    if (points >= avatar.pointsRequired) {
+      // If avatar's unlocked
       setSelectedAvatar(avatar.src);
       if (onAvatarChange) {
         onAvatarChange(avatar.src);
@@ -13,24 +14,27 @@ const AvatarSelector = ({ currentAvatar, onAvatarChange, avatars, points }) => {
   };
 
   return (
-    <div className="avatar-selector">
-      <h3>Select Your Avatar</h3>
+    <div className="avatar-selector font-bold text-[#D462AD]">
+      <h3>Select an Avatar</h3>
       <div className="avatar-list">
         {avatars.map((avatar) => (
           <div key={avatar.src} className="avatar-container">
             <img
               src={avatar.src}
               alt="Avatar"
-              className={`avatar-item ${selectedAvatar === avatar.src ? 'selected' : ''}`}
+              className={`avatar-item ${
+                selectedAvatar === avatar.src ? "selected" : ""
+              }`}
               onClick={() => handleAvatarSelect(avatar)}
               style={{
                 opacity: points >= avatar.pointsRequired ? 1 : 0.5,
-                cursor: points >= avatar.pointsRequired ? 'pointer' : 'not-allowed',
+                cursor:
+                  points >= avatar.pointsRequired ? "pointer" : "not-allowed",
               }}
             />
             <p className="points-label">
               {points >= avatar.pointsRequired
-                ? 'Unlocked'
+                ? "Unlocked"
                 : `${avatar.pointsRequired} Points`}
             </p>
           </div>
