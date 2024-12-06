@@ -70,7 +70,7 @@ export default function CreateRoom() {
             />
             <input
                 type="password"
-                placeholder="Password (optional)"
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />

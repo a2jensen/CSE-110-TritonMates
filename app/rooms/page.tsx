@@ -33,7 +33,7 @@ export default function RoomsPage() {
     return (
         <div className="container">
             <header className="header">
-                <div className="logo">LOGO</div>
+                <div className="logo">TritonMates</div>
                 <h1>Rooms</h1>
             </header>
 
