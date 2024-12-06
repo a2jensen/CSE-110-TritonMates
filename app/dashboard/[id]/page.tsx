@@ -12,6 +12,7 @@ import { getUser } from "../../api/user/UserContext"; // Import the getUser func
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../../firebase/firebaseConfig";
 import { checkUserAuth } from "@/app/api/user";
+import EmailForm from "@/components/conflict/conflictForm";
 
 const DashboardPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const router = useRouter();
@@ -128,6 +129,17 @@ const DashboardPage = ({ params }: { params: Promise<{ id: string }> }) => {
       </div>
       <div className="space-y-6">
         <TaskBoard />
+        <EmailForm trigger={popUp} setTrigger={setpopUp} />
+        <div className="flex justify-center items-center my-4">
+          <button
+            onClick={() => setpopUp(true)}
+            className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-6 rounded-lg shadow-md 
+            transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 
+            focus:ring-gray-400"
+          >
+            🦝 Report Conflict
+          </button>
+        </div>
         <EventsManager />
       </div>
     </div>
