@@ -1,5 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { event } from "../../types";
+import { getRsvp } from "@/app/api/events";
+import { useRoomContext } from "@/app/context/RoomContext";
+import { getUser } from "@/app/api/user/UserContext";
+
+interface User {
+  name: any;
+    points: any;
+    major: any;
+    pronouns: any;
+    sleepingHours: any;
+    favoriteThing: any;
+    avatar: any;
+    user_ID: any;
+    room_ID: any;
+}
 
 type EventCardProps = {
   event: event; // Event data
@@ -18,6 +33,9 @@ export function EventCard({
 }: EventCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedEvent, setEditedEvent] = useState<event>(event);
+  const [rsvped, setRsvped] = useState<string[]>([]);
+  const [rsvpUsers, setRsvpUsers] = useState<User[]>([])
+  const { roomData , setRoomData } = useRoomContext();
 
   const handleSaveEdit = async () => {
     try {
@@ -37,6 +55,44 @@ export function EventCard({
   };
 
   const hasUserRsvped = event.event_participants?.includes(currentUserId) ?? false;
+
+  useEffect(() => {
+    const fetch = async() => {
+      try {
+        if (roomData?.room_id) {
+          const rsvpers = await getRsvp(roomData?.room_id ,event.id, currentUserId)
+          if (rsvpers) {
+            console.log(rsvpers);
+            setRsvped(rsvpers);
+          }
+        }
+      } catch ( error : unknown ){
+        console.error("Failed to fetch within event card")
+      }
+    }
+    fetch();
+  },[hasUserRsvped])
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const users = await Promise.all(
+          rsvped.map(async (userId) => {
+            const userInfo = await getUser(userId); // Fetch user info
+            return userInfo;
+          })
+        );
+        const validUsers = users.filter((user): user is User => user !== undefined);
+        setRsvpUsers(validUsers); // Update state with user info
+      } catch (error) {
+        console.error("Failed to fetch user info:", error);
+      }
+    };
+
+    if (rsvped.length > 0) {
+      fetchUserInfo();
+    }
+  }, [rsvped]); // Run this effect when `rsvped` changes
 
   if (isEditing) {
     return (
@@ -98,6 +154,18 @@ export function EventCard({
       <div className="flex-1">
         <h2 className="m-0 text-[1.2em] text-[#333333]">{event.name}</h2>
         <p className="text-[0.9em] text-[#666]">{event.description}</p>
+        <ul className="text-[0.9em] text-[#666] flex "> {/* Add Tailwind classes to the list */}
+          <div>RSVPED:</div>
+            {rsvpUsers.length > 0 ? (
+              rsvpUsers.map((user, index) => (
+                <li key={index} className=" items-center ml-2 rounded">
+                  <span className="text-[0.9em] text-[#666]">{user.name}</span> {/* User's name */}
+                </li>
+              ))
+            ) : (
+              <li className="text-gray-500"> No RSVPs yet.</li>
+            )}
+        </ul>
         <div className="text-[0.9em] text-[#999]">
           {event.date.toLocaleDateString()} {/* Format date */}
         </div>
@@ -127,6 +195,8 @@ export function EventCard({
           >
             {hasUserRsvped ? "RSVPed" : "RSVP"}
           </button>
+          <div>
+</div>
         </div>
       </div>
     </div>

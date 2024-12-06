@@ -228,3 +228,32 @@ export async function eventRsvp(
         throw new Error("Failed to RSVP to the event. Please try again.");
     }
 }
+
+export async function getRsvp(
+    room_id: string,
+    event_id: string,
+    user_id: string
+){
+    try {
+        const eventRef = doc(db, `rooms/${room_id}/events`, event_id);
+        const eventSnap = await getDoc(eventRef);
+
+        if (!eventSnap.exists()) {
+            throw new Error("Event not found");
+        }
+
+        const eventData = eventSnap.data();
+        const eventParticipants = eventData.event_participants || [];
+
+        if (eventParticipants.includes(user_id)) {
+            console.log("User has already RSVPed to this event.");
+            return eventParticipants;
+        }
+
+        return eventParticipants
+        console.log(`User ${user_id} successfully RSVPed to event ${event_id}`);
+    } catch (error) {
+        console.error("Error updating event participants:", error);
+        throw new Error("Failed to RSVP to the event. Please try again.");
+    }
+}

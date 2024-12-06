@@ -22,5 +22,4 @@ export interface user {
     favoriteThing: string,
     user_ID: string,
     room_ID: string
-
 }
