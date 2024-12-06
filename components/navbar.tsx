@@ -34,7 +34,7 @@ export default function Navbar() {
             <div className="container">
                 <div className="text-4xl pl-12 text-blue-600">
                     <Link href="/">
-                        <b>TritonMates</b>
+                        <b className='text-yellow-500'>Triton</b><b>Mates</b>
                     </Link>
                 </div>
                 <nav className="nav-links text-xl px-0 font-semibold text-blue-600">
