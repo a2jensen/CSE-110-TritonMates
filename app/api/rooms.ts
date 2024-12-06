@@ -18,7 +18,7 @@ export async function createRoom(roomname : string, user_id : string, room_code 
     });
 
     // use auto generated ID as the room id field
-    await addDoc(roomsCollectionRef,{
+    await updateDoc(roomRef,{
         room_id : roomRef.id,
     });
 
@@ -62,12 +62,14 @@ export async function deleteRoomCollections( roomId : string) {
 
 export async function joinRoom(room_code : string, user_id : string){
         // case where somehow user is already in a room
+        /** 
         const roomUserCheck = query(collection(db,'rooms'), where("room_users", 'array-contains', user_id));
+        console.log('WHATS CAUSING THE ERROR',roomUserCheck);
         if (roomUserCheck) {
             alert("Woah! Your already in a room... don't try and join another one. Leave your current room first.")
             return;
         }
-
+        */
         // get specific room
         const roomsCollectionRef = query(collection(db, 'rooms'), where("room_code", "==", room_code));
 

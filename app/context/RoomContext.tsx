@@ -1,6 +1,8 @@
 // context/RoomContext.tsx
 'use client'
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { checkUserAuth } from '../api/user';
+import { checkRoom } from '../api/rooms';
 
 type RoomData = {
   created?: Date,
@@ -27,19 +29,27 @@ export const RoomProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setRoomData(data);
     localStorage.setItem("roomData", JSON.stringify(data));
   }
-
-  /**
-  useEffect(() => {
-    const storedRoomData = localStorage.getItem('roomData');
-    if (storedRoomData) {
+  /** 
+  useEffect(() => { 
+    const fetchRoomId = async() => {
       try {
-        const parsedRoomData = JSON.parse(storedRoomData) as RoomData;
-        setRoomData(parsedRoomData);
-      } catch (error: unknown) {
-        console.error("Error parsing room data from localStorage", error)
+        const user = await checkUserAuth();
+        if (user) {
+          const userId = user.uid;
+          if (userId) {
+            const roomId = await checkRoom(userId);
+            if (roomId) {
+              console.log("ROOMID WOOOOO FETCHED IN ROOM CONTEXT", roomId)
+              setRoomData({...roomData, room_id : roomId})
+            }
+          }
+        }
+      } catch (error : unknown){
+        console.error("Error in roomContext in trying to fetch room id", error)
       }
+      fetchRoomId();
     }
-  }, [])  */
+  }, []) */
 
   return (
     <RoomContext.Provider value={{ roomData, setRoomData, updateRoomData }}>
