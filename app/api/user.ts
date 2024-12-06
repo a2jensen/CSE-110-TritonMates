@@ -1,14 +1,16 @@
-import { getAuth } from "firebase/auth"
+import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 
-// function that checks if a user is logged in.
-export async function checkUserAuth() {
-    const auth = getAuth();
-    const user = auth.currentUser;
+// Function to check if a user is authenticated
+export async function checkUserAuth(): Promise<User | null> {
+  const auth = getAuth();
 
-    if(user){
-        return user;
-    } else {
-        console.error("not logged in");
-        return null;
-    };
-};
+  return new Promise((resolve) => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        resolve(user); // User is authenticated
+      } else {
+        resolve(null); // No user is logged in
+      }
+    });
+  });
+}

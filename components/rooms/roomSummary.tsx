@@ -12,19 +12,27 @@ const RoomSummary: React.FC = () => {
 
 
 
-    const [roomData, setRoomData] = useState<any>(null);
+    const [roomData, setRoomData1] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const {setRoomData} = useRoomContext();
 
     useEffect(() => {
         const handleUserAuth = async () => {
             const userData = await checkUserAuth();
-            const user_id = userData?.uid  || "";
-            const room_id = await checkRoom(user_id) || "";
-            const roomData = await fetchRoomData(room_id);
-            if (roomData) {
-                setRoomData(roomData);
-                setLoading(false);
-                console.log('Room data fetched successfully', roomData);
+            if (userData) {
+                const user_id = userData.uid;
+                if (user_id) {
+                    const room_id = await checkRoom(user_id);
+                    if (room_id) {
+                        const roomData = await fetchRoomData(room_id);
+                        if (roomData) {
+                            setRoomData1(roomData);
+                            setRoomData({...roomData, room_id : room_id })
+                            setLoading(false);
+                            console.log('Room data fetched successfully', roomData);
+                        }
+                    }
+                }
             }
         }
         handleUserAuth();

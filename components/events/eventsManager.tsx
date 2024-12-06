@@ -4,21 +4,21 @@ import AddEventForm from "./addEventForm";
 import { useState, useEffect } from "react";
 import { event } from "../../types";
 import { addEvent, getAllRoomEvents, eventRsvp, deleteEvent, editEvent } from "@/app/api/events";
-import { useRoomContext } from "@/app/context/RoomContext";
 import { checkUserAuth } from "@/app/api/user";
 
-export default function EventsManager() {
+interface EventsManagerProps {
+  roomId : string;
+}
 
-
-  const { roomData } = useRoomContext();
-  const roomID = roomData?.room_id || "";
+function EventsManager( {roomId}: EventsManagerProps ): React.JSX.Element {
+  const roomIDParam = roomId;
   const [events, setEvents] = useState<event[]>([]);
   const [userID, setUserID] = useState<string>("");
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const fetchedEvents = await getAllRoomEvents(roomID);
+        const fetchedEvents = await getAllRoomEvents(roomIDParam);
         console.log("Fetched events:", fetchedEvents);
         setEvents(fetchedEvents);
       } catch (error) {
@@ -33,12 +33,12 @@ export default function EventsManager() {
       setUserID(user?.uid || "");
     }
     fetchUser();
-  }, [roomID]);
+  }, [roomIDParam]);
 
   const currentUserId = userID;
   const handleAddEvent = async (newEvent: Omit<event, "id">) => {
     try {
-      const eventId = await addEvent(newEvent, roomID); // No need to pass participants
+      const eventId = await addEvent(newEvent, roomIDParam); // No need to pass participants
       setEvents((prevEvents) => [...prevEvents, { ...newEvent, id: eventId }]);
     } catch (error) {
       console.error("Failed to add event:", error);
@@ -49,7 +49,7 @@ export default function EventsManager() {
   const onRsvp = async (eventId: string) => {
     try {
       // Make an RSVP API call
-      await eventRsvp(roomID, eventId, userID);
+      await eventRsvp(roomIDParam, eventId, userID);
 
       // Update the state with the RSVP information
       setEvents((prevEvents) =>
@@ -72,7 +72,7 @@ export default function EventsManager() {
 
   const handleDeleteEvent = async (eventId: string) => {
     try {
-      await deleteEvent(eventId, roomID); // Backend delete
+      await deleteEvent(eventId, roomIDParam); // Backend delete
       setEvents((prevEvents) => prevEvents.filter((event) => event.id !== eventId)); // Update state
     } catch (error) {
       console.error("Failed to delete event:", error);
@@ -81,7 +81,7 @@ export default function EventsManager() {
 
   const handleEditEvent = async (updatedEvent: event) => {
     try {
-      await editEvent(updatedEvent, roomID); // Backend edit
+      await editEvent(updatedEvent, roomIDParam); // Backend edit
       setEvents((prevEvents) =>
         prevEvents.map((event) =>
           event.id === updatedEvent.id ? updatedEvent : event
@@ -107,3 +107,5 @@ export default function EventsManager() {
     </div>
   );
 }
+
+export default EventsManager;

@@ -140,7 +140,7 @@ const DashboardPage = ({ params }: { params: Promise<{ id: string }> }) => {
             🦝 Report Conflict
           </button>
         </div>
-        <EventsManager />
+        <EventsManager roomId={roomId}/>
       </div>
     </div>
   );

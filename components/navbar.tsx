@@ -5,8 +5,7 @@ import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState, } from 'react';
 import { auth, signOut, User, } from "../firebase/firebaseConfig"
-import { checkUserAuth } from '@/app/api/user';
-import { checkRoom } from '@/app/api/rooms';
+import { useRoomContext } from '@/app/context/RoomContext';
 
 
 // Put this component in sites that need it
@@ -16,43 +15,19 @@ export default function Navbar() {
     const pathname = usePathname();
     const excludedRouters = ["/", "/signup/about-usr", "/rooms" ,"/rooms/create", "/rooms/join"];
     const [ roomLink , setRoomLink ] = useState<string>("");
+    const {roomData, fetchRoomData} = useRoomContext();
 
-     
-    if (excludedRouters.includes(pathname)) {
-        return null;
-    } 
-
-    const handleSignOut = async () => {
-        try {
-            await signOut(auth);
-            setUser(null);
-            document.cookie = `auth-token=; path=/; max-age=0;`;
-            console.log('IS THIS EMPTY',document.cookie)
-        } catch (error : unknown ) {
-            console.error("Failed to sign out", error)  
-        }
-        router.push('/');
-    }
+    const isExcluded = excludedRouters.includes(pathname);
     
-    /** 
     useEffect(() => {
-        const fetchRoomId = async () => {
-            try {
-                const userFetch = await checkUserAuth();
-                if (userFetch) {
-                    const userId = userFetch.uid;
-                    const roomId = await checkRoom(userId);
-                    if (roomId) {
-                        setRoomLink(roomId);
-                    }
-                }
-            } catch (error : unknown ) {
-                console.error("Error trying to fetch room id")
-            }
+        if (!roomData) {
+            fetchRoomData(); // Fetch room data if not already loaded
         }
-        fetchRoomId();
-    },[router]) */
+        }, [roomData, fetchRoomData]);
 
+    if (isExcluded) {
+        return null;
+    }
     return (
         // what is navbar?
         <header className="bg-blue-300 p-4 px-4 shadow-lg">
@@ -64,8 +39,8 @@ export default function Navbar() {
                 </div>
                 <nav className="nav-links text-xl px-0 font-semibold">
                     <ul>
-                        <li><Link href="/rooms">Rooms</Link></li>
-                        <li><Link href="/dashboard/">Dashboard</Link></li>
+                        
+                        <li><Link href={`/dashboard/${roomData?.room_id}`}>Dashboard</Link></li>
                         <li><Link href="/user">User</Link></li>
                     </ul>
                 </nav>
