@@ -66,9 +66,7 @@ export default function Navbar() {
                     <ul>
                         <li><Link href="/rooms">Rooms</Link></li>
                         <li><Link href="/dashboard/">Dashboard</Link></li>
-                        <li><Link href={`/dashboard/${roomLink}`}>Dashboard2</Link></li>
                         <li><Link href="/user">User</Link></li>
-                        <li><button onClick={handleSignOut}>Sign Out</button></li>
                     </ul>
                 </nav>
             </div>
