@@ -43,7 +43,6 @@ export default function AboutUser() {
   
   return (
     <>
-      <Logo />
       <img id="roommates-img" src='https://img.freepik.com/free-vector/parents-child-holding-their-cellphones-tablet-home-chatting-online-social-media_74855-14130.jpg?t=st=1731474608~exp=1731478208~hmac=940cc60f124ac8c46eb1bcc20dd97159c348b738a07328e006d802e0dc318565&w=996'></img>
       <h1 id="welcome-hdr">Tell us about yourself!</h1>
 

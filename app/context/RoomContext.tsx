@@ -28,6 +28,7 @@ export const RoomProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem("roomData", JSON.stringify(data));
   }
 
+  /**
   useEffect(() => {
     const storedRoomData = localStorage.getItem('roomData');
     if (storedRoomData) {
@@ -38,7 +39,7 @@ export const RoomProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.error("Error parsing room data from localStorage", error)
       }
     }
-  }, [])
+  }, [])  */
 
   return (
     <RoomContext.Provider value={{ roomData, setRoomData, updateRoomData }}>

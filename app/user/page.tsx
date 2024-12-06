@@ -9,14 +9,18 @@ import {
   getUser,
   updateUserAvatar,
 } from "../api/user/UserContext";
-import { auth, onAuthStateChanged } from "../../firebase/firebaseConfig";
+import { auth, onAuthStateChanged, signOut } from "../../firebase/firebaseConfig";
+import { useRouter} from "next/navigation";
+import { User } from "@/types";
 
 const UserPage = () => {
+  const router = useRouter();
   const [avatar, setAvatar] = useState("/avatars/default.png"); // Default avatar
   const [points, setPoints] = useState(0);
   const [userID, setUserID] = useState("");
   const [roomID, setRoomID] = useState("");
   const [loading, setLoading] = useState(true);
+  const [, setUser] = useState<User | null>(null);
 
   const avatars = [
     { src: "/avatars/default.png", pointsRequired: 0 },
@@ -70,6 +74,18 @@ const UserPage = () => {
     return <p>Loading...</p>; // Show loading state
   }
 
+  const handleSignOut = async () => {
+    try {
+        await signOut(auth);
+        setUser(null);
+        document.cookie = `auth-token=; path=/; max-age=0;`;
+        console.log('IS THIS EMPTY',document.cookie)
+    } catch (error : unknown ) {
+        console.error("Failed to sign out", error)  
+    }
+    router.push('/');
+}
+
   return (
     <div className="user-page bg-white text-black min-h-screen">
       <header className="p-6">
@@ -82,6 +98,7 @@ const UserPage = () => {
           >
             Done
           </Link>
+          <button   className="ml-4 inline-block bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-[#FFD633] transition duration-300 ease-in-out text-center font-semibold" onClick={handleSignOut}>Sign Out</button>
         </div>
       </header>
 
