@@ -32,12 +32,12 @@ export default function Navbar() {
         // what is navbar?
         <header className="bg-sky-300 p-4 px-4 shadow-lg">
             <div className="container">
-                <div className="text-4xl pl-12">
+                <div className="text-4xl pl-12 text-blue-600">
                     <Link href="/">
                         <b>TritonMates</b>
                     </Link>
                 </div>
-                <nav className="nav-links text-xl px-0 font-semibold">
+                <nav className="nav-links text-xl px-0 font-semibold text-blue-600">
                     <ul>
                         
                         <li><Link href={`/dashboard/${roomData?.room_id}`}>Dashboard</Link></li>

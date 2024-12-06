@@ -1,0 +1,25 @@
+.aboutContainer {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 1rem;
+    align-items: center;
+    height: 75vh;
+  }
+  
+  .aboutImages {
+    width: 450px;
+    height: 300px;
+    background: url('../public/surfing_spritesheet.png') no-repeat;
+    background-size: 7200px 270px; /* Total size of the sprite sheet */
+    animation: animateAbout 2.0s steps(16) infinite;
+  }
+  
+  
+  @keyframes animateAbout {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: -7200px 0; /* Moves across the sprite sheet */
+    }
+  }

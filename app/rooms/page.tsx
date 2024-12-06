@@ -6,6 +6,7 @@ import { checkRoom } from "../api/rooms";
 import { checkUserAuth } from "../api/user";
 import { useRouter } from "next/navigation";
 import { useRoomContext } from "../context/RoomContext";
+import AboutAnimation from "@/components/AboutAnimation";
 
 export default function RoomsPage() {
     const { roomData } = useRoomContext();
@@ -31,75 +32,32 @@ export default function RoomsPage() {
         roomUserCheck();
     }, [])
     return (
-        <div className="container">
-            <header className="header">
-                <div className="logo">TritonMates</div>
-                <h1>Rooms</h1>
-            </header>
-
-            <div className="content">
-                <Link href="/rooms/join">
-                    <button className="action-button">Join Room</button>
-                </Link>
-                <Link href="/rooms/create">
-                    <button className="action-button">Create Room</button>
-                </Link>
+        <div className="flex items-center justify-center min-h-screen bg-gray-200">
+            <div className="flex flex-col items-center justify-center min-h-screen">
+                <header className="text-center mb-6">
+                    <h1 className="text-8xl font-bold text-blue-600">TritonMates</h1>
+                </header>
+            
+                <div className="flex flex-col gap-4">
+                    <Link href="/rooms/join">
+                        <button className="bg-blue-500 text-white text-3xl w-60 py-2 px-6 rounded-md shadow-md hover:bg-blue-600 transition">
+                            Join Room
+                        </button>
+                    </Link>
+                    <Link href="/rooms/create">
+                        <button className="bg-green-500 text-white text-3xl w-60 py-2 px-6 rounded-md shadow-md hover:bg-green-600 transition">
+                            Create Room
+                        </button>
+                    </Link>
+                    <Link href="/user">
+                        <button className="bg-green-500 text-white text-3xl w-60 py-2 px-6 rounded-md shadow-md hover:bg-green-600 transition">
+                            User
+                        </button>
+                    </Link>
+                </div>
             </div>
-
-            <style jsx>{`
-                .container {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: flex-start;
-                    min-height: 100vh;
-                    background: #f7f7f7;
-                    padding: 20px;
-                }
-                .header {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    margin-bottom: 30px;
-                }
-                .logo {
-                    background: #fbe4a1;
-                    padding: 10px;
-                    border-radius: 5px;
-                    margin-bottom: 10px;
-                }
-                h1 {
-                    font-size: 1.5rem;
-                    color: #333;
-                    margin: 0;
-                }
-                .content {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: 20px;
-                    width: 100%;
-                    max-width: 400px;
-                    background: #fff;
-                    padding: 20px;
-                    border-radius: 10px;
-                    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-                }
-                .action-button {
-                    width: 100%;
-                    padding: 15px;
-                    font-size: 1rem;
-                    font-weight: bold;
-                    color: #fff;
-                    background: #add8e6;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                }
-                .action-button:hover {
-                    background: #90c3e6;
-                }
-            `}</style>
+            <AboutAnimation/>
         </div>
+    
     );
 }
