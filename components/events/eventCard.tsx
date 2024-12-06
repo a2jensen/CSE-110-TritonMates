@@ -150,7 +150,7 @@ export function EventCard({
       key={event.id}
       className="flex bg-white rounded-[10px] p-4 shadow-sm items-stretch"
     >
-      <div className="w-[100px] bg-[#E0E0E0] rounded-[5px] mr-4"></div>
+      
       <div className="flex-1">
         <h2 className="m-0 text-[1.2em] text-[#333333]">{event.name}</h2>
         <p className="text-[0.9em] text-[#666]">{event.description}</p>
