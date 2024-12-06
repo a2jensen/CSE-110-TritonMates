@@ -7,13 +7,12 @@ import { useEffect } from "react";
 import { get } from "http";
 import { checkRoom, fetchRoomData } from "@/app/api/rooms";
 import { useState } from "react";
+import Roommate from "./roommate";
 
 const RoomSummary: React.FC = () => {
-
-
-
     const [roomData, setRoomData1] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [roommates, setRoommates] = useState<string[]>([]);
     const {setRoomData} = useRoomContext();
 
     useEffect(() => {
@@ -27,8 +26,11 @@ const RoomSummary: React.FC = () => {
                         const roomData = await fetchRoomData(room_id);
                         if (roomData) {
                             setRoomData1(roomData);
-                            setRoomData({...roomData, room_id : room_id })
+                            setRoomData({...roomData, room_id : room_id, })
                             setLoading(false);
+                            // Remove the user's UID from room_users
+                            const filteredRoommates = roomData?.room_users?.filter((user: string) => user !== user_id);
+                            setRoommates(filteredRoommates)
                             console.log('Room data fetched successfully', roomData);
                         }
                     }
@@ -36,7 +38,6 @@ const RoomSummary: React.FC = () => {
             }
         }
         handleUserAuth();
-
     }, []);
 
 
@@ -67,15 +68,30 @@ const RoomSummary: React.FC = () => {
     }
 
     return (
-        <div className="p-4 m-10 flex justify-between">
-            <div className="p-2">
-                <h2> {roomData?.room_name || 'No Room name available'} </h2>
-                <h4> Room Code: {roomData?.room_code || 'No Room code available'}</h4>
+            <div className="rounded-lg bg-sky-200 font-bold p-4 m-10 flex justify-between"
+            style={{ 
+                backgroundImage: "url('/avatars/sungod.png')",
+                backgroundSize: "45%", // or "contain", "50% 50%", etc.
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "right",
+            }}
+            >
+                <div className="p-4 text-blue-500">
+                    <h2> {roomData?.room_name || 'No Room name available'} </h2>
+                    <h4> Room Code: {roomData?.room_code || 'No Room code available'}</h4>
+                    <h4> Roommates: </h4>
+                    <div className="flex mx-8">
+                        {roommates.map((userId : string) => (
+                            <Roommate key={userId} roommate_Id={userId}/>
+                        ))
+                        }
+                    </div>
+                    <button className="bg-red-100 p-1 rounded-md mr-8 h-12" onClick={leaveRoomAction}>
+                    Leave Room
+                </button>
+                </div>
+               
             </div>
-            <button className="bg-red-100 p-1 my-8 rounded-md" onClick={leaveRoomAction}>
-                Leave Room
-            </button>
-        </div>
     )
 }
 

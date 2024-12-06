@@ -52,8 +52,8 @@ const AddEventForm: React.FC<AddEventFormProps> = ({ onAddEvent }) => {
     };
 
     return (
-        <div className="bg-white p-5 rounded-[10px] shadow-md max-w-[400px] self-start">
-            <h2 className="text-[1.8em] font-bold text-[#FFD54F] mb-5">Add New Event</h2>
+        <div className="bg-[#FFEE9C] p-5 rounded-[10px] shadow-md max-w-[400px] self-start">
+            <h2 className="text-[1.8em] font-bold text-[#DAA520] mb-5">Add New Event</h2>
             <form onSubmit={handleSubmit} className="flex flex-col gap-[15px]">
                 <label className="text-[0.9em] font-bold text-[#333]">Event Title</label>
                 <input

@@ -21,7 +21,7 @@ export default function TaskOverview({
   const upcomingTasks = tasks.filter((task) => task.isUpcoming);
 
   return (
-    <div className="bg-blue-50 rounded-lg p-6">
+    <div className="bg-sky-100 rounded-lg p-6">
       <h3 className="text-xl font-bold text-[#006EFF] mb-6">Task Board</h3>
 
       {/* Today's Tasks Section */}

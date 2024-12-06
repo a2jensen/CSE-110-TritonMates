@@ -109,9 +109,9 @@ const DashboardPage = ({ params }: { params: Promise<{ id: string }> }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <RoomSummary />
-      <div className="bg-white p-4 mb-4 flex items-center gap-4">
+      <div className="rounded-lg mx-10 bg-sky-200 p-4 mb-4 flex items-center gap-4">
         {/* Display the user's avatar */}
         <Link className="text-blue-500 hover:underline" href="/user">
           <img
@@ -128,18 +128,18 @@ const DashboardPage = ({ params }: { params: Promise<{ id: string }> }) => {
         </h2>
       </div>
       <div className="space-y-6">
-        <TaskBoard />
-        <EmailForm trigger={popUp} setTrigger={setpopUp} />
-        <div className="flex justify-center items-center my-4">
+      <div className="flex ml-10 mt-10 items-center justify-center">
           <button
             onClick={() => setpopUp(true)}
-            className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-6 rounded-lg shadow-md 
+            className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-4 px-8 rounded-lg shadow-md 
             transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 
-            focus:ring-gray-400"
+            focus:ring-gray-400 text-2xl"
           >
             🦝 Report Conflict
           </button>
         </div>
+        <TaskBoard />
+        <EmailForm trigger={popUp} setTrigger={setpopUp} />
         <EventsManager roomId={roomId}/>
       </div>
     </div>

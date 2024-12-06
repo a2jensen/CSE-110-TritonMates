@@ -30,7 +30,7 @@ export default function Navbar() {
     }
     return (
         // what is navbar?
-        <header className="bg-blue-300 p-4 px-4 shadow-lg">
+        <header className="bg-sky-300 p-4 px-4 shadow-lg">
             <div className="container">
                 <div className="text-4xl pl-12">
                     <Link href="/">

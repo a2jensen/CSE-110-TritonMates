@@ -134,7 +134,7 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
   console.log("roomUsers", roomUsers);
 
   return (
-    <div className="bg-blue-50 rounded-lg p-6 shadow-md">
+    <div className="bg-sky-100 rounded-lg p-6 shadow-md">
       <h3 className="text-xl font-bold text-[#4C98FC] mb-6">Task Builder</h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
