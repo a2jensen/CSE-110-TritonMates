@@ -121,7 +121,7 @@ export async function leaveRoom(room_code : string, user_id : string){
     console.log('User removed from room successfully');
 }
 
-// i may not need this function at all...
+
 export async function fetchRoomData(room_id : string) {
     const roomRef = doc(db, `rooms/${room_id}`)
     const roomSnap = await getDoc(roomRef);
@@ -145,7 +145,7 @@ export async function checkRoom(user_id : string) {
     if (roomSnap) {
         const roomId = roomSnap.docs.map(doc => doc.id)
         const roomIdString = roomId[0];
-        return roomIdString;
+        return roomIdString; // rpp, od
     } else {
         return null;
     }

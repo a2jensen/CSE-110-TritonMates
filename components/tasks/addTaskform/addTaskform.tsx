@@ -156,6 +156,7 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
             Tag a TritonMate
           </label>
           <select
+            
             value={`${newAssignee}|${newAssigneeID}`}
             onChange={(e) => {
               const selectedOption = e.target.value; // Get the value from the selected option

@@ -71,31 +71,37 @@ const UserPage = () => {
   }
 
   return (
-    <div className="user-page bg-[#182B49] text-white min-h-screen">
+    <div className="user-page bg-white text-black min-h-screen">
       <header className="p-6">
-        <h1 className="text-3xl font-bold text-[#FFCD00]">Welcome User</h1>
+        <h1 className="text-3xl font-bold text-[#FFCD00]">Welcome!</h1>
         <div className="profile flex items-center mt-4">
           <img src={avatar} alt="User Avatar" className="profile-avatar mr-4" />
-          <Link className="text-[#FFCD00] hover:underline" href="/dashboard">
+          <Link
+            href="/dashboard"
+            className="inline-block bg-[#FFCD00] text-white px-4 py-2 rounded-lg hover:bg-[#FFD633] transition duration-300 ease-in-out text-center font-semibold"
+          >
             Done
           </Link>
         </div>
       </header>
 
-      <button onClick={addPoints}>Earn Points</button>
-      <p>{`Points: ${points}`}</p>
-
-      <div className="avatar-selector-container mb-6">
-        <AvatarSelector
-          currentAvatar={avatar}
-          onAvatarChange={handleAvatarChange}
-          avatars={avatars}
-          points={points}
-        />
+      <div className="flex items-center space-x-4 bg-[#D462AD]/10 p-4 rounded-lg border border-[#D462AD]/30 shadow-sm">
+        <div className="flex items-center space-x-2">
+          <p className="text-lg font-semibold text-[#FFCD00]">
+            Points: <span className="text-[#D462AD]">{points}</span>
+          </p>
+        </div>
+        <div className="avatar-selector-container mb-6">
+          <AvatarSelector
+            currentAvatar={avatar}
+            onAvatarChange={handleAvatarChange}
+            avatars={avatars}
+            points={points}
+          />
+        </div>
       </div>
 
-      <div className="profile-summary-container mt-8 p-6 bg-[#182B49] rounded-lg shadow-lg">
-        {/* Include ProfileSummary component */}
+      <div className="profile-summary-container mt-8 p-6 rounded-lg shadow-lg">
         <ProfileSummary
           initialData={{
             name: "",
@@ -119,7 +125,7 @@ const UserPage = () => {
           padding: 20px;
         }
         .profile-summary-container {
-          background-color: #182b49;
+          background-color: #c1dcff;
         }
       `}</style>
     </div>
